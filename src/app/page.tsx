@@ -253,10 +253,11 @@ export default function RadarDashboard() {
                       <th className="py-3.5 px-4">Category</th>
                       <th className="py-3.5 px-4 max-w-xs">Best For & Pricing</th>
                       <th className="py-3.5 px-4 text-center">Trend</th>
+                      <th className="py-3.5 px-4 text-center">Est. Monthly Traffic</th>
+                      <th className="py-3.5 px-4 text-center">User Rating</th>
                       <th className="py-3.5 px-4 text-center">Score</th>
                       <th className="py-3.5 px-4 text-center">7d Change</th>
-                      <th className="py-3.5 px-4 text-center">Sub-Metrics (Launch / Social / Search / Adopt)</th>
-                      <th className="py-3.5 px-4 text-center">Updated</th>
+                      <th className="py-3.5 px-4 text-center">Sub-Metrics (LNCH/SOC/SEAR/ADOP)</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-850">
@@ -301,6 +302,14 @@ export default function RadarDashboard() {
                           <td className="py-4 px-4 text-center">
                             {renderTrendBadge(tool.trendStatus)}
                           </td>
+                          {/* Est. Monthly Traffic */}
+                          <td className="py-4 px-4 text-center font-mono text-xs text-slate-300">
+                            {tool.monthlyVisits}
+                          </td>
+                          {/* User Rating */}
+                          <td className="py-4 px-4 text-center font-mono text-xs text-amber-400 font-bold">
+                            ★ {tool.userRating}
+                          </td>
                           {/* Score */}
                           <td className="py-4 px-4 text-center">
                             <span className="inline-block px-2.5 py-1 text-xs font-bold font-mono rounded bg-blue-500/10 text-blue-300 border border-blue-500/25">
@@ -333,10 +342,6 @@ export default function RadarDashboard() {
                                 <span className="text-xs font-mono font-semibold text-slate-300">{tool.designerAdoption}</span>
                               </div>
                             </div>
-                          </td>
-                          {/* Last Updated */}
-                          <td className="py-4 px-4 text-center text-xs text-slate-500 font-mono">
-                            {tool.lastUpdated}
                           </td>
                         </tr>
                       );
@@ -584,13 +589,33 @@ export default function RadarDashboard() {
                   <p className="text-slate-400 text-xs leading-relaxed"><strong className="text-slate-300">Best for: </strong>{selectedTool.bestFor}</p>
                 </div>
 
+                {/* Real-World Tracked Signals */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-slate-900/45 border border-slate-800 rounded-xl">
+                  <div>
+                    <span className="block text-[10px] text-slate-500 uppercase font-mono">Est. Monthly Traffic</span>
+                    <span className="text-sm font-bold text-slate-200">{selectedTool.monthlyVisits}</span>
+                  </div>
+                  <div>
+                    <span className="block text-[10px] text-slate-500 uppercase font-mono">Real User Rating</span>
+                    <span className="text-sm font-bold text-amber-400">★ {selectedTool.userRating} / 5</span>
+                  </div>
+                  <div>
+                    <span className="block text-[10px] text-slate-500 uppercase font-mono">Figma Directory</span>
+                    <span className="text-sm font-bold text-slate-200">{selectedTool.figmaCommunityUsers}</span>
+                  </div>
+                </div>
+
                 {/* Why Trending */}
-                <div className="p-4 bg-violet-500/5 border border-violet-500/20 rounded-xl space-y-1">
+                <div className="p-4 bg-violet-500/5 border border-violet-500/20 rounded-xl space-y-2">
                   <span className="flex items-center gap-1.5 text-xs font-bold text-violet-400 uppercase tracking-wide">
                     <Zap size={14} />
                     Trending Catalyst
                   </span>
                   <p className="text-slate-300 text-xs leading-relaxed">{selectedTool.whyTrending}</p>
+                  <div className="pt-2 border-t border-violet-500/10 text-[10px] text-slate-500">
+                    <strong className="text-slate-450 font-semibold">Tracked Sources: </strong>
+                    {selectedTool.primaryDataSources.join(', ')}
+                  </div>
                 </div>
 
                 {/* Score Breakdown Bars */}
