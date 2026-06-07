@@ -63,7 +63,7 @@ export default function RadarDashboard() {
   // Top 5 tools for the Trend Chart
   const topFiveTools = toolsData.slice(0, 5);
 
-  // Re-structure the history for Recharts
+  // Re-structure the history for Recharts and override the final data point with the exact calculated score
   const chartData = [
     { name: 'May 07' },
     { name: 'May 17' },
@@ -72,7 +72,11 @@ export default function RadarDashboard() {
   ].map((point, index) => {
     const dataPoint: any = { name: point.name };
     topFiveTools.forEach(tool => {
-      dataPoint[tool.name] = tool.momentumHistory[index]?.score ?? tool.momentumScore;
+      if (index === 3) {
+        dataPoint[tool.name] = tool.momentumScore;
+      } else {
+        dataPoint[tool.name] = tool.momentumHistory[index]?.score ?? tool.momentumScore;
+      }
     });
     return dataPoint;
   });
@@ -236,8 +240,13 @@ export default function RadarDashboard() {
       <nav className="sticky top-0 z-40 w-full bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm py-4 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-[#aa2d00] flex items-center justify-center text-white font-bold text-lg font-mono">
-              R
+            <div className="w-9 h-9 rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-center text-[#aa2d00] shadow-sm">
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.5" strokeDasharray="3 3" />
+                <circle cx="12" cy="12" r="5" stroke="currentColor" strokeWidth="2" />
+                <circle cx="12" cy="12" r="2" fill="currentColor" />
+                <path d="M12 3v9l4 4" />
+              </svg>
             </div>
             <span className="font-display font-bold text-lg text-[#181d26] tracking-tight">AI Design Radar</span>
           </div>
@@ -249,9 +258,15 @@ export default function RadarDashboard() {
             <a href="#watchlist" className="hover:text-[#1b61c9] transition">Watchlist</a>
           </div>
           <div>
-            <span className="inline-flex px-3 py-1 rounded-full text-[10px] font-bold bg-[#aa2d00]/10 text-[#aa2d00] border border-[#aa2d00]/20 font-mono uppercase tracking-wider">
-              Standalone SaaS Only
-            </span>
+            <a 
+              href="https://github.com/saksham7saxena/ai-design-radar" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold bg-white text-[#181d26] border border-slate-200 rounded-lg hover:bg-slate-50 transition shadow-sm"
+            >
+              GitHub
+              <ExternalLink size={12} />
+            </a>
           </div>
         </div>
       </nav>
@@ -695,9 +710,8 @@ export default function RadarDashboard() {
         </section>
 
         {/* FOOTER */}
-        <footer className="pt-10 border-t border-slate-200 text-center text-xs text-slate-500 space-y-1.5">
-          <p>© {new Date().getFullYear()} AI Design Tools Radar. Structured with Airtable Design System guidelines.</p>
-          <p className="text-slate-400 font-mono">Vercel Ready • Editorial Engine • Updated: {new Date().toISOString().split('T')[0]}</p>
+        <footer className="pt-10 border-t border-slate-200 text-center text-xs text-slate-500">
+          <p>© {new Date().getFullYear()} AI Design Tools Radar. Created for market tracking and intelligence.</p>
         </footer>
 
         {/* SECTION 6: TOOL DETAIL MODAL - Refactored as clean print-magazine layout */}
