@@ -283,6 +283,7 @@ export default function RadarDashboard() {
     unsplashUrl: string;
     x: number;
     y: number;
+    startSecond?: number;
   } | null>(null);
 
   const getLocalTime = (timezone: string) => {
@@ -303,6 +304,7 @@ export default function RadarDashboard() {
       const randomIdx = Math.floor(Math.random() * data.unsplashIds.length);
       const unsplashId = data.unsplashIds[randomIdx];
       const unsplashUrl = `https://images.unsplash.com/photo-${unsplashId}?w=300&h=180&fit=crop&q=80`;
+      const startSecond = Math.floor(Math.random() * 141) + 10; // Random second between 10 and 150
       
       setHoveredLocation({
         city: location,
@@ -310,7 +312,8 @@ export default function RadarDashboard() {
         ytId: data.ytId,
         unsplashUrl,
         x: rect.left + rect.width / 2,
-        y: rect.top - 8
+        y: rect.top - 8,
+        startSecond
       });
     }
   };
@@ -1230,7 +1233,7 @@ export default function RadarDashboard() {
                       className="absolute inset-0 w-full h-full object-cover opacity-40 blur-xs"
                     />
                     <iframe 
-                      src={`https://www.youtube.com/embed/${hoveredLocation.ytId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${hoveredLocation.ytId}&start=15&modestbranding=1&iv_load_policy=3&rel=0&showinfo=0&disablekb=1`}
+                      src={`https://www.youtube.com/embed/${hoveredLocation.ytId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${hoveredLocation.ytId}&start=${hoveredLocation.startSecond || 15}&modestbranding=1&iv_load_policy=3&rel=0&showinfo=0&disablekb=1`}
                       title="City cam feed"
                       className="absolute inset-0 w-full h-full border-0 pointer-events-none scale-110"
                       allow="autoplay; encrypted-media"
