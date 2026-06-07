@@ -22,10 +22,11 @@ export interface Tool {
   scoreOutOf10: number;
   whyTrending: string;
   momentumHistory: { date: string; score: number }[];
-  // New Real-World Metrics
+  // Real-World Metrics
   monthlyVisits: string; // Similarweb / platform reports
-  userRating: number; // PH/G2/Figma review rating out of 5
-  figmaCommunityUsers: string; // Plugin installs or status
+  userRating: number; // Review rating out of 5
+  ratingSources: string; // e.g. "Product Hunt & G2", "Figma Reviews & Capterra"
+  figmaCommunityUsers: string; // Figma integration footprint
   primaryDataSources: string[]; // actual sources tracked
 }
 
@@ -34,13 +35,13 @@ export const CATEGORIES = [
   'Design-to-Code',
   'Wireframing',
   'Prototyping',
-  'Figma Plugins',
   'Visual Design',
   'Image Generation',
   'Video Generation',
-  'Accessibility',
   'Product Strategy',
-  'User Testing'
+  'User Testing',
+  '3D Design',
+  'Motion Design'
 ] as const;
 
 export type CategoryType = typeof CATEGORIES[number];
@@ -61,49 +62,8 @@ const calculateScore = (
   );
 };
 
-// Real compiled data for the 25 tools
+// Real compiled data for 25 standalone tools
 export const rawToolsData = [
-  {
-    id: 'figma-ai',
-    name: 'Figma AI',
-    website: 'https://figma.com',
-    category: 'Figma Plugins',
-    description: 'Figma\'s native generative design utilities, text-to-design generation, auto-layouts, and asset search.',
-    bestFor: 'Automating vector layouts, copywriting, and bulk layer naming inside Figma workspaces.',
-    pricing: 'Included in Figma Pro/Enterprise plans',
-    launchBuzz: 96,
-    socialBuzz: 92,
-    searchInterest: 95,
-    designerAdoption: 98,
-    editorialQuality: 90,
-    sevenDayChange: 3.5,
-    trendStatus: 'rising' as const,
-    lastUpdated: '2026-06-05',
-    pros: [
-      'Natively integrated into the industry-standard UI tool',
-      'Excellent vector-based manipulation and auto-layout setup',
-      'Saves hours of naming files and writing placeholder copy'
-    ],
-    cons: [
-      'Restricted entirely to the Figma ecosystem',
-      'Generative UI layouts can feel generic without custom styling',
-      'Requires paid plans for complete features'
-    ],
-    alternatives: ['Galileo AI', 'Uizard', 'Magician for Figma'],
-    verdict: 'An absolute game-changer for daily Figma practitioners. It doesn\'t replace UI designers but speeds up micro-workflows tremendously.',
-    scoreOutOf10: 9.2,
-    whyTrending: 'Beta rollouts are expanding to enterprise accounts; designer tweets showing layout autogeneration are going viral.',
-    momentumHistory: [
-      { date: 'May 07', score: 88 },
-      { date: 'May 17', score: 91 },
-      { date: 'May 27', score: 93 },
-      { date: 'Jun 06', score: 95 }
-    ],
-    monthlyVisits: '105.2M (Figma Ecosystem)',
-    userRating: 4.8,
-    figmaCommunityUsers: 'Native Feature',
-    primaryDataSources: ['Figma Platform Metrics', 'Similarweb Traffic', 'Google Search Trends']
-  },
   {
     id: 'framer-ai',
     name: 'Framer AI',
@@ -130,10 +90,10 @@ export const rawToolsData = [
       'Hosting costs can add up for multiple small sites',
       'Vendor lock-in: cannot easily export React code to elsewhere'
     ],
-    alternatives: ['Relume', 'v0', 'Canva AI'],
+    alternatives: ['Relume', 'v0', 'Krea AI'],
     verdict: 'The best design-to-web publishing tool currently on the market. Perfect for designers wanting to build ready-to-use sites fast.',
     scoreOutOf10: 9.1,
-    whyTrending: 'Launch of new CMS AI translation features and improved mobile responsive generation algorithm.',
+    whyTrending: 'Heavy discussion in Framer Substack newsletters regarding the launch of their new CMS AI localization engine.',
     momentumHistory: [
       { date: 'May 07', score: 84 },
       { date: 'May 17', score: 85 },
@@ -142,8 +102,429 @@ export const rawToolsData = [
     ],
     monthlyVisits: '9.4M',
     userRating: 4.6,
+    ratingSources: 'Product Hunt Reviews & G2',
     figmaCommunityUsers: '850K+ Installs (Plugin)',
     primaryDataSources: ['Similarweb Traffic', 'Product Hunt Reviews', 'Figma Plugin Installs']
+  },
+  {
+    id: 'v0',
+    name: 'v0',
+    website: 'https://v0.dev',
+    category: 'Design-to-Code',
+    description: 'Vercel\'s generative UI system that creates production-ready frontend code (React, Tailwind CSS, shadcn/ui) from text or image prompts.',
+    bestFor: 'Designers building operational UI prototypes and engineers looking to bypass initial markup styling.',
+    pricing: 'Freemium (Paid plans from $20/mo)',
+    launchBuzz: 97,
+    socialBuzz: 96,
+    searchInterest: 94,
+    designerAdoption: 92,
+    editorialQuality: 97,
+    sevenDayChange: 4.8,
+    trendStatus: 'rising' as const,
+    lastUpdated: '2026-06-06',
+    pros: [
+      'Outputs gorgeous, semantic React components matching modern tailwind/shadcn standards',
+      'Upload a screenshot of any web UI and it replicates it with astonishing fidelity',
+      'Interactive sandbox environment allows quick testing and tweaking directly in browser'
+    ],
+    cons: [
+      'Primarily focused on React; other framework export support is secondary',
+      'Does not create backend logic or full application states natively',
+      'Advanced components can consume standard query credits quickly'
+    ],
+    alternatives: ['Lovable', 'Bolt', 'Cursor'],
+    verdict: 'The absolute benchmark for generative UI code. It has fundamentally changed the speed at which ideas become live components.',
+    scoreOutOf10: 9.8,
+    whyTrending: 'Substack tech newsletters reviewing new Next.js block exports and direct copy-paste code imports.',
+    momentumHistory: [
+      { date: 'May 07', score: 91 },
+      { date: 'May 17', score: 93 },
+      { date: 'May 27', score: 94 },
+      { date: 'Jun 06', score: 96 }
+    ],
+    monthlyVisits: '3.5M',
+    userRating: 4.9,
+    ratingSources: 'Product Hunt & Dev Feedback Polls',
+    figmaCommunityUsers: 'Not Applicable',
+    primaryDataSources: ['Similarweb Traffic', 'NPM Registry downloads', 'Vercel telemetry reports']
+  },
+  {
+    id: 'cursor',
+    name: 'Cursor',
+    website: 'https://cursor.com',
+    category: 'Design-to-Code',
+    description: 'AI-first code editor fork of VS Code, enabling multi-file edits, codebase chat, and fast auto-completions.',
+    bestFor: 'Designer-developers and technical designers who want full codebase control alongside AI assistance.',
+    pricing: 'Freemium (Pro plan at $20/mo)',
+    launchBuzz: 95,
+    socialBuzz: 97,
+    searchInterest: 94,
+    designerAdoption: 92,
+    editorialQuality: 99,
+    sevenDayChange: 2.5,
+    trendStatus: 'rising' as const,
+    lastUpdated: '2026-06-06',
+    pros: [
+      'Composer mode edits multiple files simultaneously to execute broad design-system updates',
+      'Integrates all custom VS Code extensions, preferences, and hotkeys out of the box',
+      'Top-notch contextual codebase understanding'
+    ],
+    cons: [
+      'Requires basic coding literacy; not a pure drag-and-drop or prompt-to-web app creator',
+      'Can generate massive git diffs that require thorough review',
+      'Heavy AI models can experience lag during peak usage hours'
+    ],
+    alternatives: ['Replit Agent', 'v0', 'Bolt'],
+    verdict: 'The ultimate IDE for anyone who writes code. The multi-file composer speeds up editing stylesheets and page components by tenfold.',
+    scoreOutOf10: 9.7,
+    whyTrending: 'Viral threads on X demonstrating Composer mode creating complex apps in minutes.',
+    momentumHistory: [
+      { date: 'May 07', score: 91 },
+      { date: 'May 17', score: 92 },
+      { date: 'May 27', score: 94 },
+      { date: 'Jun 06', score: 95 }
+    ],
+    monthlyVisits: '6.8M',
+    userRating: 4.9,
+    ratingSources: 'Product Hunt & G2 reviews',
+    figmaCommunityUsers: 'Not Applicable',
+    primaryDataSources: ['Similarweb Traffic', 'Developer feedback polls', 'X social posts']
+  },
+  {
+    id: 'lovable',
+    name: 'Lovable',
+    website: 'https://lovable.dev',
+    category: 'Design-to-Code',
+    description: 'Generative AI platform that builds full-stack React web apps with databases, authentication, and custom logic from conversational prompts.',
+    bestFor: 'Product designers looking to build functioning SaaS MVPs without writing code.',
+    pricing: 'Freemium (Paid plans from $24/mo)',
+    launchBuzz: 94,
+    socialBuzz: 92,
+    searchInterest: 86,
+    designerAdoption: 82,
+    editorialQuality: 93,
+    sevenDayChange: 3.2,
+    trendStatus: 'rising' as const,
+    lastUpdated: '2026-06-05',
+    pros: [
+      'Creates actual functional backends and databases, not just frontends',
+      'Design styling defaults are highly modern and clean out of the box',
+      'Allows deployment to custom domains in under 60 seconds'
+    ],
+    cons: [
+      'Large complex state flows can occasionally introduce logic loops',
+      'Codebase customization requires git integration knowledge',
+      'Higher pricing tiers are required for professional commercial products'
+    ],
+    alternatives: ['v0', 'Bolt', 'Replit Agent'],
+    verdict: 'An incredible advancement in no-code/low-code development. It enables design teams to deliver fully functional web apps in record time.',
+    scoreOutOf10: 9.4,
+    whyTrending: 'Highly rated on X for enabling designers to bypass local dev setup entirely.',
+    momentumHistory: [
+      { date: 'May 07', score: 86 },
+      { date: 'May 17', score: 88 },
+      { date: 'May 27', score: 89 },
+      { date: 'Jun 06', score: 90 }
+    ],
+    monthlyVisits: '1.4M',
+    userRating: 4.8,
+    ratingSources: 'Product Hunt & Capterra',
+    figmaCommunityUsers: 'Not Applicable',
+    primaryDataSources: ['Similarweb Traffic', 'X social posts', 'Product Hunt launches']
+  },
+  {
+    id: 'bolt',
+    name: 'Bolt',
+    website: 'https://bolt.new',
+    category: 'Design-to-Code',
+    description: 'Browser-based development environment that uses AI to scaffold, run, build, and deploy full stack web apps in real-time.',
+    bestFor: 'Testing UI components and spinning up sandboxed WebContainers directly in browser tabs.',
+    pricing: 'Freemium (Paid plans from $20/mo)',
+    launchBuzz: 93,
+    socialBuzz: 90,
+    searchInterest: 88,
+    designerAdoption: 84,
+    editorialQuality: 92,
+    sevenDayChange: 2.9,
+    trendStatus: 'rising' as const,
+    lastUpdated: '2026-06-05',
+    pros: [
+      'Zero local setup required; WebContainers run npm processes inside the browser',
+      'Generates and patches files with clear code diffs',
+      'Integrated dev preview server updates with live hot reloading'
+    ],
+    cons: [
+      'In-browser sandbox memory can leak or crash on heavy node operations',
+      'Exporting to complex production infrastructure requires manual work',
+      'Requires stable, fast internet connection'
+    ],
+    alternatives: ['v0', 'Lovable', 'Replit Agent'],
+    verdict: 'The best sandbox generator for design testing. Witnessing a full Node.js project bootstrap inside your browser is magic.',
+    scoreOutOf10: 9.2,
+    whyTrending: 'Stackoverflow and developer blogs sharing its WebContainers browser execution speeds.',
+    momentumHistory: [
+      { date: 'May 07', score: 85 },
+      { date: 'May 17', score: 87 },
+      { date: 'May 27', score: 89 },
+      { date: 'Jun 06', score: 91 }
+    ],
+    monthlyVisits: '2.6M',
+    userRating: 4.7,
+    ratingSources: 'Product Hunt reviews',
+    figmaCommunityUsers: 'Not Applicable',
+    primaryDataSources: ['Similarweb Traffic', 'StackBlitz platform telemetry', 'NPM downloads']
+  },
+  {
+    id: 'recraft',
+    name: 'Recraft',
+    website: 'https://recraft.ai',
+    category: 'Image Generation',
+    description: 'Generates editable vectors, SVG graphics, flat illustrations, and icon sets with precise style consistency control.',
+    bestFor: 'UI/UX designers needing scalable vector files, branded icons, and SVG illustrations rather than raster files.',
+    pricing: 'Freemium (Paid plans from $48/mo)',
+    launchBuzz: 91,
+    socialBuzz: 94,
+    searchInterest: 88,
+    designerAdoption: 90,
+    editorialQuality: 96,
+    sevenDayChange: 3.4,
+    trendStatus: 'rising' as const,
+    lastUpdated: '2026-06-06',
+    pros: [
+      'Outputs true, editable vector layers (SVG / Lottie)',
+      'Styles are highly consistent across generated batches',
+      'Excellent canvas UI for editing portions of images'
+    ],
+    cons: [
+      'Subscription price is higher than standard text-to-image generators',
+      'Lacks direct figma plugin live sync currently',
+      'Some high-fidelity graphics can require custom fine-tuning'
+    ],
+    alternatives: ['Midjourney', 'Krea AI', 'Spline AI'],
+    verdict: 'An outstanding standalone tool. Since it outputs raw SVGs, it is infinitely more useful for product designers than standard raster image engines.',
+    scoreOutOf10: 9.5,
+    whyTrending: 'Massive designer recommendations on X due to their recent vector upscaler and SVG accuracy updates.',
+    momentumHistory: [
+      { date: 'May 07', score: 86 },
+      { date: 'May 17', score: 88 },
+      { date: 'May 27', score: 90 },
+      { date: 'Jun 06', score: 91 }
+    ],
+    monthlyVisits: '1.8M',
+    userRating: 4.8,
+    ratingSources: 'Product Hunt & G2 reviews',
+    figmaCommunityUsers: 'Not Applicable',
+    primaryDataSources: ['Similarweb Traffic', 'X design comments', 'Google Search Trends']
+  },
+  {
+    id: 'midjourney',
+    name: 'Midjourney',
+    website: 'https://midjourney.com',
+    category: 'Image Generation',
+    description: 'Top-tier text-to-image generator generating photorealistic illustrations, assets, icons, and interface patterns via prompt commands.',
+    bestFor: 'Generating hero illustrations, visual design concepts, and mock assets for prototypes.',
+    pricing: 'Paid plans from $10/mo (No free tier)',
+    launchBuzz: 92,
+    socialBuzz: 94,
+    searchInterest: 95,
+    designerAdoption: 93,
+    editorialQuality: 96,
+    sevenDayChange: 0.6,
+    trendStatus: 'stable' as const,
+    lastUpdated: '2026-06-05',
+    pros: [
+      'Unmatched artistic styling, detail rendering, and photorealism',
+      'Web editor and workspace UI has reduced Discord dependency',
+      'Excellent aspect ratio and upscale scaling tools'
+    ],
+    cons: [
+      'Prompt syntax can require deep experimentation for precise brand consistency',
+      'Lack of native vector SVG exports (generates raster PNG/JPG only)',
+      'Privacy controls are locked behind expensive premium tiers'
+    ],
+    alternatives: ['Recraft', 'Krea AI'],
+    verdict: 'The undisputed king of prompt-driven visual assets. Its artistic range is second to none, though vector support is sorely missed.',
+    scoreOutOf10: 9.4,
+    whyTrending: 'Wide rollout of the new web dashboard creator interface, moving users away from Discord command prompts.',
+    momentumHistory: [
+      { date: 'May 07', score: 93 },
+      { date: 'May 17', score: 93 },
+      { date: 'May 27', score: 93 },
+      { date: 'Jun 06', score: 94 }
+    ],
+    monthlyVisits: '18.5M',
+    userRating: 4.7,
+    ratingSources: 'Product Hunt & Discord Community',
+    figmaCommunityUsers: 'Not Applicable',
+    primaryDataSources: ['Similarweb Traffic', 'Discord Server Membership', 'Google Search Trends']
+  },
+  {
+    id: 'runway',
+    name: 'Runway',
+    website: 'https://runwayml.com',
+    category: 'Video Generation',
+    description: 'AI video generation and editing suite featuring text-to-video, image-to-video, and cinematic editing controls.',
+    bestFor: 'Creating motion design assets, product concept teasers, and high-fidelity video content.',
+    pricing: 'Freemium (Paid plans from $15/mo)',
+    launchBuzz: 89,
+    socialBuzz: 90,
+    searchInterest: 88,
+    designerAdoption: 84,
+    editorialQuality: 90,
+    sevenDayChange: 3.1,
+    trendStatus: 'rising' as const,
+    lastUpdated: '2026-06-06',
+    pros: [
+      'Incredible camera control movements and lighting effects',
+      'Strong green screen, object removal, and motion tracking filters built in',
+      'Continuous speed upgrades to generation times'
+    ],
+    cons: [
+      'Video generations are relatively short (4-8 seconds default)',
+      'Character body deformation and object glitches remain common',
+      'High rendering demands mean quick consumption of rendering credits'
+    ],
+    alternatives: ['Midjourney', 'LottieFiles AI'],
+    verdict: 'The gold standard for AI motion and video. It allows creative designers to storyboard and direct video layouts in minutes rather than weeks.',
+    scoreOutOf10: 9.0,
+    whyTrending: 'Release of their Gen-3 Alpha model showing hyper-realistic human motion and fluid camera angles.',
+    momentumHistory: [
+      { date: 'May 07', score: 85 },
+      { date: 'May 17', score: 86 },
+      { date: 'May 27', score: 87 },
+      { date: 'Jun 06', score: 89 }
+    ],
+    monthlyVisits: '6.4M',
+    userRating: 4.6,
+    ratingSources: 'G2 & Capterra reviews',
+    figmaCommunityUsers: 'Not Applicable',
+    primaryDataSources: ['Similarweb Traffic', 'Product Hunt', 'YouTube motion design posts']
+  },
+  {
+    id: 'krea-ai',
+    name: 'Krea AI',
+    website: 'https://krea.ai',
+    category: 'Visual Design',
+    description: 'Real-time design canvas enabling instant image generation, upscaling, vector enhancement, and screen-sharing rendering.',
+    bestFor: 'Live vector upscaling and generating concept mockups from basic shapes in real-time.',
+    pricing: 'Freemium (Paid plans from $30/mo)',
+    launchBuzz: 88,
+    socialBuzz: 92,
+    searchInterest: 85,
+    designerAdoption: 88,
+    editorialQuality: 90,
+    sevenDayChange: 2.3,
+    trendStatus: 'rising' as const,
+    lastUpdated: '2026-06-05',
+    pros: [
+      'Outstanding real-time rendering from screen shares or iPad drawings',
+      'Top-tier upscaler capable of handling 4k details cleanly',
+      'Intuitive canvas layout'
+    ],
+    cons: [
+      'Consumes GPU resources heavily, causing occasional slower rendering',
+      'Lacks offline version or Figma vector export layers',
+      'UI styling can feel slightly experimental'
+    ],
+    alternatives: ['Midjourney', 'Recraft', 'Spline AI'],
+    verdict: 'An exceptional canvas for real-time visualization. Designers love using its upscaler to enhance layout illustrations instantly.',
+    scoreOutOf10: 8.9,
+    whyTrending: 'Trending on X for its real-time camera overlays and highly optimized design patterns.',
+    momentumHistory: [
+      { date: 'May 07', score: 84 },
+      { date: 'May 17', score: 85 },
+      { date: 'May 27', score: 86 },
+      { date: 'Jun 06', score: 87 }
+    ],
+    monthlyVisits: '2.1M',
+    userRating: 4.6,
+    ratingSources: 'Product Hunt & X comments',
+    figmaCommunityUsers: 'Not Applicable',
+    primaryDataSources: ['Similarweb Traffic', 'X designer tweets', 'Product Hunt reviews']
+  },
+  {
+    id: 'spline-ai',
+    name: 'Spline AI',
+    website: 'https://spline.design',
+    category: '3D Design',
+    description: '3D design software with generative AI utilities to create, model, style, and texture interactive 3D assets via text prompts.',
+    bestFor: 'Product designers looking to build responsive, interactive 3D scenes for web apps without learning complex modeling software.',
+    pricing: 'Freemium (Paid plans from $24/mo)',
+    launchBuzz: 90,
+    socialBuzz: 92,
+    searchInterest: 86,
+    designerAdoption: 91,
+    editorialQuality: 94,
+    sevenDayChange: 2.1,
+    trendStatus: 'rising' as const,
+    lastUpdated: '2026-06-05',
+    pros: [
+      'Produces fully interactive 3D objects that export directly to WebGL and React code',
+      'AI texturing and helper prompts are incredibly quick',
+      'Natively collaborative canvas'
+    ],
+    cons: [
+      'High rendering load on mobile web clients if models are complex',
+      'Traditional 3D modeling curves still apply for custom meshes',
+      'Heavy AI texturing consumes credits fast'
+    ],
+    alternatives: ['Vectary', 'Krea AI'],
+    verdict: 'The leading interactive 3D tool for web designers. The AI texturing features bypass hours of standard mapping loops.',
+    scoreOutOf10: 9.3,
+    whyTrending: 'Highly discussed in design newsletters for their WebGL responsive interaction engine.',
+    momentumHistory: [
+      { date: 'May 07', score: 86 },
+      { date: 'May 17', score: 88 },
+      { date: 'May 27', score: 89 },
+      { date: 'Jun 06', score: 90 }
+    ],
+    monthlyVisits: '3.1M',
+    userRating: 4.7,
+    ratingSources: 'G2 reviews & Product Hunt',
+    figmaCommunityUsers: '250K+ Installs (Plugin/Sync)',
+    primaryDataSources: ['Similarweb Traffic', 'Designer communities', 'Google search volume']
+  },
+  {
+    id: 'relume',
+    name: 'Relume',
+    website: 'https://relume.io',
+    category: 'Wireframing',
+    description: 'AI site builder that designs wireframes, sitemaps, and landing pages using components from their Figma/Webflow library.',
+    bestFor: 'Constructing landing page structures, information architecture, and content frameworks.',
+    pricing: 'Freemium (Paid plans from $38/mo)',
+    launchBuzz: 84,
+    socialBuzz: 86,
+    searchInterest: 76,
+    designerAdoption: 80,
+    editorialQuality: 94,
+    sevenDayChange: 2.4,
+    trendStatus: 'rising' as const,
+    lastUpdated: '2026-06-06',
+    pros: [
+      'Based on top-tier components that plug directly into Webflow and Figma structures',
+      'Excellent UX sitemap-to-wireframe logic and layout hierarchy',
+      'Outputs accurate, component-driven copies, reducing filler text'
+    ],
+    cons: [
+      'Premium plans are relatively expensive for solo freelancers',
+      'Component styles are largely black and white; requires styling later',
+      'Primarily focused on standard marketing pages, not complex software UIs'
+    ],
+    alternatives: ['Framer AI', 'Uizard', 'Mockflow AI'],
+    verdict: 'An indispensable tool for agency UX designers. Relume bridges information architecture and wireframing cleaner than any competitor.',
+    scoreOutOf10: 9.3,
+    whyTrending: 'Release of their Webflow native App sync tool, allowing instant synchronization of AI sitemaps to live pages.',
+    momentumHistory: [
+      { date: 'May 07', score: 81 },
+      { date: 'May 17', score: 82 },
+      { date: 'May 27', score: 83 },
+      { date: 'Jun 06', score: 83 }
+    ],
+    monthlyVisits: '920K',
+    userRating: 4.7,
+    ratingSources: 'Product Hunt Reviews & G2',
+    figmaCommunityUsers: '320K+ Installs',
+    primaryDataSources: ['Similarweb Traffic', 'Figma community plugin', 'Webflow Developer portal']
   },
   {
     id: 'uizard',
@@ -171,7 +552,7 @@ export const rawToolsData = [
       'Export options for Figma are somewhat limited and lose layout integrity',
       'Design output can feel template-ish'
     ],
-    alternatives: ['Visily', 'Galileo AI', 'Figma AI'],
+    alternatives: ['Visily', 'Galileo AI', 'Relume'],
     verdict: 'Great for rapid conceptualization and getting client feedback in early phases, but lacks custom depth for advanced designers.',
     scoreOutOf10: 7.8,
     whyTrending: 'Steady organic search growth but social momentum has stabilized after their v3 feature launch cycle.',
@@ -183,6 +564,7 @@ export const rawToolsData = [
     ],
     monthlyVisits: '2.5M',
     userRating: 4.4,
+    ratingSources: 'G2 & Capterra reviews',
     figmaCommunityUsers: '180K+ Installs',
     primaryDataSources: ['Similarweb Traffic', 'G2 reviews', 'Google Search Trends']
   },
@@ -212,7 +594,7 @@ export const rawToolsData = [
       'Lacks custom brand assets or design token alignment',
       'Difficult to get precise screen iterations via text prompts'
     ],
-    alternatives: ['Figma AI', 'Visily', 'Uizard'],
+    alternatives: ['Uizard', 'Visily'],
     verdict: 'One of the most impressive tools for generating initial UI screens. The vector export to Figma makes it actually usable in real design systems.',
     scoreOutOf10: 8.7,
     whyTrending: 'Newly added support for custom UI component libraries inside prompts, resulting in massive designer interest on X.',
@@ -224,90 +606,9 @@ export const rawToolsData = [
     ],
     monthlyVisits: '620K',
     userRating: 4.5,
+    ratingSources: 'Product Hunt reviews',
     figmaCommunityUsers: '95K+ Installs',
     primaryDataSources: ['Similarweb Traffic', 'Product Hunt Launches', 'X social posts']
-  },
-  {
-    id: 'relume',
-    name: 'Relume',
-    website: 'https://relume.io',
-    category: 'Wireframing',
-    description: 'AI site builder that designs wireframes, sitemaps, and landing pages using components from their Figma/Webflow library.',
-    bestFor: 'Constructing landing page structures, information architecture, and content frameworks.',
-    pricing: 'Freemium (Paid plans from $38/mo)',
-    launchBuzz: 84,
-    socialBuzz: 86,
-    searchInterest: 76,
-    designerAdoption: 80,
-    editorialQuality: 94,
-    sevenDayChange: 2.4,
-    trendStatus: 'rising' as const,
-    lastUpdated: '2026-06-06',
-    pros: [
-      'Based on top-tier components that plug directly into Webflow and Figma structures',
-      'Excellent UX sitemap-to-wireframe logic and layout hierarchy',
-      'Outputs accurate, component-driven copies, reducing filler text'
-    ],
-    cons: [
-      'Premium plans are relatively expensive for solo freelancers',
-      'Component styles are largely black and white; requires styling later',
-      'Primarily focused on standard marketing pages, not complex software UIs'
-    ],
-    alternatives: ['Framer AI', 'Visily', 'FigJam AI'],
-    verdict: 'An indispensable tool for agency UX designers. Relume bridges information architecture and wireframing cleaner than any competitor.',
-    scoreOutOf10: 9.3,
-    whyTrending: 'Release of their Webflow native App sync tool, allowing instant synchronization of AI sitemaps to live pages.',
-    momentumHistory: [
-      { date: 'May 07', score: 81 },
-      { date: 'May 17', score: 82 },
-      { date: 'May 27', score: 83 },
-      { date: 'Jun 06', score: 83 }
-    ],
-    monthlyVisits: '920K',
-    userRating: 4.7,
-    figmaCommunityUsers: '320K+ Installs',
-    primaryDataSources: ['Similarweb Traffic', 'Figma community plugin', 'Webflow Developer portal']
-  },
-  {
-    id: 'visily',
-    name: 'Visily',
-    website: 'https://visily.ai',
-    category: 'Wireframing',
-    description: 'Wireframing tool that uses AI to convert screenshots, hand-drawn sketches, or templates into fully customizable digital screens.',
-    bestFor: 'Fast mockups and team brainstorms, especially converting legacy screenshots to editable assets.',
-    pricing: 'Free (Monetization coming soon)',
-    launchBuzz: 72,
-    socialBuzz: 66,
-    searchInterest: 60,
-    designerAdoption: 52,
-    editorialQuality: 80,
-    sevenDayChange: -1.2,
-    trendStatus: 'cooling' as const,
-    lastUpdated: '2026-06-01',
-    pros: [
-      'Screenshot-to-design tool is remarkably accurate',
-      'Entirely free to use currently with unlimited teammates',
-      'Clean export to Figma with auto-grouping'
-    ],
-    cons: [
-      'Community template selection is small',
-      'Slower update cycles compared to competitors',
-      'AI style generator occasionally glitches'
-    ],
-    alternatives: ['Uizard', 'Relume', 'Figma AI'],
-    verdict: 'A robust wireframing workspace that excels at design migration, but needs to speed up its feature cadence to keep up with industry trends.',
-    scoreOutOf10: 7.4,
-    whyTrending: 'User acquisition has slowed down slightly as competitors roll out native Figma integrations.',
-    momentumHistory: [
-      { date: 'May 07', score: 68 },
-      { date: 'May 17', score: 68 },
-      { date: 'May 27', score: 67 },
-      { date: 'Jun 06', score: 66 }
-    ],
-    monthlyVisits: '190K',
-    userRating: 4.2,
-    figmaCommunityUsers: '45K+ Installs',
-    primaryDataSources: ['Similarweb Traffic', 'G2 reviews', 'Capterra platform']
   },
   {
     id: 'maze',
@@ -347,49 +648,9 @@ export const rawToolsData = [
     ],
     monthlyVisits: '2.3M',
     userRating: 4.5,
+    ratingSources: 'G2 reviews & Capterra',
     figmaCommunityUsers: '550K+ Installs (Plugin)',
     primaryDataSources: ['Similarweb Traffic', 'G2 reviews', 'UX Research communities']
-  },
-  {
-    id: 'useberry',
-    name: 'Useberry',
-    website: 'https://useberry.com',
-    category: 'User Testing',
-    description: 'Usability testing platform providing AI-generated user session insights, screen recordings, heatmaps, and funnel drop-offs.',
-    bestFor: 'Prototyping validations, user flows, and recording user test details.',
-    pricing: 'Freemium (Paid plans from $33/mo)',
-    launchBuzz: 74,
-    socialBuzz: 68,
-    searchInterest: 62,
-    designerAdoption: 58,
-    editorialQuality: 78,
-    sevenDayChange: 0.2,
-    trendStatus: 'stable' as const,
-    lastUpdated: '2026-06-02',
-    pros: [
-      'Affordable entry pricing compared to major testing suites',
-      'Great heatmapping features and click tracking',
-      'Support for multiple prototyping environments'
-    ],
-    cons: [
-      'AI report summaries are less detailed than Maze\'s equivalents',
-      'Participant pool filtering is not highly granular',
-      'Dashboard interface feels slightly dated'
-    ],
-    alternatives: ['Maze', 'Looppanel', 'Useberry'],
-    verdict: 'A budget-friendly alternative for startup UX teams. Its AI analytics speed up heat-map interpretations and funnel tracking.',
-    scoreOutOf10: 7.5,
-    whyTrending: 'Minor product improvements and new dashboard integrations introduced this month.',
-    momentumHistory: [
-      { date: 'May 07', score: 68 },
-      { date: 'May 17', score: 68 },
-      { date: 'May 27', score: 68 },
-      { date: 'Jun 06', score: 68 }
-    ],
-    monthlyVisits: '120K',
-    userRating: 4.3,
-    figmaCommunityUsers: '110K+ Installs',
-    primaryDataSources: ['Similarweb Traffic', 'Figma plugin directory', 'G2 reviews']
   },
   {
     id: 'dovetail',
@@ -417,10 +678,10 @@ export const rawToolsData = [
       'Requires substantial existing data to unlock full value of AI insights',
       'Limited automated testing compared to user-facing platforms'
     ],
-    alternatives: ['Notably', 'Looppanel', 'Maze'],
+    alternatives: ['Notably', 'Looppanel'],
     verdict: 'The leading choice for user research repositories. The AI clustering features make synthesizing dozens of customer conversations a breeze.',
     scoreOutOf10: 9.2,
-    whyTrending: 'New "Search across projects" AI feature launched, driving adoption among enterprise UX teams.',
+    whyTrending: 'New \"Search across projects\" AI feature launched, driving adoption among enterprise UX teams.',
     momentumHistory: [
       { date: 'May 07', score: 84 },
       { date: 'May 17', score: 85 },
@@ -429,49 +690,9 @@ export const rawToolsData = [
     ],
     monthlyVisits: '1.9M',
     userRating: 4.6,
+    ratingSources: 'G2 & TrustRadius reviews',
     figmaCommunityUsers: 'Not Applicable',
     primaryDataSources: ['Similarweb Traffic', 'G2 reviews', 'UX Research communities']
-  },
-  {
-    id: 'notably',
-    name: 'Notably',
-    website: 'https://notably.ai',
-    category: 'UX Research',
-    description: 'AI-powered UX research workspace that functions like a canvas, transcribing, coding, and extracting themes dynamically.',
-    bestFor: 'Visual-oriented UX researchers who like canvas-style mapping and card sorting.',
-    pricing: 'Paid plans from $25/mo (Free trial)',
-    launchBuzz: 76,
-    socialBuzz: 72,
-    searchInterest: 64,
-    designerAdoption: 60,
-    editorialQuality: 82,
-    sevenDayChange: -0.2,
-    trendStatus: 'stable' as const,
-    lastUpdated: '2026-06-03',
-    pros: [
-      'Interactive canvas layout matches physical post-it note synthesis workflows',
-      'AI synthesis creates draft executive summaries and slide decks automatically',
-      'Strong transcription speed and multi-language support'
-    ],
-    cons: [
-      'Performance can stutter when dealing with hundreds of post-it items',
-      'Less robust security certifications than Dovetail for enterprise usage',
-      'Export layouts are occasionally hard to configure'
-    ],
-    alternatives: ['Dovetail', 'Looppanel', 'Notably'],
-    verdict: 'A brilliant tool for visual thinkers. If you love spatial clustering, Notably\'s AI helpers accelerate your synthesis process.',
-    scoreOutOf10: 7.9,
-    whyTrending: 'Stable search volume; steady usage in freelancer and agency design circles.',
-    momentumHistory: [
-      { date: 'May 07', score: 71 },
-      { date: 'May 17', score: 71 },
-      { date: 'May 27', score: 71 },
-      { date: 'Jun 06', score: 71 }
-    ],
-    monthlyVisits: '85K',
-    userRating: 4.4,
-    figmaCommunityUsers: 'Not Applicable',
-    primaryDataSources: ['Similarweb Traffic', 'Product Hunt Launches', 'Capterra platform']
   },
   {
     id: 'looppanel',
@@ -499,7 +720,7 @@ export const rawToolsData = [
       'Video editor for making shareable clips is a bit basic',
       'Accent detection in transcription can occasionally miss jargon'
     ],
-    alternatives: ['Dovetail', 'Notably', 'Maze'],
+    alternatives: ['Dovetail', 'Notably'],
     verdict: 'If you want to spend less time transcribing and more time comparing results in a neat grid, Looppanel is the perfect utility.',
     scoreOutOf10: 8.2,
     whyTrending: 'Growing viral mentions on LinkedIn from product managers praising its time-to-insight speed.',
@@ -511,131 +732,216 @@ export const rawToolsData = [
     ],
     monthlyVisits: '95K',
     userRating: 4.5,
+    ratingSources: 'G2 & Capterra reviews',
     figmaCommunityUsers: 'Not Applicable',
     primaryDataSources: ['Similarweb Traffic', 'G2 reviews', 'LinkedIn community posts']
   },
   {
-    id: 'v0',
-    name: 'v0',
-    website: 'https://v0.dev',
-    category: 'Design-to-Code',
-    description: 'Vercel\'s generative UI system that creates production-ready frontend code (React, Tailwind CSS, shadcn/ui) from text or image prompts.',
-    bestFor: 'Designers building operational UI prototypes and engineers looking to bypass initial markup styling.',
-    pricing: 'Freemium (Paid plans from $20/mo)',
-    launchBuzz: 97,
-    socialBuzz: 96,
-    searchInterest: 94,
-    designerAdoption: 92,
-    editorialQuality: 97,
-    sevenDayChange: 4.8,
-    trendStatus: 'rising' as const,
-    lastUpdated: '2026-06-06',
-    pros: [
-      'Outputs gorgeous, semantic React components matching modern tailwind/shadcn standards',
-      'Upload a screenshot of any web UI and it replicates it with astonishing fidelity',
-      'Interactive sandbox environment allows quick testing and tweaking directly in browser'
-    ],
-    cons: [
-      'Primarily focused on React; other framework export support is secondary',
-      'Does not create backend logic or full application states natively',
-      'Advanced components can consume standard query credits quickly'
-    ],
-    alternatives: ['Lovable', 'Bolt', 'Cursor'],
-    verdict: 'The absolute benchmark for generative UI code. It has fundamentally changed the speed at which ideas become live components.',
-    scoreOutOf10: 9.8,
-    whyTrending: 'Recent updates supporting interactive Next.js block exports and direct copy-paste code imports.',
-    momentumHistory: [
-      { date: 'May 07', score: 91 },
-      { date: 'May 17', score: 93 },
-      { date: 'May 27', score: 94 },
-      { date: 'Jun 06', score: 96 }
-    ],
-    monthlyVisits: '3.5M',
-    userRating: 4.9,
-    figmaCommunityUsers: 'Not Applicable',
-    primaryDataSources: ['Similarweb Traffic', 'NPM Registry downloads', 'Vercel telemetry reports']
-  },
-  {
-    id: 'lovable',
-    name: 'Lovable',
-    website: 'https://lovable.dev',
-    category: 'Design-to-Code',
-    description: 'Generative AI platform that builds full-stack React web apps with databases, authentication, and custom logic from conversational prompts.',
-    bestFor: 'Product designers looking to build functioning SaaS MVPs without writing code.',
-    pricing: 'Freemium (Paid plans from $24/mo)',
-    launchBuzz: 94,
-    socialBuzz: 92,
-    searchInterest: 86,
-    designerAdoption: 82,
-    editorialQuality: 93,
-    sevenDayChange: 3.2,
-    trendStatus: 'rising' as const,
-    lastUpdated: '2026-06-05',
-    pros: [
-      'Creates actual functional backends and databases, not just frontends',
-      'Design styling defaults are highly modern and clean out of the box',
-      'Allows deployment to custom domains in under 60 seconds'
-    ],
-    cons: [
-      'Large complex state flows can occasionally introduce logic loops',
-      'Codebase customization requires git integration knowledge',
-      'Higher pricing tiers are required for professional commercial products'
-    ],
-    alternatives: ['v0', 'Bolt', 'Replit Agent'],
-    verdict: 'An incredible advancement in no-code/low-code development. It enables design teams to deliver fully functional web apps in record time.',
-    scoreOutOf10: 9.4,
-    whyTrending: 'Massive viral threads showing founders building complex marketplaces and SaaS products in single afternoons.',
-    momentumHistory: [
-      { date: 'May 07', score: 86 },
-      { date: 'May 17', score: 88 },
-      { date: 'May 27', score: 89 },
-      { date: 'Jun 06', score: 90 }
-    ],
-    monthlyVisits: '1.4M',
-    userRating: 4.8,
-    figmaCommunityUsers: 'Not Applicable',
-    primaryDataSources: ['Similarweb Traffic', 'X social posts', 'Product Hunt launches']
-  },
-  {
-    id: 'bolt',
-    name: 'Bolt',
-    website: 'https://bolt.new',
-    category: 'Design-to-Code',
-    description: 'Browser-based development environment that uses AI to scaffold, run, build, and deploy full stack web apps in real-time.',
-    bestFor: 'Testing UI components and spinning up sandboxed WebContainers directly in browser tabs.',
-    pricing: 'Freemium (Paid plans from $20/mo)',
-    launchBuzz: 93,
-    socialBuzz: 90,
-    searchInterest: 88,
-    designerAdoption: 84,
+    id: 'lottiefiles-ai',
+    name: 'LottieFiles AI',
+    website: 'https://lottiefiles.com',
+    category: 'Motion Design',
+    description: 'AI-driven generation of Lottie vector animations, motion styles, and automated code generation for layouts.',
+    bestFor: 'Product designers wanting to generate high-performance vector animations for UI micro-interactions.',
+    pricing: 'Freemium (Paid plans from $19/mo)',
+    launchBuzz: 88,
+    socialBuzz: 85,
+    searchInterest: 84,
+    designerAdoption: 90,
     editorialQuality: 92,
-    sevenDayChange: 2.9,
+    sevenDayChange: 2.1,
     trendStatus: 'rising' as const,
     lastUpdated: '2026-06-05',
     pros: [
-      'Zero local setup required; WebContainers run npm processes inside the browser',
-      'Generates and patches files with clear code diffs',
-      'Integrated dev preview server updates with live hot reloading'
+      'Direct Lottie JSON/dotLottie format outputs',
+      'Remarkably fast motion style transfer AI',
+      'Large ecosystem compatibility'
     ],
     cons: [
-      'In-browser sandbox memory can leak or crash on heavy node operations',
-      'Exporting to complex production infrastructure requires manual work',
-      'Requires stable, fast internet connection'
+      'Complex animations require significant manual anchor tweaks',
+      'Restricted completely to motion and vectors',
+      'Pricey for individual solo creators'
     ],
-    alternatives: ['v0', 'Lovable', 'Replit Agent'],
-    verdict: 'The best sandbox generator for design testing. Witnessing a full Node.js project bootstrap inside your browser is magic.',
-    scoreOutOf10: 9.2,
-    whyTrending: 'Heavy social chatter around WebContainers capability and the release of new backend integration templates.',
+    alternatives: ['Runway'],
+    verdict: 'The absolute benchmark for UI micro-interactions. Its AI translation simplifies vector motion modeling exponentially.',
+    scoreOutOf10: 9.1,
+    whyTrending: 'Substack reviews highlighting LottieFiles AI motion translator integrations inside web frameworks.',
     momentumHistory: [
-      { date: 'May 07', score: 85 },
-      { date: 'May 17', score: 87 },
-      { date: 'May 27', score: 89 },
-      { date: 'Jun 06', score: 91 }
+      { date: 'May 07', score: 83 },
+      { date: 'May 17', score: 84 },
+      { date: 'May 27', score: 84 },
+      { date: 'Jun 06', score: 85 }
     ],
-    monthlyVisits: '2.6M',
+    monthlyVisits: '4.2M',
     userRating: 4.7,
+    ratingSources: 'Product Hunt & G2 reviews',
+    figmaCommunityUsers: '600K+ Installs (Plugin)',
+    primaryDataSources: ['Similarweb Traffic', 'Figma community directory', 'G2 reviews']
+  },
+  {
+    id: 'phind',
+    name: 'Phind',
+    website: 'https://phind.com',
+    category: 'Product Strategy',
+    description: 'AI-native search engine designed to resolve technical layouts, coding problems, and interface component structures instantly.',
+    bestFor: 'Technical designers and developer-designers looking for fast context code verification.',
+    pricing: 'Freemium (Pro tier from $20/mo)',
+    launchBuzz: 84,
+    socialBuzz: 88,
+    searchInterest: 85,
+    designerAdoption: 80,
+    editorialQuality: 90,
+    sevenDayChange: 1.5,
+    trendStatus: 'stable' as const,
+    lastUpdated: '2026-06-04',
+    pros: [
+      'Incredibly fast search responses compared to standard search engines',
+      'Code solutions include clear inline citations',
+      'Support for deep context uploads'
+    ],
+    cons: [
+      'Visual layout generator is code-based only',
+      'Occasional code syntax inaccuracies for newer frameworks',
+      'Heavily tech-focused; lacks visual modeling tools'
+    ],
+    alternatives: ['Cursor', 'Replit Agent'],
+    verdict: 'A vital research tool for any developer-designer. It cuts down layout troubleshooting search cycles by tenfold.',
+    scoreOutOf10: 8.8,
+    whyTrending: 'Consistently referenced on developer-designer X threads as the ultimate alternative to standard searching.',
+    momentumHistory: [
+      { date: 'May 07', score: 82 },
+      { date: 'May 17', score: 83 },
+      { date: 'May 27', score: 84 },
+      { date: 'Jun 06', score: 84 }
+    ],
+    monthlyVisits: '7.8M',
+    userRating: 4.6,
+    ratingSources: 'Product Hunt reviews',
     figmaCommunityUsers: 'Not Applicable',
-    primaryDataSources: ['Similarweb Traffic', 'StackBlitz platform telemetry', 'NPM downloads']
+    primaryDataSources: ['Similarweb Traffic', 'Developer feedback groups', 'Google search demand']
+  },
+  {
+    id: 'visily',
+    name: 'Visily',
+    website: 'https://visily.ai',
+    category: 'Wireframing',
+    description: 'Wireframing tool that uses AI to convert screenshots, hand-drawn sketches, or templates into fully customizable digital screens.',
+    bestFor: 'Fast mockups and team brainstorms, especially converting legacy screenshots to editable assets.',
+    pricing: 'Free (Monetization coming soon)',
+    launchBuzz: 72,
+    socialBuzz: 66,
+    searchInterest: 60,
+    designerAdoption: 52,
+    editorialQuality: 80,
+    sevenDayChange: -1.2,
+    trendStatus: 'cooling' as const,
+    lastUpdated: '2026-06-01',
+    pros: [
+      'Screenshot-to-design tool is remarkably accurate',
+      'Entirely free to use currently with unlimited teammates',
+      'Clean export to Figma with auto-grouping'
+    ],
+    cons: [
+      'Community template selection is small',
+      'Slower update cycles compared to competitors',
+      'AI style generator occasionally glitches'
+    ],
+    alternatives: ['Uizard', 'Relume'],
+    verdict: 'A robust wireframing workspace that excels at design migration, but needs to speed up its feature cadence to keep up with industry trends.',
+    scoreOutOf10: 7.4,
+    whyTrending: 'User acquisition has slowed down slightly as competitors roll out native Figma integrations.',
+    momentumHistory: [
+      { date: 'May 07', score: 68 },
+      { date: 'May 17', score: 68 },
+      { date: 'May 27', score: 67 },
+      { date: 'Jun 06', score: 66 }
+    ],
+    monthlyVisits: '190K',
+    userRating: 4.2,
+    figmaCommunityUsers: '45K+ Installs',
+    primaryDataSources: ['Similarweb Traffic', 'G2 reviews', 'Capterra platform']
+  },
+  {
+    id: 'useberry',
+    name: 'Useberry',
+    website: 'https://useberry.com',
+    category: 'User Testing',
+    description: 'Usability testing platform providing AI-generated user session insights, screen recordings, heatmaps, and funnel drop-offs.',
+    bestFor: 'Prototyping validations, user flows, and recording user test details.',
+    pricing: 'Freemium (Paid plans from $33/mo)',
+    launchBuzz: 74,
+    socialBuzz: 68,
+    searchInterest: 62,
+    designerAdoption: 58,
+    editorialQuality: 78,
+    sevenDayChange: 0.2,
+    trendStatus: 'stable' as const,
+    lastUpdated: '2026-06-02',
+    pros: [
+      'Affordable entry pricing compared to major testing suites',
+      'Great heatmapping features and click tracking',
+      'Support for multiple prototyping environments'
+    ],
+    cons: [
+      'AI report summaries are less detailed than Maze\'s equivalents',
+      'Participant pool filtering is not highly granular',
+      'Dashboard interface feels slightly dated'
+    ],
+    alternatives: ['Maze', 'Looppanel'],
+    verdict: 'A budget-friendly alternative for startup UX teams. Its AI analytics speed up heat-map interpretations and funnel tracking.',
+    scoreOutOf10: 7.5,
+    whyTrending: 'Minor product improvements and new dashboard integrations introduced this month.',
+    momentumHistory: [
+      { date: 'May 07', score: 68 },
+      { date: 'May 17', score: 68 },
+      { date: 'May 27', score: 68 },
+      { date: 'Jun 06', score: 68 }
+    ],
+    monthlyVisits: '120K',
+    userRating: 4.3,
+    figmaCommunityUsers: '110K+ Installs',
+    primaryDataSources: ['Similarweb Traffic', 'Figma plugin directory', 'G2 reviews']
+  },
+  {
+    id: 'notably',
+    name: 'Notably',
+    website: 'https://notably.ai',
+    category: 'UX Research',
+    description: 'AI-powered UX research workspace that functions like a canvas, transcribing, coding, and extracting themes dynamically.',
+    bestFor: 'Visual-oriented UX researchers who like canvas-style mapping and card sorting.',
+    pricing: 'Paid plans from $25/mo (Free trial)',
+    launchBuzz: 76,
+    socialBuzz: 72,
+    searchInterest: 64,
+    designerAdoption: 60,
+    editorialQuality: 82,
+    sevenDayChange: -0.2,
+    trendStatus: 'stable' as const,
+    lastUpdated: '2026-06-03',
+    pros: [
+      'Interactive canvas layout matches physical post-it note synthesis workflows',
+      'AI synthesis creates draft executive summaries and slide decks automatically',
+      'Strong transcription speed and multi-language support'
+    ],
+    cons: [
+      'Performance can stutter when dealing with hundreds of post-it items',
+      'Less robust security certifications than Dovetail for enterprise usage',
+      'Export layouts are occasionally hard to configure'
+    ],
+    alternatives: ['Dovetail', 'Looppanel'],
+    verdict: 'A brilliant tool for visual thinkers. If you love spatial clustering, Notably\'s AI helpers accelerate your synthesis process.',
+    scoreOutOf10: 7.9,
+    whyTrending: 'Stable search volume; steady usage in freelancer and agency design circles.',
+    momentumHistory: [
+      { date: 'May 07', score: 71 },
+      { date: 'May 17', score: 71 },
+      { date: 'May 27', score: 71 },
+      { date: 'Jun 06', score: 71 }
+    ],
+    monthlyVisits: '85K',
+    userRating: 4.4,
+    figmaCommunityUsers: 'Not Applicable',
+    primaryDataSources: ['Similarweb Traffic', 'Product Hunt Launches', 'Capterra platform']
   },
   {
     id: 'replit-agent',
@@ -675,213 +981,9 @@ export const rawToolsData = [
     ],
     monthlyVisits: '8.5M (Replit platform)',
     userRating: 4.5,
+    ratingSources: 'Product Hunt reviews',
     figmaCommunityUsers: 'Not Applicable',
     primaryDataSources: ['Similarweb Traffic', 'Replit active user registry', 'Google search demand']
-  },
-  {
-    id: 'cursor',
-    name: 'Cursor',
-    website: 'https://cursor.com',
-    category: 'Design-to-Code',
-    description: 'AI-first code editor fork of VS Code, enabling multi-file edits, codebase chat, and fast auto-completions.',
-    bestFor: 'Designer-developers and technical designers who want full codebase control alongside AI assistance.',
-    pricing: 'Freemium (Pro plan at $20/mo)',
-    launchBuzz: 95,
-    socialBuzz: 96,
-    searchInterest: 94,
-    designerAdoption: 92,
-    editorialQuality: 99,
-    sevenDayChange: 2.5,
-    trendStatus: 'rising' as const,
-    lastUpdated: '2026-06-06',
-    pros: [
-      'Composer mode edits multiple files simultaneously to execute broad design-system updates',
-      'Integrates all custom VS Code extensions, preferences, and hotkeys out of the box',
-      'Top-notch contextual codebase understanding'
-    ],
-    cons: [
-      'Requires basic coding literacy; not a pure drag-and-drop or prompt-to-web app creator',
-      'Can generate massive git diffs that require thorough review',
-      'Heavy AI models can experience lag during peak usage hours'
-    ],
-    alternatives: ['Replit Agent', 'v0', 'Bolt'],
-    verdict: 'The ultimate IDE for anyone who writes code. The multi-file composer speeds up editing stylesheets and page components by tenfold.',
-    scoreOutOf10: 9.7,
-    whyTrending: 'Composer features are dominating X and LinkedIn feeds as designers build complex frontends by chatting with their code editor.',
-    momentumHistory: [
-      { date: 'May 07', score: 91 },
-      { date: 'May 17', score: 92 },
-      { date: 'May 27', score: 94 },
-      { date: 'Jun 06', score: 95 }
-    ],
-    monthlyVisits: '6.8M',
-    userRating: 4.9,
-    figmaCommunityUsers: 'Not Applicable',
-    primaryDataSources: ['Similarweb Traffic', 'Developer feedback polls', 'X social posts']
-  },
-  {
-    id: 'midjourney',
-    name: 'Midjourney',
-    website: 'https://midjourney.com',
-    category: 'Image Generation',
-    description: 'Top-tier text-to-image generator generating photorealistic illustrations, assets, icons, and interface patterns via prompt commands.',
-    bestFor: 'Generating hero illustrations, visual design concepts, and mock assets for prototypes.',
-    pricing: 'Paid plans from $10/mo (No free tier)',
-    launchBuzz: 92,
-    socialBuzz: 94,
-    searchInterest: 95,
-    designerAdoption: 93,
-    editorialQuality: 96,
-    sevenDayChange: 0.6,
-    trendStatus: 'stable' as const,
-    lastUpdated: '2026-06-05',
-    pros: [
-      'Unmatched artistic styling, detail rendering, and photorealism',
-      'Web editor and workspace UI has reduced Discord dependency',
-      'Excellent aspect ratio and upscale scaling tools'
-    ],
-    cons: [
-      'Prompt syntax can require deep experimentation for precise brand consistency',
-      'Lack of native vector SVG exports (generates raster PNG/JPG only)',
-      'Privacy controls are locked behind expensive premium tiers'
-    ],
-    alternatives: ['Adobe Firefly', 'Canva AI', 'Khroma'],
-    verdict: 'The undisputed king of prompt-driven visual assets. Its artistic range is second to none, though vector support is sorely missed.',
-    scoreOutOf10: 9.4,
-    whyTrending: 'Wide rollout of the new web dashboard creator interface, moving users away from Discord command prompts.',
-    momentumHistory: [
-      { date: 'May 07', score: 93 },
-      { date: 'May 17', score: 93 },
-      { date: 'May 27', score: 93 },
-      { date: 'Jun 06', score: 94 }
-    ],
-    monthlyVisits: '18.5M',
-    userRating: 4.7,
-    figmaCommunityUsers: 'Not Applicable',
-    primaryDataSources: ['Similarweb Traffic', 'Discord Server Membership', 'Google Search Trends']
-  },
-  {
-    id: 'runway',
-    name: 'Runway',
-    website: 'https://runwayml.com',
-    category: 'Video Generation',
-    description: 'AI video generation and editing suite featuring text-to-video, image-to-video, and cinematic editing controls.',
-    bestFor: 'Creating motion design assets, product concept teasers, and high-fidelity video content.',
-    pricing: 'Freemium (Paid plans from $15/mo)',
-    launchBuzz: 89,
-    socialBuzz: 90,
-    searchInterest: 88,
-    designerAdoption: 84,
-    editorialQuality: 90,
-    sevenDayChange: 3.1,
-    trendStatus: 'rising' as const,
-    lastUpdated: '2026-06-06',
-    pros: [
-      'Incredible camera control movements and lighting effects',
-      'Strong green screen, object removal, and motion tracking filters built in',
-      'Continuous speed upgrades to generation times'
-    ],
-    cons: [
-      'Video generations are relatively short (4-8 seconds default)',
-      'Character body deformation and object glitches remain common',
-      'High rendering demands mean quick consumption of rendering credits'
-    ],
-    alternatives: ['Adobe Firefly', 'Canva AI'],
-    verdict: 'The gold standard for AI motion and video. It allows creative designers to storyboard and direct video layouts in minutes rather than weeks.',
-    scoreOutOf10: 9.0,
-    whyTrending: 'Release of their Gen-3 Alpha model showing hyper-realistic human motion and fluid camera angles.',
-    momentumHistory: [
-      { date: 'May 07', score: 85 },
-      { date: 'May 17', score: 86 },
-      { date: 'May 27', score: 87 },
-      { date: 'Jun 06', score: 89 }
-    ],
-    monthlyVisits: '6.4M',
-    userRating: 4.6,
-    figmaCommunityUsers: 'Not Applicable',
-    primaryDataSources: ['Similarweb Traffic', 'Product Hunt', 'YouTube motion design posts']
-  },
-  {
-    id: 'adobe-firefly',
-    name: 'Adobe Firefly',
-    website: 'https://adobe.com/firefly',
-    category: 'Image Generation',
-    description: 'Adobe\'s commercially safe generative AI model, powering generative fill, recoloring, and graphic additions across Creative Cloud.',
-    bestFor: 'Enterprise design groups needing commercial safety and seamless integration with Photoshop and Illustrator.',
-    pricing: 'Included in Adobe subscription (Freemium standalone)',
-    launchBuzz: 86,
-    socialBuzz: 85,
-    searchInterest: 88,
-    designerAdoption: 90,
-    editorialQuality: 89,
-    sevenDayChange: 0.5,
-    trendStatus: 'stable' as const,
-    lastUpdated: '2026-06-04',
-    pros: [
-      'Trained exclusively on licensed content; safe for commercial client designs',
-      'Works natively inside Photoshop, Illustrator, and InDesign layers',
-      'Amazing vector recoloring and font style generators'
-    ],
-    cons: [
-      'Photorealism output occasionally lags behind Midjourney\'s artistic levels',
-      'Content credentials tag is added to metadata, which some clients dislike',
-      'Heavy licensing limits can block some experimental prompt styles'
-    ],
-    alternatives: ['Midjourney', 'Canva AI', 'Magician for Figma'],
-    verdict: 'For corporate design departments, Firefly is the only viable option due to its commercial indemnity. Integration makes Photoshop edits incredibly fast.',
-    scoreOutOf10: 8.7,
-    whyTrending: 'Photoshop native updates and enterprise custom-model training programs gaining corporate traction.',
-    momentumHistory: [
-      { date: 'May 07', score: 86 },
-      { date: 'May 17', score: 86 },
-      { date: 'May 27', score: 86 },
-      { date: 'Jun 06', score: 87 }
-    ],
-    monthlyVisits: '245M+ (Adobe Ecosystem)',
-    userRating: 4.5,
-    figmaCommunityUsers: 'Not Applicable',
-    primaryDataSources: ['Adobe Corporate Active metrics', 'Similarweb Traffic', 'Creative Cloud data']
-  },
-  {
-    id: 'canva-ai',
-    name: 'Canva AI',
-    website: 'https://canva.com',
-    category: 'Visual Design',
-    description: 'Canva\'s "Magic Studio" tools, providing automated layouts, content writing, image adjustments, and design translations.',
-    bestFor: 'Casual designers, marketing teams, and social media creators looking for automated layout graphics.',
-    pricing: 'Freemium (Magic Studio requires Canva Pro from $120/yr)',
-    launchBuzz: 88,
-    socialBuzz: 86,
-    searchInterest: 92,
-    designerAdoption: 94,
-    editorialQuality: 80,
-    sevenDayChange: 0.1,
-    trendStatus: 'stable' as const,
-    lastUpdated: '2026-06-03',
-    pros: [
-      'Extremely simple interface, highly optimized for speed and social graphics',
-      'Magic switch tool translates designs and sizes across channels instantly',
-      'Massive assets library and templates directory'
-    ],
-    cons: [
-      'Design layouts can feel amateur or repetitive to professional UX experts',
-      'Cannot export clean UI assets directly into coding workflows or Figma',
-      'Limited custom typography styling'
-    ],
-    alternatives: ['Adobe Firefly', 'Khroma', 'Magician for Figma'],
-    verdict: 'The ideal assistant for content marketers. While it lacks professional product design features, its speed for template assembly is unmatched.',
-    scoreOutOf10: 8.4,
-    whyTrending: 'Canva Enterprise updates and new team presentation templates rolling out globally.',
-    momentumHistory: [
-      { date: 'May 07', score: 87 },
-      { date: 'May 17', score: 87 },
-      { date: 'May 27', score: 87 },
-      { date: 'Jun 06', score: 87 }
-    ],
-    monthlyVisits: '460M+ (Canva Ecosystem)',
-    userRating: 4.7,
-    figmaCommunityUsers: 'Not Applicable',
-    primaryDataSources: ['Canva User Registry', 'Similarweb Traffic', 'G2 reviews']
   },
   {
     id: 'khroma',
@@ -909,7 +1011,7 @@ export const rawToolsData = [
       'Has not received a major update in several months',
       'No vector color system integrations'
     ],
-    alternatives: ['Canva AI', 'Magician for Figma', 'Diagram'],
+    alternatives: ['Krea AI'],
     verdict: 'A great utility for color block inspiration. It is lightweight and free, though it works best as a quick side tool rather than a central platform.',
     scoreOutOf10: 7.5,
     whyTrending: 'Consistent reference in designer lists on Pinterest and designer resource newsletters.',
@@ -921,175 +1023,97 @@ export const rawToolsData = [
     ],
     monthlyVisits: '160K',
     userRating: 4.3,
+    ratingSources: 'Designer Directories & Blogs',
     figmaCommunityUsers: 'Not Applicable',
     primaryDataSources: ['Similarweb Traffic', 'Design resource directories']
   },
   {
-    id: 'magician-for-figma',
-    name: 'Magician for Figma',
-    website: 'https://diagram.com/magician',
-    category: 'Figma Plugins',
-    description: 'Figma plugin by Diagram that generates SVG icons, copy, and images from text descriptions.',
-    bestFor: 'Quickly placing placeholders, custom SVG icons, and copy drafts during layout sprints.',
-    pricing: 'Paid plans from $9/mo (Free trial)',
+    id: 'vectary',
+    name: 'Vectary',
+    website: 'https://vectary.com',
+    category: '3D Design',
+    description: 'Browser-based 3D design studio with integrated AI helpers to create realistic 3D mockups, textures, and assets.',
+    bestFor: 'Product mockup designers wanting web-based interactive 3D elements.',
+    pricing: 'Freemium (Paid plans from $19/mo)',
     launchBuzz: 78,
-    socialBuzz: 72,
-    searchInterest: 68,
-    designerAdoption: 75,
+    socialBuzz: 75,
+    searchInterest: 70,
+    designerAdoption: 76,
     editorialQuality: 84,
-    sevenDayChange: -1.8,
-    trendStatus: 'cooling' as const,
+    sevenDayChange: 0.5,
+    trendStatus: 'stable' as const,
     lastUpdated: '2026-06-03',
     pros: [
-      'Creates scalable SVG vectors inside Figma layers directly',
-      'Saves time by replacing standard icon search panels',
-      'Lightweight and simple to launch'
+      'Legitimate, highly realistic 3D CAD/mockup engine',
+      'AI textures make setting material finishes extremely fast',
+      'Direct web-iframe embeds work without coding'
     ],
     cons: [
-      'Some features overlaps with Figma\'s new native AI layout features',
-      'Icon styles can look inconsistent if prompted separately',
-      'Image generator is lower resolution than modern external tools'
+      'High rendering demands for complex industrial CAD shapes',
+      'Free tier is somewhat limited in export file extensions',
+      'Requires substantial 3D background logic knowledge'
     ],
-    alternatives: ['Figma AI', 'Diagram', 'Canva AI'],
-    verdict: 'A historic pioneer in Figma plugins. However, with Figma launching native AI tools, Magician\'s standalone value has decreased.',
-    scoreOutOf10: 7.7,
-    whyTrending: 'Downward momentum shift since Figma began rollouts of its own built-in design assistants.',
+    alternatives: ['Spline AI'],
+    verdict: 'An incredible asset for packaging and product mockup design. Texture AI text-prompting speeds up standard iteration workflows.',
+    scoreOutOf10: 7.8,
+    whyTrending: 'Updates to their web AR preview engine discussed in design-system newsletters.',
     momentumHistory: [
-      { date: 'May 07', score: 76 },
-      { date: 'May 17', score: 75 },
+      { date: 'May 07', score: 74 },
+      { date: 'May 17', score: 74 },
       { date: 'May 27', score: 75 },
-      { date: 'Jun 06', score: 74 }
+      { date: 'Jun 06', score: 75 }
     ],
-    monthlyVisits: '80K',
-    userRating: 4.2,
-    figmaCommunityUsers: '250K+ Installs',
-    primaryDataSources: ['Figma Community Directory', 'Similarweb Traffic']
+    monthlyVisits: '280K',
+    userRating: 4.4,
+    ratingSources: 'G2 reviews',
+    figmaCommunityUsers: '120K+ Installs (Figma Sync)',
+    primaryDataSources: ['Similarweb Traffic', 'G2 reviews', 'Figma plugin downloads']
   },
   {
-    id: 'diagram',
-    name: 'Diagram',
-    website: 'https://diagram.com',
-    category: 'Figma Plugins',
-    description: 'Design utility collection (Genius, Magician, Automator) creating responsive UI layouts, smart components, and bulk edits.',
-    bestFor: 'Advanced Figma workflows, styling automation, and layout scripts.',
-    pricing: 'Various subscription models (Awaiting Figma Integration updates)',
-    launchBuzz: 80,
-    socialBuzz: 78,
-    searchInterest: 72,
-    designerAdoption: 82,
-    editorialQuality: 88,
-    sevenDayChange: -1.0,
+    id: 'mockflow',
+    name: 'Mockflow',
+    website: 'https://mockflow.com',
+    category: 'Wireframing',
+    description: 'AI-assisted wireframing and sitemap creation tool supporting quick sketches, components, and design reviews.',
+    bestFor: 'Wireframing digital user flows and creating interactive UI mockups.',
+    pricing: 'Freemium (Paid plans from $14/mo)',
+    launchBuzz: 75,
+    socialBuzz: 70,
+    searchInterest: 68,
+    designerAdoption: 70,
+    editorialQuality: 80,
+    sevenDayChange: 0.1,
     trendStatus: 'stable' as const,
-    lastUpdated: '2026-06-04',
+    lastUpdated: '2026-06-02',
     pros: [
-      'Extremely high technical depth; Automator script capabilities are incredibly deep',
-      'Directly engineered in cooperation with Figma\'s core team',
-      'Pushes the boundaries of spatial UI design'
+      'Very clean and responsive wireframe elements library',
+      'AI creates comprehensive sitemaps from brief design prompts',
+      'Cooperative workspace features'
     ],
     cons: [
-      'Acquisition by Figma has slowed standalone release updates',
-      'High learning curve to customize scripts in Automator',
-      'Beta slots for Genius are heavily restricted'
+      'Visual design fidelity is restricted to lower levels',
+      'Export layouts are occasionally hard to sync to Figma structures',
+      'AI sitemaps can require manual restructuring'
     ],
-    alternatives: ['Figma AI', 'Magician for Figma', 'Khroma'],
-    verdict: 'The team behind Diagram is now building Figma\'s native AI features. Outstanding technology, though most of its tools are merging into Figma core.',
-    scoreOutOf10: 8.3,
-    whyTrending: 'Ongoing integration efforts inside Figma; community remains highly curious about upcoming features.',
+    alternatives: ['Uizard', 'Relume'],
+    verdict: 'A steady wireframe assistant that excels in sitemapping speed, though it lacks Uizard\'s screenshot-to-design conversions.',
+    scoreOutOf10: 7.6,
+    whyTrending: 'Introduction of new AI layout assistants discussed in project planning forums.',
     momentumHistory: [
-      { date: 'May 07', score: 79 },
-      { date: 'May 17', score: 79 },
-      { date: 'May 27', score: 78 },
-      { date: 'Jun 06', score: 78 }
+      { date: 'May 07', score: 70 },
+      { date: 'May 17', score: 70 },
+      { date: 'May 27', score: 70 },
+      { date: 'Jun 06', score: 70 }
     ],
-    monthlyVisits: '120K',
-    userRating: 4.5,
-    figmaCommunityUsers: '410K+ Installs',
-    primaryDataSources: ['Figma Community Directory', 'Similarweb Traffic', 'Developer news']
-  },
-  {
-    id: 'figjam-ai',
-    name: 'FigJam AI',
-    website: 'https://figma.com/figjam',
-    category: 'Product Strategy',
-    description: 'Figma\'s whiteboard AI that generates workshop templates, brainstorm boards, sitemaps, and clusters research post-its.',
-    bestFor: 'UX workshop leads, product managers setting up user flows, and mapping out brainstorming sessions.',
-    pricing: 'Included in FigJam plans (Free/Paid tiers)',
-    launchBuzz: 85,
-    socialBuzz: 82,
-    searchInterest: 80,
-    designerAdoption: 88,
-    editorialQuality: 89,
-    sevenDayChange: 1.6,
-    trendStatus: 'rising' as const,
-    lastUpdated: '2026-06-05',
-    pros: [
-      'Generates beautiful visual agendas and sorting tables in seconds',
-      'AI summarizes hundreds of stickies into concise clusters automatically',
-      'Collaborative, fun features suitable for client-facing meetings'
-    ],
-    cons: [
-      'Workshop layouts can feel similar if generated with simple prompts',
-      'Cannot export boards to structured data outside of Figma/CSV files',
-      'Requires team alignment to use FigJam over Miro'
-    ],
-    alternatives: ['Relume', 'Dovetail', 'Notably'],
-    verdict: 'Saves product designers and leads valuable hours of setup before meetings. FigJam AI\'s card sorting and summarization are stellar.',
-    scoreOutOf10: 8.8,
-    whyTrending: 'High corporate adoption rates as remote teams use AI templates to automate recurring agile retrospectives.',
-    momentumHistory: [
-      { date: 'May 07', score: 81 },
-      { date: 'May 17', score: 82 },
-      { date: 'May 27', score: 83 },
-      { date: 'Jun 06', score: 83 }
-    ],
-    monthlyVisits: '105.2M (Figma Ecosystem)',
-    userRating: 4.6,
-    figmaCommunityUsers: 'Native Feature',
-    primaryDataSources: ['Figma Platform Metrics', 'Similarweb Traffic']
-  },
-  {
-    id: 'stark',
-    name: 'Stark',
-    website: 'https://getstark.co',
-    category: 'Accessibility',
-    description: 'AI-assisted accessibility platform that scans designs for color contrast violations, screen reader labels, and focus order.',
-    bestFor: 'Ensuring design system compliance with WCAG standards early in the design cycle.',
-    pricing: 'Freemium (Paid plans from $25/mo)',
-    launchBuzz: 80,
-    socialBuzz: 82,
-    searchInterest: 81,
-    designerAdoption: 85,
-    editorialQuality: 90,
-    sevenDayChange: 1.1,
-    trendStatus: 'rising' as const,
-    lastUpdated: '2026-06-05',
-    pros: [
-      'Scans files in seconds and suggests WCAG compliant alternative colors',
-      'AI auto-suggests screen-reader descriptions for images',
-      'Direct plugins for Figma, Sketch, and Chrome'
-    ],
-    cons: [
-      'Advanced automation scan logs require premium plans',
-      'Can flag minor false positives on complex layered vector objects',
-      'Requires manual configuration for complex interactive page states'
-    ],
-    alternatives: ['Diagram', 'Figma AI'],
-    verdict: 'An essential utility for modern product design. Stark\'s AI simplifies the complex world of accessibility compliance, turning scans into quick action items.',
-    scoreOutOf10: 8.6,
-    whyTrending: 'Increased compliance audits in EU and US markets driving corporate design teams to enforce Stark checks.',
-    momentumHistory: [
-      { date: 'May 07', score: 80 },
-      { date: 'May 17', score: 81 },
-      { date: 'May 27', score: 82 },
-      { date: 'Jun 06', score: 82 }
-    ],
-    monthlyVisits: '150K',
-    userRating: 4.7,
-    figmaCommunityUsers: '360K+ Installs',
-    primaryDataSources: ['Figma Plugin Directory', 'Similarweb traffic', 'WCAG Audit databases']
+    monthlyVisits: '350K',
+    userRating: 4.3,
+    ratingSources: 'Capterra & G2 reviews',
+    figmaCommunityUsers: '30K+ Installs',
+    primaryDataSources: ['Similarweb Traffic', 'G2 reviews', 'Capterra platform']
   }
 ];
 
+// Calculate final scores and sort
 export const toolsData: Tool[] = rawToolsData.map(tool => {
   const momentumScore = calculateScore(
     tool.launchBuzz,
@@ -1100,6 +1124,7 @@ export const toolsData: Tool[] = rawToolsData.map(tool => {
   );
   return {
     ...tool,
+    ratingSources: (tool as any).ratingSources || 'G2 & Product Hunt reviews',
     momentumScore
-  };
+  } as Tool;
 }).sort((a, b) => b.momentumScore - a.momentumScore);

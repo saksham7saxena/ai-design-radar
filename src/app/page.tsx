@@ -16,7 +16,10 @@ import {
   Sparkles,
   Zap,
   ShieldCheck,
-  AlertTriangle
+  AlertTriangle,
+  Search,
+  ChevronDown,
+  ChevronUp
 } from 'lucide-react';
 import { 
   LineChart, 
@@ -32,15 +35,21 @@ import {
 export default function RadarDashboard() {
   const [mounted, setMounted] = useState(false);
   const [selectedTool, setSelectedTool] = useState<Tool | null>(null);
+  
+  // Interactive sorting, search, and filtering states
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [sortField, setSortField] = useState<string>('momentumScore');
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
 
   // Setup mount check to prevent Recharts hydration issues
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Compute Market Pulse KPIs dynamically from the mock data
+  // Compute Market Pulse KPIs dynamically from the standalone data
   const fastestRising = [...toolsData].sort((a, b) => b.sevenDayChange - a.sevenDayChange)[0];
-  const biggestGain = toolsData[0]; // Sorted by momentumScore desc
+  const biggestGain = toolsData[0]; // Already sorted by momentumScore desc
   
   const categoryScores = CATEGORIES.map(category => {
     const toolsInCategory = toolsData.filter(t => t.category === category);
@@ -68,7 +77,7 @@ export default function RadarDashboard() {
     return dataPoint;
   });
 
-  // Tools to Watch Data with custom pastel backgrounds matching Airtable spec
+  // Standalone watchlist signals
   const watchTools = [
     {
       name: "Codeflow AI",
@@ -153,13 +162,106 @@ export default function RadarDashboard() {
     );
   };
 
-  return (
-    <main className="min-h-screen bg-white text-[#181d26] py-12 px-4 sm:px-6 lg:px-8 font-sans">
-      <div className="max-w-7xl mx-auto space-y-12">
+  // Helper to parse visits magnitude strings (e.g. "9.4M", "620K") into numbers for correct sorting
+  const parseVisits = (visits: string): number => {
+    const clean = visits.toLowerCase().replace(/[^0-9.]/g, '');
+    const value = parseFloat(clean);
+    if (visits.toLowerCase().includes('m')) {
+      return value * 1000000;
+    }
+    if (visits.toLowerCase().includes('k')) {
+      return value * 1000;
+    }
+    return value;
+  };
+
+  // Handle clickable column header sorting
+  const handleSort = (field: string) => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortField(field);
+      setSortDirection('desc'); // Default to descending
+    }
+  };
+
+  const renderSortArrow = (field: string) => {
+    if (sortField !== field) return null;
+    return sortDirection === 'asc' ? (
+      <ChevronUp size={14} className="inline text-[#1b61c9] ml-0.5" />
+    ) : (
+      <ChevronDown size={14} className="inline text-[#1b61c9] ml-0.5" />
+    );
+  };
+
+  // Filter and Sort the data array based on states
+  const filteredTools = toolsData
+    .filter(tool => {
+      const matchesSearch = 
+        tool.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        tool.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        tool.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        tool.bestFor.toLowerCase().includes(searchQuery.toLowerCase());
         
-        {/* HERO SECTION - Anchored on clean white canvas and dark-ink type */}
+      const matchesCategory = selectedCategory === 'All' || tool.category === selectedCategory;
+      
+      return matchesSearch && matchesCategory;
+    })
+    .sort((a, b) => {
+      let aVal: any = a[sortField as keyof Tool];
+      let bVal: any = b[sortField as keyof Tool];
+
+      if (sortField === 'monthlyVisits') {
+        aVal = parseVisits(a.monthlyVisits);
+        bVal = parseVisits(b.monthlyVisits);
+      }
+
+      if (typeof aVal === 'string') {
+        return sortDirection === 'asc' 
+          ? aVal.localeCompare(bVal) 
+          : bVal.localeCompare(aVal);
+      } else {
+        return sortDirection === 'asc' 
+          ? (aVal as number) - (bVal as number) 
+          : (bVal as number) - (aVal as number);
+      }
+    });
+
+  const uniqueCategories = ['All', ...CATEGORIES];
+
+  return (
+    <main className="min-h-screen bg-white text-[#181d26] font-sans">
+      
+      {/* Pinned Top Navigation Bar - Airtable Nav Dialect */}
+      <nav className="sticky top-0 z-40 w-full bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm py-4 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-lg bg-[#aa2d00] flex items-center justify-center text-white font-bold text-lg font-mono">
+              R
+            </div>
+            <span className="font-display font-bold text-lg text-[#181d26] tracking-tight">AI Design Radar</span>
+          </div>
+          <div className="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-600">
+            <a href="#market-pulse" className="hover:text-[#1b61c9] transition">Market Pulse</a>
+            <a href="#leaderboard" className="hover:text-[#1b61c9] transition">Leaderboard</a>
+            <a href="#trends" className="hover:text-[#1b61c9] transition">Trends</a>
+            <a href="#scoring" className="hover:text-[#1b61c9] transition">Methodology</a>
+            <a href="#watchlist" className="hover:text-[#1b61c9] transition">Watchlist</a>
+          </div>
+          <div>
+            <span className="inline-flex px-3 py-1 rounded-full text-[10px] font-bold bg-[#aa2d00]/10 text-[#aa2d00] border border-[#aa2d00]/20 font-mono uppercase tracking-wider">
+              Standalone SaaS Only
+            </span>
+          </div>
+        </div>
+      </nav>
+
+      {/* Main Container */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+        
+        {/* HERO SECTION */}
         <header className="relative border-b border-slate-200 pb-10 pt-4">
-          <div className="relative">
+          <div>
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold bg-slate-100 text-[#181d26] border border-slate-200 mb-4 uppercase tracking-wider">
               <Sparkles size={12} className="text-slate-600" />
               AI Design Market Intelligence
@@ -168,20 +270,20 @@ export default function RadarDashboard() {
               AI Design Tools Radar
             </h1>
             <p className="mt-3 text-lg text-slate-600 max-w-3xl leading-relaxed font-body">
-              Track which AI design tools are gaining real momentum across launches, social buzz, search demand, and designer adoption.
+              Track which **standalone** AI design tools are gaining real momentum across launches, social buzz, search demand, and designer adoption.
             </p>
           </div>
         </header>
 
-        {/* SECTION 1: MARKET PULSE - Expressed via full-bleed signature cards */}
-        <section className="space-y-4">
+        {/* SECTION 1: MARKET PULSE */}
+        <section id="market-pulse" className="scroll-mt-20 space-y-4">
           <div className="flex items-center gap-2">
             <Activity size={18} className="text-[#aa2d00]" />
             <h2 className="text-xl font-display font-semibold text-[#181d26]">Market Pulse</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             
-            {/* Fastest Rising Card - Coral Signature Card */}
+            {/* Fastest Rising Card - Coral Signature */}
             <div className="bg-[#aa2d00] text-white rounded-lg p-6 flex flex-col justify-between min-h-[160px] shadow-sm">
               <div>
                 <span className="text-[10px] font-bold uppercase tracking-wider text-orange-200">Fastest Rising</span>
@@ -196,7 +298,7 @@ export default function RadarDashboard() {
               </div>
             </div>
 
-            {/* Hottest Category Card - Forest Signature Card */}
+            {/* Hottest Category Card - Forest Signature */}
             <div className="bg-[#0a2e0e] text-white rounded-lg p-6 flex flex-col justify-between min-h-[160px] shadow-sm">
               <div>
                 <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-200">Hottest Category</span>
@@ -211,7 +313,7 @@ export default function RadarDashboard() {
               </div>
             </div>
 
-            {/* Biggest Momentum Gain - Ink Primary Card */}
+            {/* Biggest Momentum Gain - Ink Primary */}
             <div className="bg-[#181d26] text-white rounded-lg p-6 flex flex-col justify-between min-h-[160px] shadow-sm">
               <div>
                 <span className="text-[10px] font-bold uppercase tracking-wider text-slate-300">Market Leader</span>
@@ -230,15 +332,41 @@ export default function RadarDashboard() {
         </section>
 
         {/* SECTION 2: MOMENTUM LEADERBOARD */}
-        <section className="space-y-4">
-          <div className="flex items-center justify-between">
+        <section id="leaderboard" className="scroll-mt-20 space-y-6">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div className="flex items-center gap-2">
               <Flame size={18} className="text-[#aa2d00]" />
               <h2 className="text-xl font-display font-semibold text-[#181d26]">Momentum Leaderboard</h2>
             </div>
-            <span className="text-xs text-slate-500 font-mono">
-              Sorted by Rank (Weighted Score)
-            </span>
+            
+            {/* Search Input Box */}
+            <div className="relative">
+              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+              <input 
+                type="text" 
+                placeholder="Search standalone tools..." 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="bg-white border border-slate-200 rounded-sm pl-9 pr-4 py-2 text-xs w-72 placeholder-slate-400 focus:outline-none focus:border-[#1b61c9] transition-colors"
+              />
+            </div>
+          </div>
+
+          {/* Category Filter Rail/Tabs */}
+          <div className="flex items-center gap-2 overflow-x-auto pb-2 border-b border-slate-100 scrollbar-none">
+            {uniqueCategories.map(category => (
+              <button
+                key={category}
+                onClick={() => setSelectedCategory(category)}
+                className={`px-3 py-1.5 text-xs font-semibold transition-colors shrink-0 ${
+                  selectedCategory === category 
+                    ? 'bg-[#181d26] text-white rounded-lg' 
+                    : 'bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200 rounded-lg'
+                }`}
+              >
+                {category}
+              </button>
+            ))}
           </div>
 
           {/* Table Container - Clean White & Hairline Dividers */}
@@ -247,21 +375,48 @@ export default function RadarDashboard() {
               <table className="w-full text-left border-collapse min-w-[1000px]">
                 <thead>
                   <tr className="border-b border-slate-200 bg-slate-50 text-xs font-semibold text-slate-500 tracking-wider">
-                    <th className="py-4 px-4 text-center w-12">Rank</th>
-                    <th className="py-4 px-4">Tool</th>
-                    <th className="py-4 px-4">Category</th>
+                    <th className="py-4 px-4 text-center w-12 cursor-pointer select-none" onClick={() => handleSort('momentumScore')}>
+                      Rank
+                    </th>
+                    <th className="py-4 px-4 cursor-pointer select-none" onClick={() => handleSort('name')}>
+                      Tool {renderSortArrow('name')}
+                    </th>
+                    <th className="py-4 px-4 cursor-pointer select-none" onClick={() => handleSort('category')}>
+                      Category {renderSortArrow('category')}
+                    </th>
                     <th className="py-4 px-4 max-w-xs">Best For & Pricing</th>
-                    <th className="py-4 px-4 text-center">Trend</th>
-                    <th className="py-4 px-4 text-center">Est. Monthly Traffic</th>
-                    <th className="py-4 px-4 text-center">User Rating</th>
-                    <th className="py-4 px-4 text-center">Score</th>
-                    <th className="py-4 px-4 text-center">7d Change</th>
+                    <th className="py-4 px-4 text-center cursor-pointer select-none" onClick={() => handleSort('trendStatus')}>
+                      Trend
+                    </th>
+                    <th className="py-4 px-4 text-center cursor-pointer select-none" onClick={() => handleSort('monthlyVisits')}>
+                      Est. Monthly Traffic {renderSortArrow('monthlyVisits')}
+                    </th>
+                    
+                    {/* User Rating Header with Tooltip on Hover */}
+                    <th className="py-4 px-4 text-center cursor-pointer select-none" onClick={() => handleSort('userRating')}>
+                      <span className="tooltip-trigger inline-flex items-center gap-1">
+                        User Rating
+                        <Info size={12} className="text-slate-400" />
+                        {renderSortArrow('userRating')}
+                        <span className="tooltip-content font-sans normal-case tracking-normal font-normal">
+                          Weighted G2, Product Hunt, and Capterra reviews
+                        </span>
+                      </span>
+                    </th>
+                    
+                    <th className="py-4 px-4 text-center cursor-pointer select-none" onClick={() => handleSort('momentumScore')}>
+                      Score {renderSortArrow('momentumScore')}
+                    </th>
+                    <th className="py-4 px-4 text-center cursor-pointer select-none" onClick={() => handleSort('sevenDayChange')}>
+                      7d Change {renderSortArrow('sevenDayChange')}
+                    </th>
                     <th className="py-4 px-4 text-center">Sub-Metrics (LNCH/SOC/SEAR/ADOP)</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-200">
-                  {toolsData.map((tool, idx) => {
-                    const rank = idx + 1;
+                  {filteredTools.map((tool, idx) => {
+                    // Find actual rank inside the base sorted dataset
+                    const originalRank = toolsData.findIndex(t => t.id === tool.id) + 1;
                     return (
                       <tr 
                         key={tool.id}
@@ -270,7 +425,7 @@ export default function RadarDashboard() {
                       >
                         {/* Rank */}
                         <td className="py-4 px-4 text-center font-mono font-bold text-slate-400 group-hover:text-[#1b61c9]">
-                          #{rank}
+                          #{originalRank}
                         </td>
                         {/* Tool Name & Description */}
                         <td className="py-4 px-4">
@@ -305,10 +460,17 @@ export default function RadarDashboard() {
                         <td className="py-4 px-4 text-center font-mono text-xs text-slate-700 font-medium">
                           {tool.monthlyVisits}
                         </td>
-                        {/* User Rating */}
-                        <td className="py-4 px-4 text-center font-mono text-xs text-amber-600 font-bold">
-                          ★ {tool.userRating}
+                        
+                        {/* User Rating cell with rating source tooltip */}
+                        <td className="py-4 px-4 text-center">
+                          <span className="tooltip-trigger font-mono text-xs text-amber-600 font-bold">
+                            ★ {tool.userRating}
+                            <span className="tooltip-content font-sans font-normal text-white">
+                              Source: {tool.ratingSources}
+                            </span>
+                          </span>
                         </td>
+
                         {/* Score */}
                         <td className="py-4 px-4 text-center">
                           <span className="inline-block px-2.5 py-1 text-xs font-bold font-mono rounded bg-slate-100 text-slate-800 border border-slate-200">
@@ -345,6 +507,13 @@ export default function RadarDashboard() {
                       </tr>
                     );
                   })}
+                  {filteredTools.length === 0 && (
+                    <tr>
+                      <td colSpan={10} className="py-8 text-center text-slate-400 text-sm">
+                        No tools found matching your search.
+                      </td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>
@@ -355,7 +524,7 @@ export default function RadarDashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           
           {/* SECTION 4: TREND CHART */}
-          <div className="lg:col-span-2 space-y-4">
+          <div id="trends" className="lg:col-span-2 space-y-4 scroll-mt-20">
             <div className="flex items-center gap-2">
               <TrendingUp size={18} className="text-[#1b61c9]" />
               <h2 className="text-xl font-display font-semibold text-[#181d26]">Top 5 Momentum Trends</h2>
@@ -443,7 +612,7 @@ export default function RadarDashboard() {
           </div>
 
           {/* SECTION 3: MOMENTUM SCORE SYSTEM - Styled as a Cream Callout Card */}
-          <div className="space-y-4">
+          <div id="scoring" className="space-y-4 scroll-mt-20">
             <div className="flex items-center gap-2">
               <Info size={18} className="text-[#1b61c9]" />
               <h2 className="text-xl font-display font-semibold text-[#181d26]">Score Methodology</h2>
@@ -460,23 +629,23 @@ export default function RadarDashboard() {
               <div className="space-y-4 text-xs">
                 <div className="border-l-2 border-[#aa2d00] pl-3 space-y-1">
                   <span className="font-bold text-[#aa2d00] font-display">Launch Buzz (30%)</span>
-                  <p className="text-slate-750 font-body">Product Hunt upvotes, comment velocity, and maker responses.</p>
+                  <p className="text-slate-700 font-body">Product Hunt upvotes, comment velocity, and maker responses.</p>
                 </div>
                 <div className="border-l-2 border-[#1b61c9] pl-3 space-y-1">
                   <span className="font-bold text-[#1b61c9] font-display">Social Buzz (25%)</span>
-                  <p className="text-slate-755 font-body">X threads, Reddit mentions, and designer community sentiment volume.</p>
+                  <p className="text-slate-700 font-body">X threads, Reddit mentions, and designer community sentiment volume.</p>
                 </div>
                 <div className="border-l-2 border-[#0a2e0e] pl-3 space-y-1">
-                  <span className="font-bold text-[#0a2e0e] font-display">Search Interest (20%)</span>
-                  <p className="text-slate-755 font-body font-body">Branded search term velocity and relative search demand curves.</p>
+                  <span className="font-bold text-[#0a2e0e] font-display font-display">Search Interest (20%)</span>
+                  <p className="text-slate-700 font-body">Branded search term velocity and relative search demand curves.</p>
                 </div>
                 <div className="border-l-2 border-[#d9a441] pl-3 space-y-1">
-                  <span className="font-bold text-[#d9a441] font-display font-display">Designer Adoption (15%)</span>
-                  <p className="text-slate-755 font-body">Figma Community template imports and plugin installation spikes.</p>
+                  <span className="font-bold text-[#d9a441] font-display">Designer Adoption (15%)</span>
+                  <p className="text-slate-700 font-body">Figma Community template imports and plugin installation spikes.</p>
                 </div>
                 <div className="border-l-2 border-slate-600 pl-3 space-y-1">
                   <span className="font-bold text-slate-700 font-display">Editorial Quality (10%)</span>
-                  <p className="text-slate-755 font-body font-body font-body">Usability fluidity, workflow efficiency, and core UI design problem fit.</p>
+                  <p className="text-slate-700 font-body font-body font-body font-body">Usability fluidity, workflow efficiency, and core UI design problem fit.</p>
                 </div>
               </div>
             </div>
@@ -485,7 +654,7 @@ export default function RadarDashboard() {
         </div>
 
         {/* SECTION 5: EMERGING TOOLS TO WATCH - Styled as Airtable Demo Grids */}
-        <section className="space-y-4">
+        <section id="watchlist" className="scroll-mt-20 space-y-4">
           <div className="flex items-center gap-2">
             <Compass size={18} className="text-[#0a2e0e]" />
             <h2 className="text-xl font-display font-semibold text-[#181d26]">Tools to Watch</h2>
@@ -611,7 +780,7 @@ export default function RadarDashboard() {
                   </span>
                   <p className="text-slate-800 text-xs leading-relaxed font-body">{selectedTool.whyTrending}</p>
                   <div className="pt-2 border-t border-amber-500/10 text-[10px] text-slate-500">
-                    <strong className="text-slate-600 font-semibold">Tracked Sources: </strong>
+                    <strong className="text-slate-650 font-semibold">Tracked Sources: </strong>
                     {selectedTool.primaryDataSources.join(', ')}
                   </div>
                 </div>
