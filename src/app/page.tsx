@@ -97,16 +97,16 @@ const getToolIcon = (id: string, name: string, category: string) => {
     case 'framer-ai':
       return (
         <div className="w-6 h-6 rounded-md bg-[#0055ff]/10 border border-[#0055ff]/20 flex items-center justify-center shrink-0">
-          <svg className="w-3.5 h-3.5 text-black dark:text-white" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M5 2h14v6l-7 7H5V2zm0 6h7l7 7H5v-7z" />
+          <svg className="w-3 h-3.5 text-black dark:text-white" viewBox="0 0 256 384" fill="currentColor">
+            <path d="M0 0h256v128H128L0 0Zm0 128h128l128 128H128v128L0 256V128Z" />
           </svg>
         </div>
       );
     case 'v0':
       return (
         <div className="w-6 h-6 rounded-md bg-zinc-950 border border-zinc-800 flex items-center justify-center shrink-0">
-          <svg className="w-3.5 h-3.5 text-white" viewBox="0 0 24 24" fill="currentColor" fillRule="evenodd">
-            <path clipRule="evenodd" d="M14.252 8.25h5.624c.088 0 .176.006.26.018l-5.87 5.87a1.889 1.889 0 01-.019-.265V8.25h-2.25v5.623a4.124 4.124 0 004.125 4.125h5.624v-2.25h-5.624c-.09 0-.179-.006-.265-.018l5.874-5.875a1.9 1.9 0 01.02.27v5.623H24v-5.624A4.124 4.124 0 0019.876 6h-5.624v2.25zM0 7.5v.006l7.686 9.788c.924 1.176 2.813.523 2.813-.973V7.5H8.25v6.87L2.856 7.5H0z" />
+          <svg className="w-3 h-3 text-white" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2L2 22h20z" />
           </svg>
         </div>
       );
@@ -206,7 +206,7 @@ export default function RadarDashboard() {
   const [selectedTool, setSelectedTool] = useState<Tool | null>(null);
   
   // Theme toggle state
-  const [isDark, setIsDark] = useState(true); // Default to dark mode for designers
+  const [isDark, setIsDark] = useState(false); // Default to light mode
   
   // Interactive sorting, search, and filtering states
   const [searchQuery, setSearchQuery] = useState('');
@@ -215,7 +215,7 @@ export default function RadarDashboard() {
   const [selectedPricing, setSelectedPricing] = useState<string>('All');
   const [sortField, setSortField] = useState<string>('momentumScore');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
-  const [showAll, setShowAll] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(10);
 
   // Setup mount check to prevent Recharts hydration issues
   useEffect(() => {
@@ -446,7 +446,7 @@ export default function RadarDashboard() {
       }
     });
 
-  const displayedTools = showAll ? filteredTools : filteredTools.slice(0, 10);
+  const displayedTools = filteredTools.slice(0, visibleCount);
   const uniqueCategories = ['All', ...CATEGORIES];
 
   return (
@@ -531,8 +531,8 @@ export default function RadarDashboard() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             
-            {/* Fastest Rising Card - Nicer terracotta orange-red */}
-            <div className="bg-[#c94f28] text-white rounded-lg p-6 flex flex-col justify-between min-h-[160px] shadow-sm">
+            {/* Fastest Rising Card - Soothing orange shade */}
+            <div className="bg-[#e05a36] text-white rounded-lg p-6 flex flex-col justify-between min-h-[160px] shadow-sm">
               <div>
                 <span className="text-[10px] font-bold uppercase tracking-wider text-orange-100">Fastest Rising</span>
                 <h3 className="text-2xl font-display font-medium mt-2">{fastestRising.name}</h3>
@@ -609,7 +609,7 @@ export default function RadarDashboard() {
                     value={searchQuery}
                     onChange={(e) => {
                       setSearchQuery(e.target.value);
-                      setShowAll(false);
+                      setVisibleCount(10);
                     }}
                     className={`border rounded-sm pl-9 pr-4 py-1.5 text-xs w-48 sm:w-56 placeholder-slate-400 focus:outline-none transition-colors ${
                       isDark 
@@ -625,7 +625,7 @@ export default function RadarDashboard() {
                     value={selectedTrend}
                     onChange={(e) => {
                       setSelectedTrend(e.target.value);
-                      setShowAll(false);
+                      setVisibleCount(10);
                     }}
                     className={`appearance-none border rounded-sm pl-3 pr-8 py-1.5 text-xs focus:outline-none cursor-pointer transition-colors ${
                       isDark 
@@ -647,7 +647,7 @@ export default function RadarDashboard() {
                     value={selectedPricing}
                     onChange={(e) => {
                       setSelectedPricing(e.target.value);
-                      setShowAll(false);
+                      setVisibleCount(10);
                     }}
                     className={`appearance-none border rounded-sm pl-3 pr-8 py-1.5 text-xs focus:outline-none cursor-pointer transition-colors ${
                       isDark 
@@ -671,7 +671,7 @@ export default function RadarDashboard() {
                       setSelectedCategory('All');
                       setSelectedTrend('All');
                       setSelectedPricing('All');
-                      setShowAll(false);
+                      setVisibleCount(10);
                     }}
                     className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-sm border transition-colors ${
                       isDark 
@@ -701,7 +701,7 @@ export default function RadarDashboard() {
                 key={category}
                 onClick={() => {
                   setSelectedCategory(category);
-                  setShowAll(false);
+                  setVisibleCount(10);
                 }}
                 className={`px-3 py-1.5 text-xs font-semibold transition-colors shrink-0 ${
                   selectedCategory === category 
@@ -787,7 +787,7 @@ export default function RadarDashboard() {
                             href={tool.mapsLink} 
                             target="_blank" 
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1 text-xs text-[#1b61c9] hover:underline"
+                            className={`inline-flex items-center gap-1 text-xs hover:underline ${isDark ? 'text-sky-400' : 'text-[#1b61c9]'}`}
                           >
                             <MapPin size={10} className="shrink-0" />
                             {tool.hqLocation}
@@ -839,14 +839,24 @@ export default function RadarDashboard() {
             {filteredTools.length > 10 && (
               <div className={`p-4 border-t flex justify-center transition-colors ${isDark ? 'border-[#2a2725] bg-[#181615]/50' : 'border-slate-200 bg-slate-50/50'}`}>
                 <button
-                  onClick={() => setShowAll(!showAll)}
+                  onClick={() => {
+                    if (visibleCount === 10) {
+                      setVisibleCount(filteredTools.length > 25 ? 25 : filteredTools.length);
+                    } else if (visibleCount === 25) {
+                      setVisibleCount(filteredTools.length);
+                    } else {
+                      setVisibleCount(10);
+                    }
+                  }}
                   className={`px-4 py-2 text-xs font-semibold rounded-sm border transition-colors shadow-sm cursor-pointer ${
                     isDark 
                       ? 'bg-[#181615] border-[#2a2725] text-slate-200 hover:bg-[#221f1d] hover:text-white' 
                       : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50 hover:text-[#aa2d00]'
                   }`}
                 >
-                  {showAll ? 'Show top 10 tools' : `Show all ${filteredTools.length} tools`}
+                  {visibleCount === 10 
+                    ? (filteredTools.length > 25 ? 'Show Top 25 Tools' : `Show All ${filteredTools.length} Tools`) 
+                    : (visibleCount === 25 && filteredTools.length > 25 ? `Show All ${filteredTools.length} Tools` : 'Show Less')}
                 </button>
               </div>
             )}
