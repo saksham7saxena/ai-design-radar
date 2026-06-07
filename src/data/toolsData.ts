@@ -29,6 +29,8 @@ export interface Tool {
   figmaCommunityUsers: string; // Figma integration footprint
   primaryDataSources: string[]; // actual sources tracked
   launchDate: string;
+  hqLocation?: string;
+  mapsLink?: string;
 }
 
 export const CATEGORIES = [
@@ -67,6 +69,8 @@ const calculateScore = (
 export const rawToolsData = [
   {
     id: 'framer-ai',
+    hqLocation: 'Amsterdam, Netherlands',
+    mapsLink: 'https://www.google.com/maps/search/?api=1&query=Amsterdam,+Netherlands',
     launchDate: 'Jun 2023',
     name: 'Framer AI',
     website: 'https://framer.com',
@@ -110,6 +114,8 @@ export const rawToolsData = [
   },
   {
     id: 'v0',
+    hqLocation: 'San Francisco, CA',
+    mapsLink: 'https://www.google.com/maps/search/?api=1&query=San+Francisco,+CA',
     launchDate: 'Oct 2023',
     name: 'v0',
     website: 'https://v0.dev',
@@ -153,6 +159,8 @@ export const rawToolsData = [
   },
   {
     id: 'cursor',
+    hqLocation: 'San Francisco, CA',
+    mapsLink: 'https://www.google.com/maps/search/?api=1&query=San+Francisco,+CA',
     launchDate: 'Jan 2023',
     name: 'Cursor',
     website: 'https://cursor.com',
@@ -196,6 +204,8 @@ export const rawToolsData = [
   },
   {
     id: 'lovable',
+    hqLocation: 'Stockholm, Sweden',
+    mapsLink: 'https://www.google.com/maps/search/?api=1&query=Stockholm,+Sweden',
     launchDate: 'Nov 2024',
     name: 'Lovable',
     website: 'https://lovable.dev',
@@ -239,6 +249,8 @@ export const rawToolsData = [
   },
   {
     id: 'bolt',
+    hqLocation: 'San Francisco, CA',
+    mapsLink: 'https://www.google.com/maps/search/?api=1&query=San+Francisco,+CA',
     launchDate: 'Oct 2024',
     name: 'Bolt',
     website: 'https://bolt.new',
@@ -282,6 +294,8 @@ export const rawToolsData = [
   },
   {
     id: 'recraft',
+    hqLocation: 'London, United Kingdom',
+    mapsLink: 'https://www.google.com/maps/search/?api=1&query=London,+UK',
     launchDate: 'May 2023',
     name: 'Recraft',
     website: 'https://recraft.ai',
@@ -325,6 +339,8 @@ export const rawToolsData = [
   },
   {
     id: 'midjourney',
+    hqLocation: 'San Francisco, CA',
+    mapsLink: 'https://www.google.com/maps/search/?api=1&query=San+Francisco,+CA',
     launchDate: 'Jul 2022',
     name: 'Midjourney',
     website: 'https://midjourney.com',
@@ -368,6 +384,8 @@ export const rawToolsData = [
   },
   {
     id: 'runway',
+    hqLocation: 'New York City, NY',
+    mapsLink: 'https://www.google.com/maps/search/?api=1&query=New+York,+NY',
     launchDate: 'Mar 2023',
     name: 'Runway',
     website: 'https://runwayml.com',
@@ -411,6 +429,8 @@ export const rawToolsData = [
   },
   {
     id: 'krea-ai',
+    hqLocation: 'San Francisco, CA',
+    mapsLink: 'https://www.google.com/maps/search/?api=1&query=San+Francisco,+CA',
     launchDate: 'Dec 2023',
     name: 'Krea AI',
     website: 'https://krea.ai',
@@ -454,6 +474,8 @@ export const rawToolsData = [
   },
   {
     id: 'spline-ai',
+    hqLocation: 'San Francisco, CA',
+    mapsLink: 'https://www.google.com/maps/search/?api=1&query=San+Francisco,+CA',
     launchDate: 'Mar 2023',
     name: 'Spline AI',
     website: 'https://spline.design',
@@ -497,6 +519,8 @@ export const rawToolsData = [
   },
   {
     id: 'relume',
+    hqLocation: 'Sydney, Australia',
+    mapsLink: 'https://www.google.com/maps/search/?api=1&query=Sydney,+Australia',
     launchDate: 'Nov 2023',
     name: 'Relume',
     website: 'https://relume.io',
@@ -540,6 +564,8 @@ export const rawToolsData = [
   },
   {
     id: 'uizard',
+    hqLocation: 'Copenhagen, Denmark',
+    mapsLink: 'https://www.google.com/maps/search/?api=1&query=Copenhagen,+Denmark',
     launchDate: 'Feb 2021',
     name: 'Uizard',
     website: 'https://uizard.io',
@@ -583,6 +609,8 @@ export const rawToolsData = [
   },
   {
     id: 'galileo-ai',
+    hqLocation: 'San Francisco, CA',
+    mapsLink: 'https://www.google.com/maps/search/?api=1&query=San+Francisco,+CA',
     launchDate: 'Feb 2023',
     name: 'Galileo AI',
     website: 'https://usegalileo.ai',
@@ -626,6 +654,8 @@ export const rawToolsData = [
   },
   {
     id: 'maze',
+    hqLocation: 'Paris, France',
+    mapsLink: 'https://www.google.com/maps/search/?api=1&query=Paris,+France',
     launchDate: 'May 2018',
     name: 'Maze',
     website: 'https://maze.co',
@@ -669,6 +699,8 @@ export const rawToolsData = [
   },
   {
     id: 'dovetail',
+    hqLocation: 'Sydney, Australia',
+    mapsLink: 'https://www.google.com/maps/search/?api=1&query=Sydney,+Australia',
     launchDate: 'Aug 2017',
     name: 'Dovetail',
     website: 'https://dovetailapp.com',
@@ -712,6 +744,8 @@ export const rawToolsData = [
   },
   {
     id: 'looppanel',
+    hqLocation: 'Bengaluru, India',
+    mapsLink: 'https://www.google.com/maps/search/?api=1&query=Bengaluru,+India',
     launchDate: 'Apr 2022',
     name: 'Looppanel',
     website: 'https://looppanel.com',
@@ -755,6 +789,8 @@ export const rawToolsData = [
   },
   {
     id: 'lottiefiles-ai',
+    hqLocation: 'San Francisco, CA',
+    mapsLink: 'https://www.google.com/maps/search/?api=1&query=San+Francisco,+CA',
     launchDate: 'May 2023',
     name: 'LottieFiles AI',
     website: 'https://lottiefiles.com',
@@ -798,6 +834,8 @@ export const rawToolsData = [
   },
   {
     id: 'phind',
+    hqLocation: 'San Francisco, CA',
+    mapsLink: 'https://www.google.com/maps/search/?api=1&query=San+Francisco,+CA',
     launchDate: 'Feb 2023',
     name: 'Phind',
     website: 'https://phind.com',
@@ -841,6 +879,8 @@ export const rawToolsData = [
   },
   {
     id: 'visily',
+    hqLocation: 'San Jose, CA',
+    mapsLink: 'https://www.google.com/maps/search/?api=1&query=San+Jose,+CA',
     launchDate: 'Nov 2021',
     name: 'Visily',
     website: 'https://visily.ai',
@@ -883,6 +923,8 @@ export const rawToolsData = [
   },
   {
     id: 'useberry',
+    hqLocation: 'Athens, Greece',
+    mapsLink: 'https://www.google.com/maps/search/?api=1&query=Athens,+Greece',
     launchDate: 'May 2018',
     name: 'Useberry',
     website: 'https://useberry.com',
@@ -925,6 +967,8 @@ export const rawToolsData = [
   },
   {
     id: 'notably',
+    hqLocation: 'Columbus, OH',
+    mapsLink: 'https://www.google.com/maps/search/?api=1&query=Columbus,+OH',
     launchDate: 'Jun 2021',
     name: 'Notably',
     website: 'https://notably.ai',
@@ -967,6 +1011,8 @@ export const rawToolsData = [
   },
   {
     id: 'replit-agent',
+    hqLocation: 'San Francisco, CA',
+    mapsLink: 'https://www.google.com/maps/search/?api=1&query=San+Francisco,+CA',
     launchDate: 'Sep 2024',
     name: 'Replit Agent',
     website: 'https://replit.com',
@@ -1010,6 +1056,8 @@ export const rawToolsData = [
   },
   {
     id: 'khroma',
+    hqLocation: 'Toronto, Canada',
+    mapsLink: 'https://www.google.com/maps/search/?api=1&query=Toronto,+Canada',
     launchDate: 'May 2018',
     name: 'Khroma',
     website: 'http://khroma.co',
@@ -1053,6 +1101,8 @@ export const rawToolsData = [
   },
   {
     id: 'vectary',
+    hqLocation: 'Bratislava, Slovakia',
+    mapsLink: 'https://www.google.com/maps/search/?api=1&query=Bratislava,+Slovakia',
     launchDate: 'Oct 2016',
     name: 'Vectary',
     website: 'https://vectary.com',
@@ -1096,6 +1146,8 @@ export const rawToolsData = [
   },
   {
     id: 'mockflow',
+    hqLocation: 'Chennai, India',
+    mapsLink: 'https://www.google.com/maps/search/?api=1&query=Chennai,+India',
     launchDate: 'Aug 2009',
     name: 'Mockflow',
     website: 'https://mockflow.com',

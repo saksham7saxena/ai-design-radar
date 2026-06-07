@@ -19,7 +19,8 @@ import {
   AlertTriangle,
   Search,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  MapPin
 } from 'lucide-react';
 import { 
   LineChart, 
@@ -36,7 +37,7 @@ import {
 const getCategoryBadgeStyle = (category: string, isDark: boolean): string => {
   const styles: { [key: string]: { dark: string; light: string } } = {
     'UX Research': {
-      dark: 'bg-cyan-950/45 border-cyan-900/40 text-cyan-300',
+      dark: 'bg-cyan-950/45 border-cyan-800/40 text-cyan-300',
       light: 'bg-cyan-50 border-cyan-200 text-cyan-800'
     },
     'Design-to-Code': {
@@ -60,7 +61,7 @@ const getCategoryBadgeStyle = (category: string, isDark: boolean): string => {
       light: 'bg-fuchsia-50 border-fuchsia-200 text-fuchsia-800'
     },
     'Video Generation': {
-      dark: 'bg-pink-950/45 border-pink-900/40 text-pink-300',
+      dark: 'bg-pink-950/45 border-pink-800/40 text-pink-300',
       light: 'bg-pink-50 border-pink-200 text-pink-800'
     },
     'Product Strategy': {
@@ -68,7 +69,7 @@ const getCategoryBadgeStyle = (category: string, isDark: boolean): string => {
       light: 'bg-rose-50 border-rose-200 text-rose-800'
     },
     'User Testing': {
-      dark: 'bg-orange-950/45 border-orange-850/40 text-orange-350',
+      dark: 'bg-orange-950/45 border-orange-800/40 text-orange-350',
       light: 'bg-orange-50 border-orange-200 text-orange-850'
     },
     '3D Design': {
@@ -90,89 +91,88 @@ const getCategoryBadgeStyle = (category: string, isDark: boolean): string => {
   return isDark ? style.dark : style.light;
 };
 
-// Helper function to return designer-oriented stylized SVG logos or initials tags
+// Helper function to return accurate stylized SVG logos or initials tags
 const getToolIcon = (id: string, name: string, category: string) => {
   switch (id) {
     case 'framer-ai':
       return (
         <div className="w-6 h-6 rounded-md bg-[#0055ff]/10 border border-[#0055ff]/20 flex items-center justify-center shrink-0">
-          <svg className="w-3.5 h-3.5 text-[#0055ff]" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2v20c5.523 0 10-4.477 10-10S17.523 2 12 2z" />
+          <svg className="w-3.5 h-3.5 text-black dark:text-white" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M5 2h14v6l-7 7H5V2zm0 6h7l7 7H5v-7z" />
           </svg>
         </div>
       );
     case 'v0':
       return (
-        <div className="w-6 h-6 rounded-md bg-zinc-950 border border-zinc-800 flex items-center justify-center text-[10px] font-black text-white font-mono shrink-0">
-          V0
+        <div className="w-6 h-6 rounded-md bg-zinc-950 border border-zinc-800 flex items-center justify-center shrink-0">
+          <svg className="w-3.5 h-3.5 text-white" viewBox="0 0 24 24" fill="currentColor" fillRule="evenodd">
+            <path clipRule="evenodd" d="M14.252 8.25h5.624c.088 0 .176.006.26.018l-5.87 5.87a1.889 1.889 0 01-.019-.265V8.25h-2.25v5.623a4.124 4.124 0 004.125 4.125h5.624v-2.25h-5.624c-.09 0-.179-.006-.265-.018l5.874-5.875a1.9 1.9 0 01.02.27v5.623H24v-5.624A4.124 4.124 0 0019.876 6h-5.624v2.25zM0 7.5v.006l7.686 9.788c.924 1.176 2.813.523 2.813-.973V7.5H8.25v6.87L2.856 7.5H0z" />
+          </svg>
         </div>
       );
     case 'cursor':
       return (
-        <div className="w-6 h-6 rounded-md bg-sky-950 border border-sky-900 flex items-center justify-center shrink-0">
-          <svg className="w-3.5 h-3.5 text-sky-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-            <path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z" fill="currentColor"/>
+        <div className="w-6 h-6 rounded-md bg-zinc-900 border border-zinc-800 flex items-center justify-center shrink-0">
+          <svg className="w-3.5 h-3.5 text-slate-100" viewBox="0 0 24 24" fill="currentColor" fillRule="evenodd">
+            <path d="M22.106 5.68L12.5.135a.998.998 0 00-.998 0L1.893 5.68a.84.84 0 00-.419.726v11.186c0 .3.16.577.42.727l9.607 5.547a.999.999 0 00.998 0l9.608-5.547a.84.84 0 00.42-.727V6.407a.84.84 0 00-.42-.726zm-.603 1.176L12.228 22.92c-.063.108-.228.064-.228-.061V12.34a.59.59 0 00-.295-.51l-9.11-5.26c-.107-.062-.063-.228.062-.228h18.55c.264 0 .428.286.296.514z" />
           </svg>
         </div>
       );
     case 'lovable':
       return (
         <div className="w-6 h-6 rounded-md bg-rose-950 border border-rose-900 flex items-center justify-center shrink-0">
-          <svg className="w-3.5 h-3.5 text-rose-500" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5c0-3.08 2.42-5.5 5.5-5.5 1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          <svg className="w-3.5 h-3.5 text-rose-500" viewBox="0 0 24 24" fill="currentColor" fillRule="evenodd">
+            <path clipRule="evenodd" d="M7.082 0c3.91 0 7.081 3.179 7.081 7.1v2.7h2.357c3.91 0 7.082 3.178 7.082 7.1 0 3.923-3.17 7.1-7.082 7.1H0V7.1C0 3.18 3.17 0 7.082 0z" />
           </svg>
         </div>
       );
     case 'bolt':
       return (
         <div className="w-6 h-6 rounded-md bg-amber-950 border border-amber-900 flex items-center justify-center shrink-0">
-          <svg className="w-3.5 h-3.5 text-amber-400" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+          <svg className="w-3.5 h-3.5 text-amber-450" viewBox="0 0 56 78" fill="currentColor">
+            <path d="M23.4273 48.2853C23.7931 47.5845 23.0614 46.8837 22.3298 46.8837H1.11228C0.0148224 46.8837 -0.350997 45.8326 0.380642 45.1318L40.9866 0.282084C41.7182 -0.418693 43.1815 0.282084 42.8157 1.33325L32.9386 30.0651C32.5727 30.7659 32.9386 31.4666 33.6702 31.4666H54.8877C55.9852 31.4666 56.351 32.5178 55.6194 33.2186L15.0134 77.7179C14.2818 78.4187 12.8185 77.7179 13.1843 76.6667L23.4273 48.2853Z" />
           </svg>
         </div>
       );
     case 'recraft':
       return (
         <div className="w-6 h-6 rounded-md bg-emerald-950 border border-emerald-900 flex items-center justify-center shrink-0">
-          <svg className="w-3.5 h-3.5 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          <svg className="w-3.5 h-3.5 text-emerald-450" viewBox="0 0 24 24" fill="currentColor" fillRule="evenodd">
+            <path d="M19.667 8.275c0-4.57-4.15-8.275-9.27-8.275-1.774 0-3.213 3.705-3.213 8.275 0 1.143.09 2.233.253 3.224H4.29L1 23h9.4v-6.447c5.117 0 9.266-3.707 9.266-8.275l.001-.002zm-9.27-6.76c.93 0 1.682 3.028 1.682 6.76 0 3.733-.752 6.76-1.681 6.76-.93 0-1.681-3.027-1.681-6.76 0-3.732.752-6.76 1.68-6.76z"></path>
+            <path d="M19.848 16.552h-9.44L14.028 23h9.438l-3.618-6.448z"></path>
           </svg>
         </div>
       );
     case 'midjourney':
       return (
         <div className="w-6 h-6 rounded-md bg-purple-950 border border-purple-900 flex items-center justify-center shrink-0">
-          <svg className="w-3.5 h-3.5 text-purple-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M22 10.16c0-1.2-1.35-2.2-3.13-2.5C17.3 6.94 14.8 6.5 12 6.5s-5.3.44-6.87 1.16C3.35 7.96 2 8.96 2 10.16v3.68c0 1.2 1.35 2.2 3.13 2.5 1.57.72 4.07 1.16 6.87 1.16s5.3-.44 6.87-1.16c1.78-.3 3.13-1.3 3.13-2.5v-3.68z"/>
+          <svg className="w-3.5 h-3.5 text-purple-300" viewBox="0 0 24 24" fill="currentColor" fillRule="evenodd">
+            <path d="M22.369 17.676c-1.387 1.259-3.17 2.378-5.332 3.417.044.03.086.057.13.083l.018.01.019.012c.216.123.42.184.641.184.222 0 .426-.061.642-.184l.018-.011.019-.011c.14-.084.266-.178.492-.366l.178-.148c.279-.232.426-.342.625-.456.304-.174.612-.266.949-.266.337 0 .645.092.949.266l.023.014c.188.109.334.219.602.442l.178.148c.221.184.346.278.483.36l.028.017.018.01c.21.12.407.181.62.185h.022a.31.31 0 110 .618c-.337 0-.645-.092-.95-.266a3.137 3.137 0 01-.09-.054l-.022-.014-.022-.013-.02-.014a5.356 5.356 0 01-.49-.377l-.159-.132a3.836 3.836 0 00-.483-.36l-.027-.017-.019-.01a1.256 1.256 0 00-.641-.185c-.222 0-.426.061-.641.184l-.02.011-.018.011c-.14.084-.266.178-.492.366l-.158.132a5.125 5.125 0 01-.51.39l-.022.014-.022.014-.09.054a1.868 1.868 0 01-.95.266c-.337 0-.644-.092-.949-.266a3.137 3.137 0 01-.09-.054l-.022-.014-.022-.013-.026-.017a4.881 4.881 0 01-.425-.325.308.308 0 01-.12-.1l-.098-.081a3.836 3.836 0 00-.483-.36l-.027-.017-.019-.01a1.256 1.256 0 00-.641-.185c-.222 0-.426.061-.642.184l-.018.011-.019.011c-.14.084-.266.178-.492.366l-.158.132a5.125 5.125 0 01-.51.39l-.023.014-.022.014-.09.054A1.868 1.868 0 0112 22c-.337 0-.645-.092-.949-.266a3.137 3.137 0 01-.09-.054l-.022-.014-.022-.013-.021-.014a5.356 5.356 0 01-.49-.377l-.158-.132a3.836 3.836 0 00-.483-.36l-.028-.017-.018-.01a1.256 1.256 0 00-.642-.185c-.221 0-.425.061-.641.184l-.019.011-.018.011c-.141.084-.266.178-.492.366l-.158.132a5.125 5.125 0 01-.511.39l-.022.014-.022.014-.09.054a1.868 1.868 0 01-.986.264c-.746-.09-1.319-.38-1.89-.866l-.035-.03c-.047-.041-.118-.106-.192-.174l-.196-.181-.107-.1-.011-.01a1.531 1.531 0 00-.336-.253.313.313 0 00-.095-.03h-.005c-.119.022-.238.059-.361.11a.308.309 0 01-.077.061l-.008.005a.309.309 0 01-.126.034 5.66 5.66 0 00-.774.518l-.416.324-.055.043a6.542 6.542 0 01-.324.236c-.305.207-.552.315-.8.315a.31.31 0 01-.01-.618h.01c.09 0 .235-.062.438-.198l.04-.027c.077-.054.163-.117.27-.199l.385-.301.06-.047c.268-.206.506-.373.73-.505l-.633-1.21a.309.309 0 01.254-.451l20.287-1.305a.309.309 0 01.228.537zm-1.118.14L2.369 19.03l.423.809c.128-.045.256-.078.388-.1a.31.31 0 01.052-.005c.132 0 .26.032.386.093.153.073.294.179.483.35l.016.015.092.086.144.134.097.089c.065.06.125.114.16.144.485.418.948.658 1.554.736h.011a1.25 1.25 0 00.6-.172l.021-.011.019-.011.018-.011c.141-.084.266-.178.492-.366l.178-.148c.279-.232.426-.342.625-.456.305-.174.612-.266.95-.266.336 0 .644.092.948.266l.023.014c.188.109.335.219.603.442l.177.148c.222.184.346.278.484.36l.027.017.019.01c.215.124.42.185.641.185.222 0 .426-.061.641-.184l.019-.011.018-.011c.141-.084.267-.178.493-.366l.177-.148c.28-.232.427-.342.626-.456.304-.174.612-.266.949-.266.337 0 .644.092.949.266l.025.015c.187.109.334.22.603.443 1.867-.878 3.448-1.811 4.73-2.832l.02-.016zM3.653 2.026C6.073 3.06 8.69 4.941 10.8 7.258c2.46 2.7 4.109 5.828 4.637 9.149a.31.31 0 01-.421.335c-2.348-.945-4.54-1.258-6.59-1.02-1.739.2-3.337.792-4.816 1.703-.294.182-.62-.182-.405-.454 1.856-2.355 2.581-4.99 2.343-7.794-.195-2.292-1.031-4.61-2.284-6.709a.31.31 0 01.388-.442zM10.04 4.45c1.778.543 3.892 2.102 5.782 4.243 1.984 2.248 3.552 4.934 4.347 7.582a.31.31 0 01-.401.38l-.022-.01-.386-.154a10.594 10.594 0 00-.291-.112l-.016-.006c-.68-.247-1.199-.291-1.944-.101a.31.31 0 01-.375-.218C15.378 11.123 13.073 7.276 9.775 5c-.291-.201-.072-.653.266-.55zM4.273 2.996l.008.015c1.028 1.94 1.708 4.031 1.885 6.113.213 2.513-.31 4.906-1.673 7.092l-.02.031.003-.001c1.198-.581 2.47-.969 3.825-1.132l.055-.006c1.981-.23 4.083.029 6.309.837l.066.025-.007-.039c-.593-2.95-2.108-5.737-4.31-8.179l-.07-.078c-1.785-1.96-3.944-3.6-6.014-4.65l-.057-.028zm7.92 3.238l.048.048c2.237 2.295 3.885 5.431 4.974 9.191l.038.132.022-.004c.71-.133 1.284-.063 1.963.18l.027.01.066.024.046.018-.025-.073c-.811-2.307-2.208-4.62-3.936-6.594l-.058-.065c-1.02-1.155-2.103-2.132-3.15-2.856l-.015-.011z" />
           </svg>
         </div>
       );
     case 'runway':
       return (
         <div className="w-6 h-6 rounded-md bg-orange-950 border border-orange-900 flex items-center justify-center shrink-0">
-          <svg className="w-3.5 h-3.5 text-orange-400" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M8 5v14l11-7z"/>
+          <svg className="w-3.5 h-3.5 text-white" viewBox="0 0 24 24" fill="currentColor" fillRule="evenodd">
+            <path d="M17.86 22.992c-2.669.245-4.887-2.876-6.597-4.454C10.398 24.759 1 24.177 1 17.86V6.15c0-.921.244-1.861.733-2.65C2.635 1.977 4.383.98 6.15 1h11.71c6.316 0 6.918 9.398.677 10.243l2.97 2.951c3.252 3.064.808 8.929-3.646 8.797zm-1.428-3.721c1.842 1.898 4.774-1.034 2.876-2.876l-5.132-5.132H11.3v2.876l4.436 4.436.696.696zM4.12 17.842c-.037 2.632 4.117 2.632 4.06 0V6.132c.038-1.316-1.353-2.35-2.612-1.955-.057.019-.113.037-.15.056-.79.301-1.335 1.09-1.317 1.936v11.673h.02zm13.74-9.68c2.632.037 2.632-4.098 0-4.06h-6.973c.526 1.109.395 2.857.413 4.06h6.56z" />
           </svg>
         </div>
       );
     case 'krea-ai':
       return (
         <div className="w-6 h-6 rounded-md bg-pink-950 border border-pink-900 flex items-center justify-center shrink-0">
-          <svg className="w-3.5 h-3.5 text-pink-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"/>
-            <circle cx="7.5" cy="10.5" r="1.5" fill="currentColor"/>
-            <circle cx="11.5" cy="7.5" r="1.5" fill="currentColor"/>
-            <circle cx="16.5" cy="9.5" r="1.5" fill="currentColor"/>
+          <svg className="w-3.5 h-3.5 text-pink-400" viewBox="0 0 24 24" fill="currentColor" fillRule="evenodd">
+            <path d="M7.421.017c1.956-.137 3.68 1.224 3.932 3.103.24 1.784-.982 3.51-2.818 3.915-.46.102-.97.073-1.458.135a5.126 5.126 0 00-3.042 1.483l-.01.005-.01-.001-.007-.006-.003-.01a.03.03 0 01.005-.017.044.044 0 00.008-.025 485.376 485.376 0 01-.011-5.028C4.01 1.711 5.478.155 7.42.017z"></path>
+            <path d="M7.627 15.562c-2.488-.02-4.271-2.47-3.405-4.761a3.665 3.665 0 013.052-2.336c.425-.045.936-.034 1.345-.109 2.104-.39 3.73-2 4.058-4.049.073-.454.034-.996.142-1.478.497-2.232 3.055-3.484 5.203-2.476 1.119.527 1.87 1.522 2.056 2.71.037.243.05.545.037.905-.243 6.468-5.768 11.647-12.488 11.592m3.135 1.03a.044.044 0 01-.024-.022v-.007l.002-.006c0-.003 0-.004.003-.005l.006-.003c2.553-.585 4.764-1.76 6.635-3.526.033-.031.064-.029.092.007.299.396.613.82.863 1.225a11.736 11.736 0 011.755 5.414c.027.391.036.693.026.907-.093 1.888-1.672 3.41-3.665 3.421-1.763.011-3.313-1.192-3.647-2.875-.08-.399-.056-.95-.122-1.371-.208-1.295-.841-2.344-1.899-3.144l-.025-.015zm-3.73 7.352c-1.498-.26-2.703-1.424-2.972-2.871a5.537 5.537 0 01-.055-.905V15.38c0-.016.005-.018.017-.008.979.87 2.009 1.402 3.353 1.49l.36.011c1.751.057 3.234 1.204 3.576 2.87.506 2.464-1.724 4.645-4.28 4.2z"></path>
           </svg>
         </div>
       );
     case 'spline-ai':
       return (
         <div className="w-6 h-6 rounded-md bg-indigo-950 border border-indigo-900 flex items-center justify-center shrink-0">
-          <svg className="w-3.5 h-3.5 text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-            <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
-            <line x1="12" y1="22.08" x2="12" y2="12"/>
+          <svg className="w-3.5 h-3.5 text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round">
+            <path d="M8 3h8c1 0 2 1 2 2v3c0 1-1 2-2 2H8c-1 0-2 1-2 2v3c0 1 1 2 2 2h8" />
           </svg>
         </div>
       );
@@ -265,7 +265,8 @@ export default function RadarDashboard() {
       confidence: "High",
       category: "Design-to-Code",
       bgColor: "bg-[#fcab79]/15 border-[#fcab79]/30", // Peach
-      textColor: "text-[#aa2d00]"
+      textColor: "text-[#aa2d00]",
+      website: "https://codeflow.ai"
     },
     {
       name: "UserQuery Agent",
@@ -274,7 +275,8 @@ export default function RadarDashboard() {
       confidence: "Medium",
       category: "User Testing",
       bgColor: "bg-[#a8d8c4]/20 border-[#a8d8c4]/40", // Mint
-      textColor: "text-[#0a2e0e]"
+      textColor: "text-[#0a2e0e]",
+      website: "https://userquery.com"
     },
     {
       name: "Critique.ai",
@@ -283,7 +285,8 @@ export default function RadarDashboard() {
       confidence: "High",
       category: "UX Research",
       bgColor: "bg-[#f4d35e]/15 border-[#f4d35e]/30", // Yellow
-      textColor: "text-[#b28704]"
+      textColor: "text-[#b28704]",
+      website: "https://critique.ai"
     },
     {
       name: "WireframeAI Studio",
@@ -292,7 +295,8 @@ export default function RadarDashboard() {
       confidence: "Medium",
       category: "Wireframing",
       bgColor: "bg-[#f5e9d4]/70 border-[#e0e2e6]", // Cream
-      textColor: "text-[#333840]"
+      textColor: "text-[#333840]",
+      website: "https://wireframe.ai"
     }
   ];
 
@@ -527,8 +531,8 @@ export default function RadarDashboard() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             
-            {/* Fastest Rising Card - Creative Orange-Red Accent */}
-            <div className="bg-[#ff5c35] text-white rounded-lg p-6 flex flex-col justify-between min-h-[160px] shadow-sm">
+            {/* Fastest Rising Card - Nicer terracotta orange-red */}
+            <div className="bg-[#c94f28] text-white rounded-lg p-6 flex flex-col justify-between min-h-[160px] shadow-sm">
               <div>
                 <span className="text-[10px] font-bold uppercase tracking-wider text-orange-100">Fastest Rising</span>
                 <h3 className="text-2xl font-display font-medium mt-2">{fastestRising.name}</h3>
@@ -703,7 +707,7 @@ export default function RadarDashboard() {
                   selectedCategory === category 
                     ? (isDark ? 'bg-slate-100 text-slate-950 rounded-lg' : 'bg-[#181d26] text-white rounded-lg')
                     : isDark 
-                      ? 'bg-[#181615] text-slate-400 hover:bg-[#252220] border border-[#2a2725] rounded-lg'
+                      ? 'bg-[#181615] text-slate-450 hover:bg-[#252220] border border-[#2a2725] rounded-lg'
                       : 'bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200 rounded-lg'
                 }`}
               >
@@ -723,6 +727,12 @@ export default function RadarDashboard() {
                     </th>
                     <th className="py-4 px-4 cursor-pointer select-none" onClick={() => handleSort('name')}>
                       Tool {renderSortArrow('name')}
+                    </th>
+                    <th className="py-4 px-4 text-center cursor-pointer select-none" onClick={() => handleSort('launchDate')}>
+                      Launch Date {renderSortArrow('launchDate')}
+                    </th>
+                    <th className="py-4 px-4 text-center cursor-pointer select-none" onClick={() => handleSort('hqLocation')}>
+                      Location {renderSortArrow('hqLocation')}
                     </th>
                     <th className="py-4 px-4 text-center cursor-pointer select-none" onClick={() => handleSort('monthlyVisits')}>
                       Est. Monthly Traffic {renderSortArrow('monthlyVisits')}
@@ -767,6 +777,23 @@ export default function RadarDashboard() {
                             {tool.description}
                           </span>
                         </td>
+                        {/* Launch Date */}
+                        <td className={`py-4 px-4 text-center font-mono text-xs transition-colors ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+                          {tool.launchDate}
+                        </td>
+                        {/* HQ Location with Google Maps link */}
+                        <td className="py-4 px-4 text-center" onClick={(e) => e.stopPropagation()}>
+                          <a 
+                            href={tool.mapsLink} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-xs text-[#1b61c9] hover:underline"
+                          >
+                            <MapPin size={10} className="shrink-0" />
+                            {tool.hqLocation}
+                            <ExternalLink size={8} />
+                          </a>
+                        </td>
                         {/* Est. Monthly Traffic */}
                         <td className={`py-4 px-4 text-center font-mono text-xs font-medium transition-colors ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
                           {tool.monthlyVisits}
@@ -799,7 +826,7 @@ export default function RadarDashboard() {
                   })}
                   {displayedTools.length === 0 && (
                     <tr>
-                      <td colSpan={5} className={`py-8 text-center text-sm ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                      <td colSpan={7} className={`py-8 text-center text-sm ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
                         No tools found matching your filters.
                       </td>
                     </tr>
@@ -913,7 +940,7 @@ export default function RadarDashboard() {
           </div>
         </section>
 
-        {/* SECTION 5: WATCHLIST */}
+        {/* SECTION 5: WATCHLIST (Emerging Tools Closer) */}
         <section id="watchlist" className="scroll-mt-20 space-y-4">
           <div className="flex items-center gap-2">
             <Compass size={18} className="text-[#0a2e0e]" />
@@ -922,17 +949,23 @@ export default function RadarDashboard() {
           
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             {watchTools.map((tool, idx) => (
-              <div 
+              <a 
+                href={tool.website} 
+                target="_blank" 
+                rel="noopener noreferrer"
                 key={idx} 
-                className={`rounded-lg p-5 border shadow-sm relative flex flex-col justify-between min-h-[180px] transition-colors ${
+                className={`rounded-lg p-5 border shadow-sm relative flex flex-col justify-between min-h-[180px] transition-all hover:-translate-y-0.5 hover:shadow-md cursor-pointer ${
                   isDark 
-                    ? 'bg-[#181615] border-[#2a2725]' 
-                    : tool.bgColor
+                    ? 'bg-[#181615] border-[#2a2725] hover:border-[#ff5c35]/40 text-slate-100' 
+                    : `${tool.bgColor} hover:border-slate-350`
                 }`}
               >
                 <div className="space-y-2">
                   <div className="flex items-start justify-between">
-                    <h4 className={`font-bold transition-colors ${isDark ? 'text-slate-100' : 'text-[#181d26]'}`}>{tool.name}</h4>
+                    <h4 className={`font-bold transition-colors ${isDark ? 'text-slate-100' : 'text-[#181d26]'} flex items-center gap-1`}>
+                      {tool.name}
+                      <ExternalLink size={10} className="opacity-50 group-hover:opacity-100" />
+                    </h4>
                     <span className={`inline-flex px-2 py-0.5 rounded-sm text-[10px] font-semibold border ${
                       isDark ? 'bg-[#0f0e0d] border-[#2a2725] text-slate-200' : 'bg-white/80 text-slate-800 border-slate-200'
                     }`}>
@@ -945,11 +978,11 @@ export default function RadarDashboard() {
                 </div>
                 <div className={`pt-4 border-t space-y-1.5 text-[11px] ${isDark ? 'border-[#2a2725]/80' : 'border-slate-200/50'}`}>
                   <div className="flex justify-between">
-                    <span className={`font-mono ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>SIGNAL</span>
+                    <span className={`font-mono ${isDark ? 'text-slate-305' : 'text-slate-700'}`}>SIGNAL</span>
                     <span className={isDark ? 'text-slate-100' : 'text-slate-900 font-semibold'}>{tool.source}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className={`font-mono ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>CONFIDENCE</span>
+                    <span className={`font-mono ${isDark ? 'text-slate-305' : 'text-slate-700'}`}>CONFIDENCE</span>
                     <span className={`font-bold ${
                       isDark 
                         ? (tool.confidence === 'High' ? 'text-emerald-400' : 'text-amber-400')
@@ -959,7 +992,7 @@ export default function RadarDashboard() {
                     </span>
                   </div>
                 </div>
-              </div>
+              </a>
             ))}
           </div>
         </section>
@@ -1076,7 +1109,7 @@ export default function RadarDashboard() {
                 </div>
 
                 {/* Real-World Tracked Signals */}
-                <div className={`grid grid-cols-1 md:grid-cols-3 gap-4 p-4 border rounded-lg transition-colors ${
+                <div className={`grid grid-cols-1 md:grid-cols-4 gap-4 p-4 border rounded-lg transition-colors ${
                   isDark ? 'bg-[#0f0e0d] border-[#2a2725]' : 'bg-slate-50 border-slate-200'
                 }`}>
                   <div>
@@ -1086,6 +1119,17 @@ export default function RadarDashboard() {
                   <div>
                     <span className={`block text-[9px] uppercase font-mono ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>Real User Rating</span>
                     <span className={`text-sm font-bold ${isDark ? 'text-amber-400' : 'text-amber-700'}`}>★ {selectedTool.userRating} / 5</span>
+                  </div>
+                  <div>
+                    <span className={`block text-[9px] uppercase font-mono ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>Founded Location</span>
+                    <a 
+                      href={selectedTool.mapsLink} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="block text-xs font-bold text-[#1b61c9] hover:underline"
+                    >
+                      {selectedTool.hqLocation}
+                    </a>
                   </div>
                   <div>
                     <span className={`block text-[9px] uppercase font-mono ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>Figma Directory</span>
