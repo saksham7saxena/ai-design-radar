@@ -232,7 +232,7 @@ const CITY_CAM_MAPPING: {
   },
   'San Francisco, CA': {
     timezone: 'America/Los_Angeles',
-    ytId: 'BZJoQpYB6-0',
+    ytId: 'mKo2QHfWlgE',
     unsplashIds: ['1501594907352-04cda38ebc29', '1506012787146-f92b2d7d6d96', '1470229722913-7c0e2dbbafd3'],
     country: 'USA'
   },
@@ -1196,20 +1196,20 @@ export default function RadarDashboard() {
               transform: 'translate(-50%, -100%)'
             }}
           >
-            <div className={`w-72 rounded-lg overflow-hidden border shadow-xl transition-colors ${
+            <div className={`w-[480px] rounded-lg overflow-hidden border shadow-xl transition-colors ${
               isDark ? 'bg-[#181615]/95 border-[#2a2725] text-slate-100' : 'bg-white/95 border-slate-200 text-[#181d26]'
             }`}>
               {/* Header */}
-              <div className={`px-4 py-2.5 border-b flex items-center justify-between text-xs transition-colors ${
+              <div className={`px-4 py-3 border-b flex items-center justify-between text-sm transition-colors ${
                 isDark ? 'border-[#2a2725] bg-[#0f0e0d]/50' : 'border-slate-100 bg-slate-50'
               }`}>
                 <div className="flex flex-col">
-                  <span className="font-bold font-display">{hoveredLocation.city}</span>
-                  <span className={`text-[10px] font-mono mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                  <span className="font-bold font-display text-sm">{hoveredLocation.city}</span>
+                  <span className={`text-xs font-mono mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                     Local Time: {getLocalTime(hoveredLocation.timezone)}
                   </span>
                 </div>
-                <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold font-mono uppercase tracking-wider ${
+                <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold font-mono uppercase tracking-wider ${
                   hoveredLocation.ytId 
                     ? 'bg-red-500/10 text-red-400 border border-red-500/20' 
                     : 'bg-blue-500/10 text-blue-400 border border-blue-500/20'
