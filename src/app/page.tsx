@@ -91,114 +91,43 @@ const getCategoryBadgeStyle = (category: string, isDark: boolean): string => {
   return isDark ? style.dark : style.light;
 };
 
-// Helper function to return accurate stylized SVG logos or initials tags
+// Helper function to return accurate brand logo SVG images dynamically from public/logos/
 const getToolIcon = (id: string, name: string, category: string) => {
-  switch (id) {
-    case 'framer-ai':
-      return (
-        <div className="w-6 h-6 rounded-md bg-[#0055ff]/10 border border-[#0055ff]/20 flex items-center justify-center shrink-0">
-          <svg className="w-3 h-3.5 text-black dark:text-white" viewBox="0 0 256 384" fill="currentColor">
-            <path d="M0 0h256v128H128L0 0Zm0 128h128l128 128H128v128L0 256V128Z" />
-          </svg>
-        </div>
-      );
-    case 'v0':
-      return (
-        <div className="w-6 h-6 rounded-md bg-zinc-950 border border-zinc-800 flex items-center justify-center shrink-0">
-          <svg className="w-3 h-3 text-white" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2L2 22h20z" />
-          </svg>
-        </div>
-      );
-    case 'cursor':
-      return (
-        <div className="w-6 h-6 rounded-md bg-zinc-900 border border-zinc-800 flex items-center justify-center shrink-0">
-          <svg className="w-3.5 h-3.5 text-slate-100" viewBox="0 0 24 24" fill="currentColor" fillRule="evenodd">
-            <path d="M22.106 5.68L12.5.135a.998.998 0 00-.998 0L1.893 5.68a.84.84 0 00-.419.726v11.186c0 .3.16.577.42.727l9.607 5.547a.999.999 0 00.998 0l9.608-5.547a.84.84 0 00.42-.727V6.407a.84.84 0 00-.42-.726zm-.603 1.176L12.228 22.92c-.063.108-.228.064-.228-.061V12.34a.59.59 0 00-.295-.51l-9.11-5.26c-.107-.062-.063-.228.062-.228h18.55c.264 0 .428.286.296.514z" />
-          </svg>
-        </div>
-      );
-    case 'lovable':
-      return (
-        <div className="w-6 h-6 rounded-md bg-rose-950 border border-rose-900 flex items-center justify-center shrink-0">
-          <svg className="w-3.5 h-3.5 text-rose-500" viewBox="0 0 24 24" fill="currentColor" fillRule="evenodd">
-            <path clipRule="evenodd" d="M7.082 0c3.91 0 7.081 3.179 7.081 7.1v2.7h2.357c3.91 0 7.082 3.178 7.082 7.1 0 3.923-3.17 7.1-7.082 7.1H0V7.1C0 3.18 3.17 0 7.082 0z" />
-          </svg>
-        </div>
-      );
-    case 'bolt':
-      return (
-        <div className="w-6 h-6 rounded-md bg-amber-950 border border-amber-900 flex items-center justify-center shrink-0">
-          <svg className="w-3.5 h-3.5 text-amber-450" viewBox="0 0 56 78" fill="currentColor">
-            <path d="M23.4273 48.2853C23.7931 47.5845 23.0614 46.8837 22.3298 46.8837H1.11228C0.0148224 46.8837 -0.350997 45.8326 0.380642 45.1318L40.9866 0.282084C41.7182 -0.418693 43.1815 0.282084 42.8157 1.33325L32.9386 30.0651C32.5727 30.7659 32.9386 31.4666 33.6702 31.4666H54.8877C55.9852 31.4666 56.351 32.5178 55.6194 33.2186L15.0134 77.7179C14.2818 78.4187 12.8185 77.7179 13.1843 76.6667L23.4273 48.2853Z" />
-          </svg>
-        </div>
-      );
-    case 'recraft':
-      return (
-        <div className="w-6 h-6 rounded-md bg-emerald-950 border border-emerald-900 flex items-center justify-center shrink-0">
-          <svg className="w-3.5 h-3.5 text-emerald-450" viewBox="0 0 24 24" fill="currentColor" fillRule="evenodd">
-            <path d="M19.667 8.275c0-4.57-4.15-8.275-9.27-8.275-1.774 0-3.213 3.705-3.213 8.275 0 1.143.09 2.233.253 3.224H4.29L1 23h9.4v-6.447c5.117 0 9.266-3.707 9.266-8.275l.001-.002zm-9.27-6.76c.93 0 1.682 3.028 1.682 6.76 0 3.733-.752 6.76-1.681 6.76-.93 0-1.681-3.027-1.681-6.76 0-3.732.752-6.76 1.68-6.76z"></path>
-            <path d="M19.848 16.552h-9.44L14.028 23h9.438l-3.618-6.448z"></path>
-          </svg>
-        </div>
-      );
-    case 'midjourney':
-      return (
-        <div className="w-6 h-6 rounded-md bg-purple-950 border border-purple-900 flex items-center justify-center shrink-0">
-          <svg className="w-3.5 h-3.5 text-purple-300" viewBox="0 0 24 24" fill="currentColor" fillRule="evenodd">
-            <path d="M22.369 17.676c-1.387 1.259-3.17 2.378-5.332 3.417.044.03.086.057.13.083l.018.01.019.012c.216.123.42.184.641.184.222 0 .426-.061.642-.184l.018-.011.019-.011c.14-.084.266-.178.492-.366l.178-.148c.279-.232.426-.342.625-.456.304-.174.612-.266.949-.266.337 0 .645.092.949.266l.023.014c.188.109.334.219.602.442l.178.148c.221.184.346.278.483.36l.028.017.018.01c.21.12.407.181.62.185h.022a.31.31 0 110 .618c-.337 0-.645-.092-.95-.266a3.137 3.137 0 01-.09-.054l-.022-.014-.022-.013-.02-.014a5.356 5.356 0 01-.49-.377l-.159-.132a3.836 3.836 0 00-.483-.36l-.027-.017-.019-.01a1.256 1.256 0 00-.641-.185c-.222 0-.426.061-.641.184l-.02.011-.018.011c-.14.084-.266.178-.492.366l-.158.132a5.125 5.125 0 01-.51.39l-.022.014-.022.014-.09.054a1.868 1.868 0 01-.95.266c-.337 0-.644-.092-.949-.266a3.137 3.137 0 01-.09-.054l-.022-.014-.022-.013-.026-.017a4.881 4.881 0 01-.425-.325.308.308 0 01-.12-.1l-.098-.081a3.836 3.836 0 00-.483-.36l-.027-.017-.019-.01a1.256 1.256 0 00-.641-.185c-.222 0-.426.061-.642.184l-.018.011-.019.011c-.14.084-.266.178-.492.366l-.158.132a5.125 5.125 0 01-.51.39l-.023.014-.022.014-.09.054A1.868 1.868 0 0112 22c-.337 0-.645-.092-.949-.266a3.137 3.137 0 01-.09-.054l-.022-.014-.022-.013-.021-.014a5.356 5.356 0 01-.49-.377l-.158-.132a3.836 3.836 0 00-.483-.36l-.028-.017-.018-.01a1.256 1.256 0 00-.642-.185c-.221 0-.425.061-.641.184l-.019.011-.018.011c-.141.084-.266.178-.492.366l-.158.132a5.125 5.125 0 01-.511.39l-.022.014-.022.014-.09.054a1.868 1.868 0 01-.986.264c-.746-.09-1.319-.38-1.89-.866l-.035-.03c-.047-.041-.118-.106-.192-.174l-.196-.181-.107-.1-.011-.01a1.531 1.531 0 00-.336-.253.313.313 0 00-.095-.03h-.005c-.119.022-.238.059-.361.11a.308.309 0 01-.077.061l-.008.005a.309.309 0 01-.126.034 5.66 5.66 0 00-.774.518l-.416.324-.055.043a6.542 6.542 0 01-.324.236c-.305.207-.552.315-.8.315a.31.31 0 01-.01-.618h.01c.09 0 .235-.062.438-.198l.04-.027c.077-.054.163-.117.27-.199l.385-.301.06-.047c.268-.206.506-.373.73-.505l-.633-1.21a.309.309 0 01.254-.451l20.287-1.305a.309.309 0 01.228.537zm-1.118.14L2.369 19.03l.423.809c.128-.045.256-.078.388-.1a.31.31 0 01.052-.005c.132 0 .26.032.386.093.153.073.294.179.483.35l.016.015.092.086.144.134.097.089c.065.06.125.114.16.144.485.418.948.658 1.554.736h.011a1.25 1.25 0 00.6-.172l.021-.011.019-.011.018-.011c.141-.084.266-.178.492-.366l.178-.148c.279-.232.426-.342.625-.456.305-.174.612-.266.95-.266.336 0 .644.092.948.266l.023.014c.188.109.335.219.603.442l.177.148c.222.184.346.278.484.36l.027.017.019.01c.215.124.42.185.641.185.222 0 .426-.061.641-.184l.019-.011.018-.011c.141-.084.267-.178.493-.366l.177-.148c.28-.232.427-.342.626-.456.304-.174.612-.266.949-.266.337 0 .644.092.949.266l.025.015c.187.109.334.22.603.443 1.867-.878 3.448-1.811 4.73-2.832l.02-.016zM3.653 2.026C6.073 3.06 8.69 4.941 10.8 7.258c2.46 2.7 4.109 5.828 4.637 9.149a.31.31 0 01-.421.335c-2.348-.945-4.54-1.258-6.59-1.02-1.739.2-3.337.792-4.816 1.703-.294.182-.62-.182-.405-.454 1.856-2.355 2.581-4.99 2.343-7.794-.195-2.292-1.031-4.61-2.284-6.709a.31.31 0 01.388-.442zM10.04 4.45c1.778.543 3.892 2.102 5.782 4.243 1.984 2.248 3.552 4.934 4.347 7.582a.31.31 0 01-.401.38l-.022-.01-.386-.154a10.594 10.594 0 00-.291-.112l-.016-.006c-.68-.247-1.199-.291-1.944-.101a.31.31 0 01-.375-.218C15.378 11.123 13.073 7.276 9.775 5c-.291-.201-.072-.653.266-.55zM4.273 2.996l.008.015c1.028 1.94 1.708 4.031 1.885 6.113.213 2.513-.31 4.906-1.673 7.092l-.02.031.003-.001c1.198-.581 2.47-.969 3.825-1.132l.055-.006c1.981-.23 4.083.029 6.309.837l.066.025-.007-.039c-.593-2.95-2.108-5.737-4.31-8.179l-.07-.078c-1.785-1.96-3.944-3.6-6.014-4.65l-.057-.028zm7.92 3.238l.048.048c2.237 2.295 3.885 5.431 4.974 9.191l.038.132.022-.004c.71-.133 1.284-.063 1.963.18l.027.01.066.024.046.018-.025-.073c-.811-2.307-2.208-4.62-3.936-6.594l-.058-.065c-1.02-1.155-2.103-2.132-3.15-2.856l-.015-.011z" />
-          </svg>
-        </div>
-      );
-    case 'runway':
-      return (
-        <div className="w-6 h-6 rounded-md bg-orange-950 border border-orange-900 flex items-center justify-center shrink-0">
-          <svg className="w-3.5 h-3.5 text-white" viewBox="0 0 24 24" fill="currentColor" fillRule="evenodd">
-            <path d="M17.86 22.992c-2.669.245-4.887-2.876-6.597-4.454C10.398 24.759 1 24.177 1 17.86V6.15c0-.921.244-1.861.733-2.65C2.635 1.977 4.383.98 6.15 1h11.71c6.316 0 6.918 9.398.677 10.243l2.97 2.951c3.252 3.064.808 8.929-3.646 8.797zm-1.428-3.721c1.842 1.898 4.774-1.034 2.876-2.876l-5.132-5.132H11.3v2.876l4.436 4.436.696.696zM4.12 17.842c-.037 2.632 4.117 2.632 4.06 0V6.132c.038-1.316-1.353-2.35-2.612-1.955-.057.019-.113.037-.15.056-.79.301-1.335 1.09-1.317 1.936v11.673h.02zm13.74-9.68c2.632.037 2.632-4.098 0-4.06h-6.973c.526 1.109.395 2.857.413 4.06h6.56z" />
-          </svg>
-        </div>
-      );
-    case 'krea-ai':
-      return (
-        <div className="w-6 h-6 rounded-md bg-pink-950 border border-pink-900 flex items-center justify-center shrink-0">
-          <svg className="w-3.5 h-3.5 text-pink-400" viewBox="0 0 24 24" fill="currentColor" fillRule="evenodd">
-            <path d="M7.421.017c1.956-.137 3.68 1.224 3.932 3.103.24 1.784-.982 3.51-2.818 3.915-.46.102-.97.073-1.458.135a5.126 5.126 0 00-3.042 1.483l-.01.005-.01-.001-.007-.006-.003-.01a.03.03 0 01.005-.017.044.044 0 00.008-.025 485.376 485.376 0 01-.011-5.028C4.01 1.711 5.478.155 7.42.017z"></path>
-            <path d="M7.627 15.562c-2.488-.02-4.271-2.47-3.405-4.761a3.665 3.665 0 013.052-2.336c.425-.045.936-.034 1.345-.109 2.104-.39 3.73-2 4.058-4.049.073-.454.034-.996.142-1.478.497-2.232 3.055-3.484 5.203-2.476 1.119.527 1.87 1.522 2.056 2.71.037.243.05.545.037.905-.243 6.468-5.768 11.647-12.488 11.592m3.135 1.03a.044.044 0 01-.024-.022v-.007l.002-.006c0-.003 0-.004.003-.005l.006-.003c2.553-.585 4.764-1.76 6.635-3.526.033-.031.064-.029.092.007.299.396.613.82.863 1.225a11.736 11.736 0 011.755 5.414c.027.391.036.693.026.907-.093 1.888-1.672 3.41-3.665 3.421-1.763.011-3.313-1.192-3.647-2.875-.08-.399-.056-.95-.122-1.371-.208-1.295-.841-2.344-1.899-3.144l-.025-.015zm-3.73 7.352c-1.498-.26-2.703-1.424-2.972-2.871a5.537 5.537 0 01-.055-.905V15.38c0-.016.005-.018.017-.008.979.87 2.009 1.402 3.353 1.49l.36.011c1.751.057 3.234 1.204 3.576 2.87.506 2.464-1.724 4.645-4.28 4.2z"></path>
-          </svg>
-        </div>
-      );
-    case 'spline-ai':
-      return (
-        <div className="w-6 h-6 rounded-md bg-indigo-950 border border-indigo-900 flex items-center justify-center shrink-0">
-          <svg className="w-3.5 h-3.5 text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round">
-            <path d="M8 3h8c1 0 2 1 2 2v3c0 1-1 2-2 2H8c-1 0-2 1-2 2v3c0 1 1 2 2 2h8" />
-          </svg>
-        </div>
-      );
-    default:
-      const letter = name.charAt(0);
-      const colors: { [key: string]: string } = {
-        'UX Research': 'bg-cyan-900 border border-cyan-800 text-cyan-200',
-        'Design-to-Code': 'bg-blue-900 border border-blue-800 text-blue-200',
-        'Wireframing': 'bg-teal-900 border border-teal-800 text-teal-200',
-        'Prototyping': 'bg-indigo-900 border border-indigo-800 text-indigo-200',
-        'Visual Design': 'bg-purple-900 border border-purple-800 text-purple-200',
-        'Image Generation': 'bg-fuchsia-900 border border-fuchsia-800 text-fuchsia-200',
-        'Video Generation': 'bg-pink-900 border border-pink-800 text-pink-200',
-        'Product Strategy': 'bg-rose-900 border border-rose-800 text-rose-200',
-        'User Testing': 'bg-orange-900 border border-[#3e3a37] text-orange-200',
-        '3D Design': 'bg-amber-900 border border-amber-800 text-amber-200',
-        'Motion Design': 'bg-violet-900 border border-violet-800 text-violet-200',
-      };
-      
-      const colorClass = colors[category] || 'bg-[#2a2725] border border-[#3b3734] text-slate-300';
-      return (
-        <div className={`w-6 h-6 rounded-md flex items-center justify-center text-[11px] font-bold shadow-sm shrink-0 ${colorClass}`}>
-          {letter}
-        </div>
-      );
-  }
+  const letter = name.charAt(0);
+  const colors: { [key: string]: string } = {
+    'UX Research': 'bg-cyan-900 border border-cyan-800 text-cyan-200',
+    'Design-to-Code': 'bg-blue-900 border border-blue-800 text-blue-200',
+    'Wireframing': 'bg-teal-900 border border-teal-800 text-teal-200',
+    'Prototyping': 'bg-indigo-900 border border-indigo-800 text-indigo-200',
+    'Visual Design': 'bg-purple-900 border border-purple-800 text-purple-200',
+    'Image Generation': 'bg-fuchsia-900 border border-fuchsia-800 text-fuchsia-200',
+    'Video Generation': 'bg-pink-900 border border-pink-800 text-pink-200',
+    'Product Strategy': 'bg-rose-900 border border-rose-800 text-rose-200',
+    'User Testing': 'bg-orange-900 border border-[#3e3a37] text-orange-200',
+    '3D Design': 'bg-amber-900 border border-amber-800 text-amber-200',
+    'Motion Design': 'bg-violet-900 border border-violet-800 text-violet-200',
+  };
+  
+  const colorClass = colors[category] || 'bg-[#2a2725] border border-[#3b3734] text-slate-300';
+  
+  return (
+    <div className="w-6 h-6 rounded-md overflow-hidden flex items-center justify-center shrink-0 relative shadow-sm border border-slate-200/40 dark:border-slate-800/40">
+      {/* Fallback initials badge (underneath) */}
+      <div className={`absolute inset-0 flex items-center justify-center text-[11px] font-bold ${colorClass}`}>
+        {letter}
+      </div>
+      {/* Brand logo SVG image (on top) */}
+      <img 
+        src={`/logos/${id}.svg`} 
+        alt={`${name} logo`} 
+        className="absolute inset-0 w-full h-full object-cover bg-white dark:bg-slate-900 z-10" 
+        onError={(e) => {
+          // Hide the image to reveal the fallback initials badge underneath
+          e.currentTarget.style.display = 'none';
+        }}
+      />
+    </div>
+  );
 };
 
 export default function RadarDashboard() {

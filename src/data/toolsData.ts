@@ -879,8 +879,8 @@ export const rawToolsData = [
   },
   {
     id: 'visily',
-    hqLocation: 'San Jose, CA',
-    mapsLink: 'https://www.google.com/maps/search/?api=1&query=San+Jose,+CA',
+    hqLocation: 'Atlanta, GA',
+    mapsLink: 'https://www.google.com/maps/search/?api=1&query=Atlanta,+GA',
     launchDate: 'Nov 2021',
     name: 'Visily',
     website: 'https://visily.ai',
@@ -1101,8 +1101,8 @@ export const rawToolsData = [
   },
   {
     id: 'vectary',
-    hqLocation: 'Bratislava, Slovakia',
-    mapsLink: 'https://www.google.com/maps/search/?api=1&query=Bratislava,+Slovakia',
+    hqLocation: 'Redwood City, CA',
+    mapsLink: 'https://www.google.com/maps/search/?api=1&query=Redwood+City,+CA',
     launchDate: 'Oct 2016',
     name: 'Vectary',
     website: 'https://vectary.com',
