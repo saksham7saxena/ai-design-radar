@@ -42,6 +42,8 @@ export default function RadarDashboard() {
   // Interactive sorting, search, and filtering states
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [selectedTrend, setSelectedTrend] = useState<string>('All');
+  const [selectedPricing, setSelectedPricing] = useState<string>('All');
   const [sortField, setSortField] = useState<string>('momentumScore');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
 
@@ -194,6 +196,19 @@ export default function RadarDashboard() {
     return value;
   };
 
+  // Helper to parse launch date strings (e.g. "Jun 2023", "Oct 2024") into timestamps for sorting
+  const parseLaunchDate = (dateStr: string): number => {
+    if (!dateStr) return 0;
+    const parts = dateStr.split(' ');
+    const monthNames: { [key: string]: number } = {
+      Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
+      Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11
+    };
+    const month = monthNames[parts[0]] ?? 0;
+    const year = parseInt(parts[1]) || 0;
+    return new Date(year, month).getTime();
+  };
+
   // Handle clickable column header sorting
   const handleSort = (field: string) => {
     if (sortField === field) {
@@ -224,7 +239,14 @@ export default function RadarDashboard() {
         
       const matchesCategory = selectedCategory === 'All' || tool.category === selectedCategory;
       
-      return matchesSearch && matchesCategory;
+      const matchesTrend = selectedTrend === 'All' || tool.trendStatus === selectedTrend.toLowerCase();
+      
+      const matchesPricing = selectedPricing === 'All' ||
+        (selectedPricing === 'Free' && tool.pricing.toLowerCase().startsWith('free')) ||
+        (selectedPricing === 'Freemium' && tool.pricing.toLowerCase().includes('freemium')) ||
+        (selectedPricing === 'Paid' && !tool.pricing.toLowerCase().includes('free') && !tool.pricing.toLowerCase().includes('freemium'));
+      
+      return matchesSearch && matchesCategory && matchesTrend && matchesPricing;
     })
     .sort((a, b) => {
       let aVal: any = a[sortField as keyof Tool];
@@ -233,6 +255,11 @@ export default function RadarDashboard() {
       if (sortField === 'monthlyVisits') {
         aVal = parseVisits(a.monthlyVisits);
         bVal = parseVisits(b.monthlyVisits);
+      }
+
+      if (sortField === 'launchDate') {
+        aVal = parseLaunchDate(a.launchDate);
+        bVal = parseLaunchDate(b.launchDate);
       }
 
       if (typeof aVal === 'string') {
@@ -256,16 +283,21 @@ export default function RadarDashboard() {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className={`w-9 h-9 rounded-lg border flex items-center justify-center shadow-sm transition-colors ${isDark ? 'bg-slate-900 border-slate-800 text-slate-100' : 'bg-slate-50 border-slate-200 text-[#aa2d00]'}`}>
-              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.5" strokeDasharray="3 3" />
-                <circle cx="12" cy="12" r="5" stroke="currentColor" strokeWidth="2" />
-                <circle cx="12" cy="12" r="2" fill="currentColor" />
-                <path d="M12 3v9l4 4" />
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                {/* Concentric rings */}
+                <circle cx="12" cy="12" r="9" className="opacity-25" />
+                <circle cx="12" cy="12" r="6" strokeDasharray="2 2" className="opacity-40" />
+                <circle cx="12" cy="12" r="3" className="opacity-60" />
+                {/* Radar Sweep */}
+                <g className="animate-[spin_4s_linear_infinite]" style={{ transformOrigin: '12px 12px' }}>
+                  <line x1="12" y1="12" x2="12" y2="3" stroke="currentColor" strokeWidth="1.5" className="opacity-80" />
+                  <circle cx="12" cy="3" r="1" fill="currentColor" className="animate-ping" />
+                </g>
               </svg>
             </div>
             <span className={`font-display font-bold text-lg tracking-tight ${isDark ? 'text-slate-100' : 'text-[#181d26]'}`}>AI Design Radar</span>
           </div>
-          <div className={`hidden md:flex items-center gap-8 text-sm font-semibold ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+          <div className={`hidden md:flex items-center gap-8 text-sm font-semibold ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
             <a href="#market-pulse" className={`transition ${isDark ? 'hover:text-white' : 'hover:text-[#1b61c9]'}`}>Market Pulse</a>
             <a href="#leaderboard" className={`transition ${isDark ? 'hover:text-white' : 'hover:text-[#1b61c9]'}`}>Leaderboard</a>
             <a href="#trends" className={`transition ${isDark ? 'hover:text-white' : 'hover:text-[#1b61c9]'}`}>Trends</a>
@@ -305,13 +337,13 @@ export default function RadarDashboard() {
         <header className={`relative border-b pb-10 pt-4 transition-colors ${isDark ? 'border-slate-800' : 'border-slate-200'}`}>
           <div>
             <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold border mb-4 uppercase tracking-wider transition-colors ${isDark ? 'bg-slate-900 border-slate-800 text-slate-200' : 'bg-slate-100 border-slate-200 text-[#181d26]'}`}>
-              <Sparkles size={12} className={isDark ? 'text-slate-400' : 'text-slate-600'} />
+              <Sparkles size={12} className={isDark ? 'text-slate-300' : 'text-slate-700'} />
               AI Design Market Intelligence
             </div>
             <h1 className={`text-4xl md:text-5xl font-display tracking-tight leading-tight transition-colors ${isDark ? 'text-slate-100' : 'text-[#181d26]'}`}>
               AI Design Tools Radar
             </h1>
-            <p className={`mt-3 text-lg max-w-3xl leading-relaxed font-body transition-colors ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+            <p className={`mt-3 text-lg max-w-3xl leading-relaxed font-body transition-colors ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
               Track which standalone AI design tools are gaining real momentum across launches, social buzz, search demand, and designer adoption.
             </p>
           </div>
@@ -360,10 +392,10 @@ export default function RadarDashboard() {
               <div>
                 <span className="text-[10px] font-bold uppercase tracking-wider text-slate-300">Market Leader</span>
                 <h3 className="text-2xl font-display font-medium mt-2">{biggestGain.name}</h3>
-                <p className="text-xs text-slate-400 mt-1">{biggestGain.category}</p>
+                <p className="text-xs text-slate-300 mt-1">{biggestGain.category}</p>
               </div>
               <div className="mt-6 flex items-center justify-between border-t border-slate-800 pt-3">
-                <span className="text-xs text-slate-400">Peak momentum score</span>
+                <span className="text-xs text-slate-300">Peak momentum score</span>
                 <span className="text-lg font-bold text-white">
                   {biggestGain.momentumScore} / 100
                 </span>
@@ -375,26 +407,96 @@ export default function RadarDashboard() {
 
         {/* SECTION 2: MOMENTUM LEADERBOARD */}
         <section id="leaderboard" className="scroll-mt-20 space-y-6">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div className="flex items-center gap-2">
-              <Flame size={18} className="text-[#aa2d00]" />
-              <h2 className={`text-xl font-display font-semibold transition-colors ${isDark ? 'text-slate-100' : 'text-[#181d26]'}`}>Momentum Leaderboard</h2>
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+              <div className="flex items-center gap-2">
+                <Flame size={18} className="text-[#aa2d00]" />
+                <h2 className={`text-xl font-display font-semibold transition-colors ${isDark ? 'text-slate-100' : 'text-[#181d26]'}`}>Momentum Leaderboard</h2>
+              </div>
+              
+              {/* Search & Advanced Filters */}
+              <div className="flex flex-wrap items-center gap-3">
+                {/* Search Input */}
+                <div className="relative">
+                  <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                  <input 
+                    type="text" 
+                    placeholder="Search tools..." 
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className={`border rounded-sm pl-9 pr-4 py-1.5 text-xs w-48 sm:w-56 placeholder-slate-400 focus:outline-none transition-colors ${
+                      isDark 
+                        ? 'bg-slate-900 border-slate-800 text-slate-200 focus:border-blue-500' 
+                        : 'bg-white border-slate-200 text-[#181d26] focus:border-[#1b61c9]'
+                    }`}
+                  />
+                </div>
+
+                {/* Trend Filter */}
+                <div className="relative">
+                  <select
+                    value={selectedTrend}
+                    onChange={(e) => setSelectedTrend(e.target.value)}
+                    className={`appearance-none border rounded-sm pl-3 pr-8 py-1.5 text-xs focus:outline-none cursor-pointer transition-colors ${
+                      isDark 
+                        ? 'bg-slate-900 border-slate-800 text-slate-200 focus:border-blue-500' 
+                        : 'bg-white border-slate-200 text-[#181d26] focus:border-[#1b61c9]'
+                    }`}
+                  >
+                    <option value="All">All Trends</option>
+                    <option value="Rising">Rising</option>
+                    <option value="Stable">Stable</option>
+                    <option value="Cooling">Cooling</option>
+                  </select>
+                  <ChevronDown size={12} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                </div>
+
+                {/* Pricing Filter */}
+                <div className="relative">
+                  <select
+                    value={selectedPricing}
+                    onChange={(e) => setSelectedPricing(e.target.value)}
+                    className={`appearance-none border rounded-sm pl-3 pr-8 py-1.5 text-xs focus:outline-none cursor-pointer transition-colors ${
+                      isDark 
+                        ? 'bg-slate-900 border-slate-800 text-slate-200 focus:border-blue-500' 
+                        : 'bg-white border-slate-200 text-[#181d26] focus:border-[#1b61c9]'
+                    }`}
+                  >
+                    <option value="All">All Pricing</option>
+                    <option value="Free">Free</option>
+                    <option value="Freemium">Freemium</option>
+                    <option value="Paid">Paid</option>
+                  </select>
+                  <ChevronDown size={12} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                </div>
+
+                {/* Clear Filters Button */}
+                {(searchQuery !== '' || selectedCategory !== 'All' || selectedTrend !== 'All' || selectedPricing !== 'All') && (
+                  <button
+                    onClick={() => {
+                      setSearchQuery('');
+                      setSelectedCategory('All');
+                      setSelectedTrend('All');
+                      setSelectedPricing('All');
+                    }}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-sm border transition-colors ${
+                      isDark 
+                        ? 'bg-slate-900 border-slate-800 text-slate-200 hover:bg-slate-800 hover:text-white' 
+                        : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100 hover:text-[#aa2d00]'
+                    }`}
+                  >
+                    <X size={12} />
+                    Clear Filters
+                  </button>
+                )}
+              </div>
             </div>
-            
-            {/* Search Input Box */}
-            <div className="relative">
-              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-              <input 
-                type="text" 
-                placeholder="Search tools..." 
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className={`border rounded-sm pl-9 pr-4 py-2 text-xs w-72 placeholder-slate-400 focus:outline-none transition-colors ${
-                  isDark 
-                    ? 'bg-slate-900 border-slate-800 text-slate-200 focus:border-blue-500' 
-                    : 'bg-white border-slate-200 text-[#181d26] focus:border-[#1b61c9]'
-                }`}
-              />
+
+            {/* Matching Count */}
+            <div className="flex items-center justify-between text-xs transition-colors">
+              <span className={isDark ? 'text-slate-300' : 'text-slate-600'}>
+                Showing <strong className={isDark ? 'text-slate-100' : 'text-slate-800'}>{filteredTools.length}</strong> of <strong className={isDark ? 'text-slate-100' : 'text-slate-800'}>{toolsData.length}</strong> tools
+              </span>
             </div>
           </div>
 
@@ -422,7 +524,7 @@ export default function RadarDashboard() {
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse min-w-[800px]">
                 <thead>
-                  <tr className={`border-b text-xs font-semibold tracking-wider transition-colors ${isDark ? 'border-slate-800 bg-slate-900 text-slate-400' : 'border-slate-200 bg-slate-50 text-slate-600'}`}>
+                  <tr className={`border-b text-xs font-semibold tracking-wider transition-colors ${isDark ? 'border-slate-800 bg-slate-900 text-slate-300' : 'border-slate-200 bg-slate-50 text-slate-700'}`}>
                     <th className="py-4 px-4 text-center w-12 cursor-pointer select-none" onClick={() => handleSort('momentumScore')}>
                       Rank
                     </th>
@@ -432,15 +534,18 @@ export default function RadarDashboard() {
                     <th className="py-4 px-4 cursor-pointer select-none" onClick={() => handleSort('category')}>
                       Category {renderSortArrow('category')}
                     </th>
+                    <th className="py-4 px-4 text-center cursor-pointer select-none" onClick={() => handleSort('launchDate')}>
+                      Launch Date {renderSortArrow('launchDate')}
+                    </th>
                     <th className="py-4 px-4 text-center cursor-pointer select-none" onClick={() => handleSort('monthlyVisits')}>
                       Est. Monthly Traffic {renderSortArrow('monthlyVisits')}
                     </th>
                     
                     {/* User Rating Header with Tooltip on Hover */}
                     <th className="py-4 px-4 text-center cursor-pointer select-none" onClick={() => handleSort('userRating')}>
-                      <span className="tooltip-trigger inline-flex items-center gap-1">
+                      <span className="tooltip-trigger inline-flex items-center gap-1 justify-center">
                         User Rating
-                        <Info size={12} className="text-slate-400" />
+                        <Info size={12} className={isDark ? 'text-slate-300' : 'text-slate-500'} />
                         {renderSortArrow('userRating')}
                         <span className="tooltip-content font-sans normal-case tracking-normal font-normal">
                           Weighted G2, Product Hunt, and Capterra reviews
@@ -467,7 +572,7 @@ export default function RadarDashboard() {
                         className={`transition-colors cursor-pointer text-sm align-middle group ${isDark ? 'border-slate-800 hover:bg-slate-800/40' : 'border-slate-200 hover:bg-slate-50'}`}
                       >
                         {/* Rank */}
-                        <td className={`py-4 px-4 text-center font-mono font-bold group-hover:text-[#1b61c9] ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                        <td className={`py-4 px-4 text-center font-mono font-bold group-hover:text-[#1b61c9] ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
                           #{originalRank}
                         </td>
                         {/* Tool Name & Description */}
@@ -475,9 +580,9 @@ export default function RadarDashboard() {
                           <div>
                             <span className={`font-bold transition-colors flex items-center gap-1 ${isDark ? 'text-slate-200 group-hover:text-blue-400' : 'text-[#181d26] group-hover:text-[#1b61c9]'}`}>
                               {tool.name}
-                              <ExternalLink size={12} className="text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+                              <ExternalLink size={12} className={`opacity-0 group-hover:opacity-100 transition-opacity ${isDark ? 'text-slate-300' : 'text-slate-500'}`} />
                             </span>
-                            <span className={`block text-xs mt-0.5 line-clamp-1 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                            <span className={`block text-xs mt-0.5 line-clamp-1 ${isDark ? 'text-slate-200' : 'text-slate-700'}`}>
                               {tool.description}
                             </span>
                           </div>
@@ -491,6 +596,10 @@ export default function RadarDashboard() {
                           }`}>
                             {tool.category}
                           </span>
+                        </td>
+                        {/* Launch Date */}
+                        <td className={`py-4 px-4 text-center font-mono text-xs transition-colors ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+                          {tool.launchDate}
                         </td>
                         {/* Est. Monthly Traffic */}
                         <td className={`py-4 px-4 text-center font-mono text-xs font-medium transition-colors ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
@@ -534,8 +643,8 @@ export default function RadarDashboard() {
                   })}
                   {filteredTools.length === 0 && (
                     <tr>
-                      <td colSpan={7} className="py-8 text-center text-slate-400 text-sm">
-                        No tools found matching your search.
+                      <td colSpan={8} className={`py-8 text-center text-sm ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                        No tools found matching your filters.
                       </td>
                     </tr>
                   )}
@@ -628,7 +737,7 @@ export default function RadarDashboard() {
                   </ResponsiveContainer>
                 </div>
               ) : (
-                <div className="h-[300px] flex items-center justify-center text-slate-400">
+                <div className={`h-[300px] flex items-center justify-center ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
                   Loading trend chart...
                 </div>
               )}
@@ -698,19 +807,19 @@ export default function RadarDashboard() {
                   <div className="flex items-start justify-between">
                     <h4 className={`font-bold transition-colors ${isDark ? 'text-slate-100' : 'text-[#181d26]'}`}>{tool.name}</h4>
                     <span className={`inline-flex px-2 py-0.5 rounded-sm text-[10px] font-semibold border ${
-                      isDark ? 'bg-slate-950 border-slate-800 text-slate-300' : 'bg-white/80 text-slate-800 border-slate-200'
+                      isDark ? 'bg-slate-950 border-slate-800 text-slate-200' : 'bg-white/80 text-slate-800 border-slate-200'
                     }`}>
                       {tool.category}
                     </span>
                   </div>
-                  <p className={`text-xs leading-relaxed font-body ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
+                  <p className={`text-xs leading-relaxed font-body ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
                     {tool.whyTrending}
                   </p>
                 </div>
                 <div className={`pt-4 border-t space-y-1.5 text-[11px] ${isDark ? 'border-slate-800/80' : 'border-slate-200/50'}`}>
                   <div className="flex justify-between">
                     <span className={`font-mono ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>SIGNAL</span>
-                    <span className={isDark ? 'text-slate-200' : 'text-slate-900 font-semibold'}>{tool.source}</span>
+                    <span className={isDark ? 'text-slate-100' : 'text-slate-900 font-semibold'}>{tool.source}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className={`font-mono ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>CONFIDENCE</span>
@@ -772,17 +881,21 @@ export default function RadarDashboard() {
                     </a>
                   </div>
                   <h3 className={`text-3xl font-display font-medium mt-2 ${isDark ? 'text-slate-100' : 'text-[#181d26]'}`}>{selectedTool.name}</h3>
-                  <p className={`text-xs mt-1 italic ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Pricing: {selectedTool.pricing}</p>
+                  <div className="flex items-center gap-3 mt-1.5 text-xs">
+                    <span className={`italic ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>Pricing: {selectedTool.pricing}</span>
+                    <span className={isDark ? 'text-slate-700' : 'text-slate-300'}>•</span>
+                    <span className={isDark ? 'text-slate-300' : 'text-slate-600'}><strong className="font-semibold">Launched:</strong> {selectedTool.launchDate}</span>
+                  </div>
                 </div>
 
                 <div className={`flex items-center gap-4 border rounded-lg p-3 ${isDark ? 'bg-slate-950 border-slate-800' : 'bg-slate-50 border-slate-200'}`}>
                   <div className={`text-center pr-4 border-r ${isDark ? 'border-slate-800' : 'border-slate-200'}`}>
-                    <span className={`block text-[9px] uppercase font-mono ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Radar Score</span>
+                    <span className={`block text-[9px] uppercase font-mono ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>Radar Score</span>
                     <span className={`text-3xl font-black font-mono ${isDark ? 'text-[#fcab79]' : 'text-[#aa2d00]'}`}>{selectedTool.momentumScore}</span>
                   </div>
                   <div className="text-center">
-                    <span className={`block text-[9px] uppercase font-mono ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Rating</span>
-                    <span className={`text-lg font-bold font-mono ${isDark ? 'text-slate-300' : 'text-slate-500'}`}>{selectedTool.scoreOutOf10}/10</span>
+                    <span className={`block text-[9px] uppercase font-mono ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>Rating</span>
+                    <span className={`text-lg font-bold font-mono ${isDark ? 'text-slate-200' : 'text-slate-600'}`}>{selectedTool.scoreOutOf10}/10</span>
                   </div>
                 </div>
               </div>
@@ -792,9 +905,9 @@ export default function RadarDashboard() {
                 
                 {/* Description */}
                 <div className="space-y-2">
-                  <h4 className={`text-xs font-bold uppercase tracking-wider font-mono ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Description</h4>
-                  <p className={`text-sm leading-relaxed font-body ${isDark ? 'text-slate-300' : 'text-slate-800'}`}>{selectedTool.description}</p>
-                  <p className={`text-xs leading-relaxed ${isDark ? 'text-slate-400' : 'text-slate-600'}`}><strong className={`font-semibold ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>Best for: </strong>{selectedTool.bestFor}</p>
+                  <h4 className={`text-xs font-bold uppercase tracking-wider font-mono ${isDark ? 'text-slate-300' : 'text-slate-705'}`}>Description</h4>
+                  <p className={`text-sm leading-relaxed font-body ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>{selectedTool.description}</p>
+                  <p className={`text-xs leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-600'}`}><strong className={`font-semibold ${isDark ? 'text-slate-200' : 'text-slate-700'}`}>Best for: </strong>{selectedTool.bestFor}</p>
                 </div>
 
                 {/* Real-World Tracked Signals */}
@@ -802,15 +915,15 @@ export default function RadarDashboard() {
                   isDark ? 'bg-slate-950 border-slate-800' : 'bg-slate-50 border-slate-200'
                 }`}>
                   <div>
-                    <span className={`block text-[9px] uppercase font-mono ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Est. Monthly Traffic</span>
+                    <span className={`block text-[9px] uppercase font-mono ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>Est. Monthly Traffic</span>
                     <span className={`text-sm font-bold ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>{selectedTool.monthlyVisits}</span>
                   </div>
                   <div>
-                    <span className={`block text-[9px] uppercase font-mono ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Real User Rating</span>
+                    <span className={`block text-[9px] uppercase font-mono ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>Real User Rating</span>
                     <span className={`text-sm font-bold ${isDark ? 'text-amber-400' : 'text-amber-700'}`}>★ {selectedTool.userRating} / 5</span>
                   </div>
                   <div>
-                    <span className={`block text-[9px] uppercase font-mono ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Figma Directory</span>
+                    <span className={`block text-[9px] uppercase font-mono ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>Figma Directory</span>
                     <span className={`text-sm font-bold ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>{selectedTool.figmaCommunityUsers}</span>
                   </div>
                 </div>
@@ -823,16 +936,27 @@ export default function RadarDashboard() {
                     <Zap size={14} />
                     Trending Catalyst
                   </span>
-                  <p className={`text-xs leading-relaxed font-body ${isDark ? 'text-slate-300' : 'text-slate-800'}`}>{selectedTool.whyTrending}</p>
-                  <div className={`pt-2 border-t text-[10px] ${isDark ? 'text-slate-400 border-slate-800/80' : 'text-slate-600 border-amber-500/10'}`}>
-                    <strong className={`font-semibold ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>Tracked Sources: </strong>
-                    {selectedTool.primaryDataSources.join(', ')}
+                  <p className={`text-xs leading-relaxed font-body ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>{selectedTool.whyTrending}</p>
+                  <div className={`pt-3 border-t flex flex-wrap items-center gap-1.5 text-[10px] ${isDark ? 'border-slate-800/80' : 'border-amber-500/10'}`}>
+                    <strong className={`font-semibold shrink-0 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>Tracked Sources:</strong>
+                    {selectedTool.primaryDataSources.map((src, i) => (
+                      <span 
+                        key={i} 
+                        className={`inline-flex px-2 py-0.5 rounded-sm border font-semibold font-mono text-[9px] ${
+                          isDark 
+                            ? 'bg-slate-900 border-slate-800 text-blue-400' 
+                            : 'bg-white border-slate-200 text-[#1b61c9]'
+                        }`}
+                      >
+                        {src}
+                      </span>
+                    ))}
                   </div>
                 </div>
 
                 {/* Score Breakdown Bars */}
                 <div className="space-y-3">
-                  <h4 className={`text-xs font-bold uppercase tracking-wider font-mono ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Momentum Signals</h4>
+                  <h4 className={`text-xs font-bold uppercase tracking-wider font-mono ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>Momentum Signals</h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {renderScoreBar('Launch Buzz (30%)', selectedTool.launchBuzz, 'bg-[#aa2d00]', 'bg-[#fcab79]')}
                     {renderScoreBar('Social Buzz (25%)', selectedTool.socialBuzz, 'bg-[#1b61c9]', 'bg-[#458fff]')}
@@ -850,7 +974,7 @@ export default function RadarDashboard() {
                     </h4>
                     <ul className="space-y-2">
                       {selectedTool.pros.map((pro, index) => (
-                        <li key={index} className={`flex gap-2 text-xs leading-relaxed font-body ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                        <li key={index} className={`flex gap-2 text-xs leading-relaxed font-body ${isDark ? 'text-slate-200' : 'text-slate-700'}`}>
                           <Check size={14} className={`shrink-0 mt-0.5 ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`} />
                           <span>{pro}</span>
                         </li>
@@ -865,7 +989,7 @@ export default function RadarDashboard() {
                     </h4>
                     <ul className="space-y-2">
                       {selectedTool.cons.map((con, index) => (
-                        <li key={index} className={`flex gap-2 text-xs leading-relaxed font-body ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                        <li key={index} className={`flex gap-2 text-xs leading-relaxed font-body ${isDark ? 'text-slate-200' : 'text-slate-700'}`}>
                           <X size={14} className={`shrink-0 mt-0.5 ${isDark ? 'text-rose-400' : 'text-rose-700'}`} />
                           <span>{con}</span>
                         </li>
@@ -877,7 +1001,7 @@ export default function RadarDashboard() {
                 {/* Alternatives & Verdict */}
                 <div className={`space-y-4 pt-6 border-t ${isDark ? 'border-slate-800' : 'border-slate-200'}`}>
                   <div>
-                    <h4 className={`text-xs font-bold uppercase tracking-wider font-mono ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Alternatives to Consider</h4>
+                    <h4 className={`text-xs font-bold uppercase tracking-wider font-mono ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>Alternatives to Consider</h4>
                     <div className="flex flex-wrap gap-2 mt-2">
                       {selectedTool.alternatives.map((alt, index) => (
                         <span key={index} className={`px-2.5 py-1 text-xs rounded-sm border font-semibold font-mono ${
@@ -894,8 +1018,8 @@ export default function RadarDashboard() {
                       ? 'bg-slate-950/40 border-slate-800' 
                       : 'bg-[#f5e9d4]/40 border-[#e0d4be]/60'
                   }`}>
-                    <h4 className={`text-xs font-bold uppercase tracking-wide font-mono ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Editorial Verdict</h4>
-                    <p className={`text-xs mt-1.5 leading-relaxed font-body ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>{selectedTool.verdict}</p>
+                    <h4 className={`text-xs font-bold uppercase tracking-wide font-mono ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>Editorial Verdict</h4>
+                    <p className={`text-xs mt-1.5 leading-relaxed font-body ${isDark ? 'text-slate-200' : 'text-slate-850'}`}>{selectedTool.verdict}</p>
                   </div>
                 </div>
 

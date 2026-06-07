@@ -28,6 +28,7 @@ export interface Tool {
   ratingSources: string; // e.g. "Product Hunt & G2", "Figma Reviews & Capterra"
   figmaCommunityUsers: string; // Figma integration footprint
   primaryDataSources: string[]; // actual sources tracked
+  launchDate: string;
 }
 
 export const CATEGORIES = [
@@ -66,6 +67,7 @@ const calculateScore = (
 export const rawToolsData = [
   {
     id: 'framer-ai',
+    launchDate: 'Jun 2023',
     name: 'Framer AI',
     website: 'https://framer.com',
     category: 'Prototyping',
@@ -108,6 +110,7 @@ export const rawToolsData = [
   },
   {
     id: 'v0',
+    launchDate: 'Oct 2023',
     name: 'v0',
     website: 'https://v0.dev',
     category: 'Design-to-Code',
@@ -150,6 +153,7 @@ export const rawToolsData = [
   },
   {
     id: 'cursor',
+    launchDate: 'Jan 2023',
     name: 'Cursor',
     website: 'https://cursor.com',
     category: 'Design-to-Code',
@@ -192,6 +196,7 @@ export const rawToolsData = [
   },
   {
     id: 'lovable',
+    launchDate: 'Nov 2024',
     name: 'Lovable',
     website: 'https://lovable.dev',
     category: 'Design-to-Code',
@@ -234,6 +239,7 @@ export const rawToolsData = [
   },
   {
     id: 'bolt',
+    launchDate: 'Oct 2024',
     name: 'Bolt',
     website: 'https://bolt.new',
     category: 'Design-to-Code',
@@ -276,6 +282,7 @@ export const rawToolsData = [
   },
   {
     id: 'recraft',
+    launchDate: 'May 2023',
     name: 'Recraft',
     website: 'https://recraft.ai',
     category: 'Image Generation',
@@ -318,6 +325,7 @@ export const rawToolsData = [
   },
   {
     id: 'midjourney',
+    launchDate: 'Jul 2022',
     name: 'Midjourney',
     website: 'https://midjourney.com',
     category: 'Image Generation',
@@ -360,6 +368,7 @@ export const rawToolsData = [
   },
   {
     id: 'runway',
+    launchDate: 'Mar 2023',
     name: 'Runway',
     website: 'https://runwayml.com',
     category: 'Video Generation',
@@ -402,6 +411,7 @@ export const rawToolsData = [
   },
   {
     id: 'krea-ai',
+    launchDate: 'Dec 2023',
     name: 'Krea AI',
     website: 'https://krea.ai',
     category: 'Visual Design',
@@ -444,6 +454,7 @@ export const rawToolsData = [
   },
   {
     id: 'spline-ai',
+    launchDate: 'Mar 2023',
     name: 'Spline AI',
     website: 'https://spline.design',
     category: '3D Design',
@@ -486,6 +497,7 @@ export const rawToolsData = [
   },
   {
     id: 'relume',
+    launchDate: 'Nov 2023',
     name: 'Relume',
     website: 'https://relume.io',
     category: 'Wireframing',
@@ -528,6 +540,7 @@ export const rawToolsData = [
   },
   {
     id: 'uizard',
+    launchDate: 'Feb 2021',
     name: 'Uizard',
     website: 'https://uizard.io',
     category: 'Wireframing',
@@ -570,6 +583,7 @@ export const rawToolsData = [
   },
   {
     id: 'galileo-ai',
+    launchDate: 'Feb 2023',
     name: 'Galileo AI',
     website: 'https://usegalileo.ai',
     category: 'Wireframing',
@@ -612,6 +626,7 @@ export const rawToolsData = [
   },
   {
     id: 'maze',
+    launchDate: 'May 2018',
     name: 'Maze',
     website: 'https://maze.co',
     category: 'User Testing',
@@ -654,6 +669,7 @@ export const rawToolsData = [
   },
   {
     id: 'dovetail',
+    launchDate: 'Aug 2017',
     name: 'Dovetail',
     website: 'https://dovetailapp.com',
     category: 'UX Research',
@@ -696,6 +712,7 @@ export const rawToolsData = [
   },
   {
     id: 'looppanel',
+    launchDate: 'Apr 2022',
     name: 'Looppanel',
     website: 'https://looppanel.com',
     category: 'UX Research',
@@ -738,6 +755,7 @@ export const rawToolsData = [
   },
   {
     id: 'lottiefiles-ai',
+    launchDate: 'May 2023',
     name: 'LottieFiles AI',
     website: 'https://lottiefiles.com',
     category: 'Motion Design',
@@ -780,6 +798,7 @@ export const rawToolsData = [
   },
   {
     id: 'phind',
+    launchDate: 'Feb 2023',
     name: 'Phind',
     website: 'https://phind.com',
     category: 'Product Strategy',
@@ -822,6 +841,7 @@ export const rawToolsData = [
   },
   {
     id: 'visily',
+    launchDate: 'Nov 2021',
     name: 'Visily',
     website: 'https://visily.ai',
     category: 'Wireframing',
@@ -863,6 +883,7 @@ export const rawToolsData = [
   },
   {
     id: 'useberry',
+    launchDate: 'May 2018',
     name: 'Useberry',
     website: 'https://useberry.com',
     category: 'User Testing',
@@ -904,6 +925,7 @@ export const rawToolsData = [
   },
   {
     id: 'notably',
+    launchDate: 'Jun 2021',
     name: 'Notably',
     website: 'https://notably.ai',
     category: 'UX Research',
@@ -945,6 +967,7 @@ export const rawToolsData = [
   },
   {
     id: 'replit-agent',
+    launchDate: 'Sep 2024',
     name: 'Replit Agent',
     website: 'https://replit.com',
     category: 'Design-to-Code',
@@ -987,6 +1010,7 @@ export const rawToolsData = [
   },
   {
     id: 'khroma',
+    launchDate: 'May 2018',
     name: 'Khroma',
     website: 'http://khroma.co',
     category: 'Visual Design',
@@ -1029,6 +1053,7 @@ export const rawToolsData = [
   },
   {
     id: 'vectary',
+    launchDate: 'Oct 2016',
     name: 'Vectary',
     website: 'https://vectary.com',
     category: '3D Design',
@@ -1071,6 +1096,7 @@ export const rawToolsData = [
   },
   {
     id: 'mockflow',
+    launchDate: 'Aug 2009',
     name: 'Mockflow',
     website: 'https://mockflow.com',
     category: 'Wireframing',
