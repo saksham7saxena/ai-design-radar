@@ -387,7 +387,7 @@ export default function RadarDashboard() {
           {/* Table Container - Clean White & Hairline Dividers */}
           <div className="bg-white border border-slate-200 rounded-lg overflow-hidden shadow-sm">
             <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse min-w-[1000px]">
+              <table className="w-full text-left border-collapse min-w-[800px]">
                 <thead>
                   <tr className="border-b border-slate-200 bg-slate-50 text-xs font-semibold text-slate-500 tracking-wider">
                     <th className="py-4 px-4 text-center w-12 cursor-pointer select-none" onClick={() => handleSort('momentumScore')}>
@@ -398,10 +398,6 @@ export default function RadarDashboard() {
                     </th>
                     <th className="py-4 px-4 cursor-pointer select-none" onClick={() => handleSort('category')}>
                       Category {renderSortArrow('category')}
-                    </th>
-                    <th className="py-4 px-4 max-w-xs">Best For & Pricing</th>
-                    <th className="py-4 px-4 text-center cursor-pointer select-none" onClick={() => handleSort('trendStatus')}>
-                      Trend
                     </th>
                     <th className="py-4 px-4 text-center cursor-pointer select-none" onClick={() => handleSort('monthlyVisits')}>
                       Est. Monthly Traffic {renderSortArrow('monthlyVisits')}
@@ -420,12 +416,11 @@ export default function RadarDashboard() {
                     </th>
                     
                     <th className="py-4 px-4 text-center cursor-pointer select-none" onClick={() => handleSort('momentumScore')}>
-                      Score {renderSortArrow('momentumScore')}
+                      Score & 7d Shift {renderSortArrow('momentumScore')}
                     </th>
-                    <th className="py-4 px-4 text-center cursor-pointer select-none" onClick={() => handleSort('sevenDayChange')}>
-                      7d Change {renderSortArrow('sevenDayChange')}
+                    <th className="py-4 px-4 text-center cursor-pointer select-none" onClick={() => handleSort('trendStatus')}>
+                      Trend
                     </th>
-                    <th className="py-4 px-4 text-center">Sub-Metrics (LNCH/SOC/SEAR/ADOP)</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-200">
@@ -460,17 +455,6 @@ export default function RadarDashboard() {
                             {tool.category}
                           </span>
                         </td>
-                        {/* Best For & Pricing */}
-                        <td className="py-4 px-4 max-w-xs">
-                          <div className="text-xs">
-                            <p className="text-slate-800 font-medium line-clamp-1">{tool.bestFor}</p>
-                            <p className="text-slate-500 mt-0.5 italic">{tool.pricing}</p>
-                          </div>
-                        </td>
-                        {/* Trend Status */}
-                        <td className="py-4 px-4 text-center">
-                          {renderTrendBadge(tool.trendStatus)}
-                        </td>
                         {/* Est. Monthly Traffic */}
                         <td className="py-4 px-4 text-center font-mono text-xs text-slate-700 font-medium">
                           {tool.monthlyVisits}
@@ -486,38 +470,19 @@ export default function RadarDashboard() {
                           </span>
                         </td>
 
-                        {/* Score */}
+                        {/* Score & 7d Shift merged */}
                         <td className="py-4 px-4 text-center">
-                          <span className="inline-block px-2.5 py-1 text-xs font-bold font-mono rounded bg-slate-100 text-slate-800 border border-slate-200">
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-bold font-mono rounded bg-slate-100 text-slate-800 border border-slate-200">
                             {tool.momentumScore}
+                            <span className={`text-[10px] font-semibold ${tool.sevenDayChange >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
+                              ({tool.sevenDayChange >= 0 ? '+' : ''}{tool.sevenDayChange}%)
+                            </span>
                           </span>
                         </td>
-                        {/* 7d Change */}
-                        <td className="py-4 px-4 text-center font-mono font-semibold">
-                          <span className={tool.sevenDayChange >= 0 ? 'text-emerald-600' : 'text-rose-600'}>
-                            {tool.sevenDayChange >= 0 ? '+' : ''}{tool.sevenDayChange}%
-                          </span>
-                        </td>
-                        {/* Sub-Metrics */}
-                        <td className="py-4 px-4">
-                          <div className="flex items-center justify-center gap-3">
-                            <div className="text-center">
-                              <span className="block text-[9px] text-slate-400 font-mono uppercase">LNCH</span>
-                              <span className="text-xs font-mono font-semibold text-slate-700">{tool.launchBuzz}</span>
-                            </div>
-                            <div className="text-center">
-                              <span className="block text-[9px] text-slate-400 font-mono uppercase">SOC</span>
-                              <span className="text-xs font-mono font-semibold text-slate-700">{tool.socialBuzz}</span>
-                            </div>
-                            <div className="text-center">
-                              <span className="block text-[9px] text-slate-400 font-mono uppercase">SEAR</span>
-                              <span className="text-xs font-mono font-semibold text-slate-700">{tool.searchInterest}</span>
-                            </div>
-                            <div className="text-center">
-                              <span className="block text-[9px] text-slate-400 font-mono uppercase">ADOP</span>
-                              <span className="text-xs font-mono font-semibold text-slate-700">{tool.designerAdoption}</span>
-                            </div>
-                          </div>
+
+                        {/* Trend Status */}
+                        <td className="py-4 px-4 text-center">
+                          {renderTrendBadge(tool.trendStatus)}
                         </td>
                       </tr>
                     );
