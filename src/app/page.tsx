@@ -1196,7 +1196,7 @@ export default function RadarDashboard() {
               transform: 'translate(-50%, -100%)'
             }}
           >
-            <div className={`w-[480px] rounded-lg overflow-hidden border shadow-xl transition-colors ${
+            <div className={`w-[560px] rounded-lg overflow-hidden border shadow-xl transition-colors ${
               isDark ? 'bg-[#181615]/95 border-[#2a2725] text-slate-100' : 'bg-white/95 border-slate-200 text-[#181d26]'
             }`}>
               {/* Header */}
@@ -1230,7 +1230,7 @@ export default function RadarDashboard() {
                       className="absolute inset-0 w-full h-full object-cover opacity-40 blur-xs"
                     />
                     <iframe 
-                      src={`https://www.youtube.com/embed/${hoveredLocation.ytId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${hoveredLocation.ytId}&modestbranding=1&iv_load_policy=3&rel=0&showinfo=0&disablekb=1`}
+                      src={`https://www.youtube.com/embed/${hoveredLocation.ytId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${hoveredLocation.ytId}&start=15&modestbranding=1&iv_load_policy=3&rel=0&showinfo=0&disablekb=1`}
                       title="City cam feed"
                       className="absolute inset-0 w-full h-full border-0 pointer-events-none scale-110"
                       allow="autoplay; encrypted-media"
