@@ -4,11 +4,16 @@ AI Design Tools Radar is a high-performance single-page market intelligence dash
 
 ## Key Features
 
+- **Dynamic Animated SVG Logo**: A custom-designed SVG radar logo with concentric tracks and an active spinning sweeper group (`animate-[spin_4s_linear_infinite]`).
 - **Market Pulse**: Dynamic top-line KPIs highlighting the fastest-rising tool, hottest category by average momentum, and the current overall market leader.
-- **Momentum Leaderboard**: A dense, responsive data grid showcasing rank, tool name, category, pricing models, weighted scores, 7-day shifts, sub-metric signals, and trend categorizations.
-- **Interactive Tool Details**: Click any tool in the leaderboard to open a modal detailing website link, pros/cons list, category alternatives, catalyst reasoning, and our editorial verdict.
+- **Momentum Leaderboard**: A dense, responsive data grid showcasing rank, tool name, category, launch date, estimated traffic, user ratings, weighted scores, 7-day shifts, and trend statuses.
+- **Sortable Columns**: Clickable headers allowing instant sorting by Rank, Name, Category, Launch Date, Traffic volume, User Rating, or Momentum Score.
+- **Advanced Filters**: Seamless real-time filtering via category pills, search bar input, Trend Status dropdowns, and Pricing Model selectors, complete with matching counters and a quick "Clear Filters" button.
+- **Interactive Tool Details**: Click any tool in the leaderboard to open a modal detailing its website link, pros/cons list, category alternatives, catalyst reasoning, launch date, structured data source badges, and our editorial verdict.
 - **Interactive Trend Visualizations**: A custom Recharts line chart mapping the 30-day historical momentum paths of the top 5 market-leading tools.
 - **Emerging Tools Grid**: Spotlight on upcoming design tools gaining signal velocity across social channels, newsletters, and communities before they enter the formal radar.
+- **WCAG AA Compliance**: High-contrast, accessibility-audited text hierarchy in both light editorial and dark mode.
+
 
 ---
 
