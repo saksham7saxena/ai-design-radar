@@ -39,13 +39,9 @@ export default function RadarDashboard() {
   }, []);
 
   // Compute Market Pulse KPIs dynamically from the mock data
-  // 1. Fastest-rising tool (highest positive 7-day change)
   const fastestRising = [...toolsData].sort((a, b) => b.sevenDayChange - a.sevenDayChange)[0];
+  const biggestGain = toolsData[0]; // Sorted by momentumScore desc
   
-  // 2. Biggest momentum gain (highest overall momentum score)
-  const biggestGain = toolsData[0]; // Already sorted by momentumScore desc
-  
-  // 3. Hottest category this week (highest average momentum score per category)
   const categoryScores = CATEGORIES.map(category => {
     const toolsInCategory = toolsData.filter(t => t.category === category);
     const avgScore = toolsInCategory.length 
@@ -58,7 +54,7 @@ export default function RadarDashboard() {
   // Top 5 tools for the Trend Chart
   const topFiveTools = toolsData.slice(0, 5);
 
-  // Re-structure the 30-day history for Recharts
+  // Re-structure the history for Recharts
   const chartData = [
     { name: 'May 07' },
     { name: 'May 17' },
@@ -72,35 +68,43 @@ export default function RadarDashboard() {
     return dataPoint;
   });
 
-  // Tools to Watch Data
+  // Tools to Watch Data with custom pastel backgrounds matching Airtable spec
   const watchTools = [
     {
       name: "Codeflow AI",
       whyTrending: "New Figma-to-code tool gaining significant mentions on X for direct React component generation.",
       source: "X mentions (+140% this week)",
       confidence: "High",
-      category: "Design-to-Code"
+      category: "Design-to-Code",
+      bgColor: "bg-[#fcab79]/15 border-[#fcab79]/30", // Peach
+      textColor: "text-[#aa2d00]"
     },
     {
       name: "UserQuery Agent",
       whyTrending: "AI usability testing agent discussed on Reddit UX research communities for autonomous script interviewing.",
       source: "Reddit UX Design Community",
       confidence: "Medium",
-      category: "User Testing"
+      category: "User Testing",
+      bgColor: "bg-[#a8d8c4]/20 border-[#a8d8c4]/40", // Mint
+      textColor: "text-[#0a2e0e]"
     },
     {
       name: "Critique.ai",
       whyTrending: "Design review agent mentioned in Substack newsletters for automated heuristic analysis of UI layouts.",
       source: "Design Systems Weekly Substack",
       confidence: "High",
-      category: "UX Research"
+      category: "UX Research",
+      bgColor: "bg-[#f4d35e]/15 border-[#f4d35e]/30", // Yellow
+      textColor: "text-[#b28704]"
     },
     {
       name: "WireframeAI Studio",
       whyTrending: "New AI wireframing tool trending on Product Hunt with quick text-to-layout conversion features.",
       source: "Product Hunt Launch #4 Product of the Day",
       confidence: "Medium",
-      category: "Wireframing"
+      category: "Wireframing",
+      bgColor: "bg-[#f5e9d4]/70 border-[#e0e2e6]", // Cream
+      textColor: "text-[#333840]"
     }
   ];
 
@@ -109,22 +113,22 @@ export default function RadarDashboard() {
     switch (status) {
       case 'rising':
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/25">
-            <TrendingUp size={12} className="text-emerald-400" />
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+            <TrendingUp size={12} />
             Rising
           </span>
         );
       case 'cooling':
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-rose-500/10 text-rose-400 border border-rose-500/25">
-            <TrendingDown size={12} className="text-rose-400" />
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-rose-50 text-rose-700 border border-rose-250">
+            <TrendingDown size={12} />
             Cooling
           </span>
         );
       default:
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-zinc-500/10 text-zinc-400 border border-zinc-500/25">
-            <Minus size={12} className="text-zinc-400" />
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-50 text-slate-600 border border-slate-200">
+            <Minus size={12} />
             Stable
           </span>
         );
@@ -136,10 +140,10 @@ export default function RadarDashboard() {
     return (
       <div className="space-y-1.5">
         <div className="flex justify-between text-xs font-medium">
-          <span className="text-slate-400">{label}</span>
-          <span className="text-slate-200">{value}%</span>
+          <span className="text-slate-600 font-mono uppercase tracking-wider">{label}</span>
+          <span className="text-slate-900 font-bold">{value}%</span>
         </div>
-        <div className="h-1.5 w-full bg-slate-900 rounded-full overflow-hidden border border-slate-800">
+        <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden border border-slate-200">
           <div 
             className={`h-full ${color} rounded-full`}
             style={{ width: `${value}%` }}
@@ -150,75 +154,73 @@ export default function RadarDashboard() {
   };
 
   return (
-    <main className="min-h-screen bg-slate-950 text-slate-100 grid-bg py-8 px-4 sm:px-6 lg:px-8 font-sans">
-      <div className="max-w-7xl mx-auto space-y-10">
+    <main className="min-h-screen bg-white text-[#181d26] py-12 px-4 sm:px-6 lg:px-8 font-sans">
+      <div className="max-w-7xl mx-auto space-y-12">
         
-        {/* HERO SECTION */}
-        <header className="relative border-b border-slate-800 pb-8 pt-4">
-          <div className="absolute top-0 right-0 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute top-0 left-0 w-72 h-72 bg-violet-500/5 rounded-full blur-3xl pointer-events-none" />
+        {/* HERO SECTION - Anchored on clean white canvas and dark-ink type */}
+        <header className="relative border-b border-slate-200 pb-10 pt-4">
           <div className="relative">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20 mb-3 uppercase tracking-wider">
-              <Sparkles size={12} />
-              AI Design Market intelligence
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold bg-slate-100 text-[#181d26] border border-slate-200 mb-4 uppercase tracking-wider">
+              <Sparkles size={12} className="text-slate-600" />
+              AI Design Market Intelligence
             </div>
-            <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-slate-100 via-slate-300 to-slate-400 bg-clip-text text-transparent">
+            <h1 className="text-4xl md:text-5xl font-display text-[#181d26] tracking-tight leading-tight">
               AI Design Tools Radar
             </h1>
-            <p className="mt-3 text-lg text-slate-400 max-w-3xl leading-relaxed">
+            <p className="mt-3 text-lg text-slate-600 max-w-3xl leading-relaxed font-body">
               Track which AI design tools are gaining real momentum across launches, social buzz, search demand, and designer adoption.
             </p>
           </div>
         </header>
 
-        {/* SECTION 1: MARKET PULSE */}
+        {/* SECTION 1: MARKET PULSE - Expressed via full-bleed signature cards */}
         <section className="space-y-4">
           <div className="flex items-center gap-2">
-            <Activity size={18} className="text-blue-400" />
-            <h2 className="text-xl font-bold tracking-tight text-slate-200">Market Pulse</h2>
+            <Activity size={18} className="text-[#aa2d00]" />
+            <h2 className="text-xl font-display font-semibold text-[#181d26]">Market Pulse</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             
-            {/* Fastest Rising Card */}
-            <div className="glass-panel hover-card rounded-xl p-6 border border-slate-800 relative overflow-hidden flex flex-col justify-between min-h-[140px]">
+            {/* Fastest Rising Card - Coral Signature Card */}
+            <div className="bg-[#aa2d00] text-white rounded-lg p-6 flex flex-col justify-between min-h-[160px] shadow-sm">
               <div>
-                <span className="text-xs font-semibold text-emerald-400 uppercase tracking-wider">Fastest Rising</span>
-                <h3 className="text-2xl font-bold text-slate-100 mt-1">{fastestRising.name}</h3>
-                <p className="text-xs text-slate-400 mt-1">{fastestRising.category}</p>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-orange-200">Fastest Rising</span>
+                <h3 className="text-2xl font-display font-medium mt-2">{fastestRising.name}</h3>
+                <p className="text-xs text-orange-100/90 mt-1">{fastestRising.category}</p>
               </div>
-              <div className="mt-4 flex items-center justify-between">
-                <span className="text-xs text-slate-500">7d momentum shift</span>
-                <span className="inline-flex items-center text-sm font-bold text-emerald-400">
+              <div className="mt-6 flex items-center justify-between border-t border-orange-850/30 pt-3">
+                <span className="text-xs text-orange-100/80">7d momentum shift</span>
+                <span className="text-lg font-bold text-white">
                   +{fastestRising.sevenDayChange}%
                 </span>
               </div>
             </div>
 
-            {/* Hottest Category Card */}
-            <div className="glass-panel hover-card rounded-xl p-6 border border-slate-800 relative overflow-hidden flex flex-col justify-between min-h-[140px]">
+            {/* Hottest Category Card - Forest Signature Card */}
+            <div className="bg-[#0a2e0e] text-white rounded-lg p-6 flex flex-col justify-between min-h-[160px] shadow-sm">
               <div>
-                <span className="text-xs font-semibold text-blue-400 uppercase tracking-wider">Hottest Category</span>
-                <h3 className="text-2xl font-bold text-slate-100 mt-1">{hottestCategory.category}</h3>
-                <p className="text-xs text-slate-400 mt-1">Leading development speed</p>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-200">Hottest Category</span>
+                <h3 className="text-2xl font-display font-medium mt-2">{hottestCategory.category}</h3>
+                <p className="text-xs text-emerald-100/90 mt-1">Leading development speed</p>
               </div>
-              <div className="mt-4 flex items-center justify-between">
-                <span className="text-xs text-slate-500">Avg momentum score</span>
-                <span className="text-sm font-bold text-blue-400">
+              <div className="mt-6 flex items-center justify-between border-t border-emerald-850/30 pt-3">
+                <span className="text-xs text-emerald-100/80">Avg momentum score</span>
+                <span className="text-lg font-bold text-white">
                   {Math.round(hottestCategory.avgScore)} pts
                 </span>
               </div>
             </div>
 
-            {/* Biggest Momentum Gain */}
-            <div className="glass-panel hover-card rounded-xl p-6 border border-slate-800 relative overflow-hidden flex flex-col justify-between min-h-[140px]">
+            {/* Biggest Momentum Gain - Ink Primary Card */}
+            <div className="bg-[#181d26] text-white rounded-lg p-6 flex flex-col justify-between min-h-[160px] shadow-sm">
               <div>
-                <span className="text-xs font-semibold text-violet-400 uppercase tracking-wider">Market Leader</span>
-                <h3 className="text-2xl font-bold text-slate-100 mt-1">{biggestGain.name}</h3>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-300">Market Leader</span>
+                <h3 className="text-2xl font-display font-medium mt-2">{biggestGain.name}</h3>
                 <p className="text-xs text-slate-400 mt-1">{biggestGain.category}</p>
               </div>
-              <div className="mt-4 flex items-center justify-between">
-                <span className="text-xs text-slate-500">Peak momentum score</span>
-                <span className="text-sm font-bold text-violet-400">
+              <div className="mt-6 flex items-center justify-between border-t border-slate-800 pt-3">
+                <span className="text-xs text-slate-450">Peak momentum score</span>
+                <span className="text-lg font-bold text-white">
                   {biggestGain.momentumScore} / 100
                 </span>
               </div>
@@ -227,144 +229,139 @@ export default function RadarDashboard() {
           </div>
         </section>
 
-        {/* LEADERBOARD & DETAILS CONTAINER */}
+        {/* SECTION 2: MOMENTUM LEADERBOARD */}
+        <section className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Flame size={18} className="text-[#aa2d00]" />
+              <h2 className="text-xl font-display font-semibold text-[#181d26]">Momentum Leaderboard</h2>
+            </div>
+            <span className="text-xs text-slate-500 font-mono">
+              Sorted by Rank (Weighted Score)
+            </span>
+          </div>
+
+          {/* Table Container - Clean White & Hairline Dividers */}
+          <div className="bg-white border border-slate-200 rounded-lg overflow-hidden shadow-sm">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse min-w-[1000px]">
+                <thead>
+                  <tr className="border-b border-slate-200 bg-slate-50 text-xs font-semibold text-slate-500 tracking-wider">
+                    <th className="py-4 px-4 text-center w-12">Rank</th>
+                    <th className="py-4 px-4">Tool</th>
+                    <th className="py-4 px-4">Category</th>
+                    <th className="py-4 px-4 max-w-xs">Best For & Pricing</th>
+                    <th className="py-4 px-4 text-center">Trend</th>
+                    <th className="py-4 px-4 text-center">Est. Monthly Traffic</th>
+                    <th className="py-4 px-4 text-center">User Rating</th>
+                    <th className="py-4 px-4 text-center">Score</th>
+                    <th className="py-4 px-4 text-center">7d Change</th>
+                    <th className="py-4 px-4 text-center">Sub-Metrics (LNCH/SOC/SEAR/ADOP)</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-200">
+                  {toolsData.map((tool, idx) => {
+                    const rank = idx + 1;
+                    return (
+                      <tr 
+                        key={tool.id}
+                        onClick={() => setSelectedTool(tool)}
+                        className="hover-tr cursor-pointer text-sm align-middle group"
+                      >
+                        {/* Rank */}
+                        <td className="py-4 px-4 text-center font-mono font-bold text-slate-400 group-hover:text-[#1b61c9]">
+                          #{rank}
+                        </td>
+                        {/* Tool Name & Description */}
+                        <td className="py-4 px-4">
+                          <div>
+                            <span className="font-bold text-[#181d26] group-hover:text-[#1b61c9] flex items-center gap-1 transition-colors">
+                              {tool.name}
+                              <ExternalLink size={12} className="text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+                            </span>
+                            <span className="block text-xs text-slate-500 mt-0.5 line-clamp-1">
+                              {tool.description}
+                            </span>
+                          </div>
+                        </td>
+                        {/* Category */}
+                        <td className="py-4 px-4">
+                          <span className="inline-flex px-2.5 py-0.5 text-xs rounded-sm bg-slate-100 text-slate-700 border border-slate-200 font-medium">
+                            {tool.category}
+                          </span>
+                        </td>
+                        {/* Best For & Pricing */}
+                        <td className="py-4 px-4 max-w-xs">
+                          <div className="text-xs">
+                            <p className="text-slate-800 font-medium line-clamp-1">{tool.bestFor}</p>
+                            <p className="text-slate-500 mt-0.5 italic">{tool.pricing}</p>
+                          </div>
+                        </td>
+                        {/* Trend Status */}
+                        <td className="py-4 px-4 text-center">
+                          {renderTrendBadge(tool.trendStatus)}
+                        </td>
+                        {/* Est. Monthly Traffic */}
+                        <td className="py-4 px-4 text-center font-mono text-xs text-slate-700 font-medium">
+                          {tool.monthlyVisits}
+                        </td>
+                        {/* User Rating */}
+                        <td className="py-4 px-4 text-center font-mono text-xs text-amber-600 font-bold">
+                          ★ {tool.userRating}
+                        </td>
+                        {/* Score */}
+                        <td className="py-4 px-4 text-center">
+                          <span className="inline-block px-2.5 py-1 text-xs font-bold font-mono rounded bg-slate-100 text-slate-800 border border-slate-200">
+                            {tool.momentumScore}
+                          </span>
+                        </td>
+                        {/* 7d Change */}
+                        <td className="py-4 px-4 text-center font-mono font-semibold">
+                          <span className={tool.sevenDayChange >= 0 ? 'text-emerald-600' : 'text-rose-600'}>
+                            {tool.sevenDayChange >= 0 ? '+' : ''}{tool.sevenDayChange}%
+                          </span>
+                        </td>
+                        {/* Sub-Metrics */}
+                        <td className="py-4 px-4">
+                          <div className="flex items-center justify-center gap-3">
+                            <div className="text-center">
+                              <span className="block text-[9px] text-slate-400 font-mono uppercase">LNCH</span>
+                              <span className="text-xs font-mono font-semibold text-slate-700">{tool.launchBuzz}</span>
+                            </div>
+                            <div className="text-center">
+                              <span className="block text-[9px] text-slate-400 font-mono uppercase">SOC</span>
+                              <span className="text-xs font-mono font-semibold text-slate-700">{tool.socialBuzz}</span>
+                            </div>
+                            <div className="text-center">
+                              <span className="block text-[9px] text-slate-400 font-mono uppercase">SEAR</span>
+                              <span className="text-xs font-mono font-semibold text-slate-700">{tool.searchInterest}</span>
+                            </div>
+                            <div className="text-center">
+                              <span className="block text-[9px] text-slate-400 font-mono uppercase">ADOP</span>
+                              <span className="text-xs font-mono font-semibold text-slate-700">{tool.designerAdoption}</span>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        {/* DETAILS, CHART & FORMULA GRID */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           
-          {/* SECTION 2: MOMENTUM LEADERBOARD (SPAN 2 COLS) */}
-          <section className="lg:col-span-3 space-y-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Flame size={18} className="text-orange-500" />
-                <h2 className="text-xl font-bold tracking-tight text-slate-200">Momentum Leaderboard</h2>
-              </div>
-              <span className="text-xs text-slate-400">
-                Sorted by Rank (Weighted Intelligence Score)
-              </span>
-            </div>
-
-            {/* Table Container with Horizontal Scroll */}
-            <div className="glass-panel border border-slate-850 rounded-xl overflow-hidden">
-              <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse min-w-[1000px]">
-                  <thead>
-                    <tr className="border-b border-slate-800 bg-slate-900/40 text-xs font-semibold text-slate-400 tracking-wider">
-                      <th className="py-3.5 px-4 text-center w-12">Rank</th>
-                      <th className="py-3.5 px-4">Tool</th>
-                      <th className="py-3.5 px-4">Category</th>
-                      <th className="py-3.5 px-4 max-w-xs">Best For & Pricing</th>
-                      <th className="py-3.5 px-4 text-center">Trend</th>
-                      <th className="py-3.5 px-4 text-center">Est. Monthly Traffic</th>
-                      <th className="py-3.5 px-4 text-center">User Rating</th>
-                      <th className="py-3.5 px-4 text-center">Score</th>
-                      <th className="py-3.5 px-4 text-center">7d Change</th>
-                      <th className="py-3.5 px-4 text-center">Sub-Metrics (LNCH/SOC/SEAR/ADOP)</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-850">
-                    {toolsData.map((tool, idx) => {
-                      const rank = idx + 1;
-                      return (
-                        <tr 
-                          key={tool.id}
-                          onClick={() => setSelectedTool(tool)}
-                          className="hover:bg-slate-900/40 transition cursor-pointer text-sm align-middle group"
-                        >
-                          {/* Rank */}
-                          <td className="py-4 px-4 text-center font-mono font-bold text-slate-400 group-hover:text-blue-400">
-                            #{rank}
-                          </td>
-                          {/* Tool Name & description */}
-                          <td className="py-4 px-4">
-                            <div>
-                              <span className="font-bold text-slate-200 group-hover:text-white flex items-center gap-1">
-                                {tool.name}
-                                <ExternalLink size={12} className="text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity" />
-                              </span>
-                              <span className="block text-xs text-slate-400 mt-0.5 line-clamp-1">
-                                {tool.description}
-                              </span>
-                            </div>
-                          </td>
-                          {/* Category */}
-                          <td className="py-4 px-4">
-                            <span className="inline-flex px-2 py-0.5 text-xs rounded bg-slate-800 text-slate-300 font-medium">
-                              {tool.category}
-                            </span>
-                          </td>
-                          {/* Best For & Pricing */}
-                          <td className="py-4 px-4 max-w-xs">
-                            <div className="text-xs">
-                              <p className="text-slate-300 font-medium line-clamp-1">{tool.bestFor}</p>
-                              <p className="text-slate-500 mt-0.5 italic">{tool.pricing}</p>
-                            </div>
-                          </td>
-                          {/* Trend Status */}
-                          <td className="py-4 px-4 text-center">
-                            {renderTrendBadge(tool.trendStatus)}
-                          </td>
-                          {/* Est. Monthly Traffic */}
-                          <td className="py-4 px-4 text-center font-mono text-xs text-slate-300">
-                            {tool.monthlyVisits}
-                          </td>
-                          {/* User Rating */}
-                          <td className="py-4 px-4 text-center font-mono text-xs text-amber-400 font-bold">
-                            ★ {tool.userRating}
-                          </td>
-                          {/* Score */}
-                          <td className="py-4 px-4 text-center">
-                            <span className="inline-block px-2.5 py-1 text-xs font-bold font-mono rounded bg-blue-500/10 text-blue-300 border border-blue-500/25">
-                              {tool.momentumScore}
-                            </span>
-                          </td>
-                          {/* 7d Change */}
-                          <td className="py-4 px-4 text-center font-mono font-semibold">
-                            <span className={tool.sevenDayChange >= 0 ? 'text-emerald-400' : 'text-rose-400'}>
-                              {tool.sevenDayChange >= 0 ? '+' : ''}{tool.sevenDayChange}%
-                            </span>
-                          </td>
-                          {/* Sub-Metrics Mini Sparkbars */}
-                          <td className="py-4 px-4">
-                            <div className="flex items-center justify-center gap-3">
-                              <div className="text-center">
-                                <span className="block text-[9px] text-slate-500 uppercase">LNCH</span>
-                                <span className="text-xs font-mono font-semibold text-slate-300">{tool.launchBuzz}</span>
-                              </div>
-                              <div className="text-center">
-                                <span className="block text-[9px] text-slate-500 uppercase">SOC</span>
-                                <span className="text-xs font-mono font-semibold text-slate-300">{tool.socialBuzz}</span>
-                              </div>
-                              <div className="text-center">
-                                <span className="block text-[9px] text-slate-500 uppercase">SEAR</span>
-                                <span className="text-xs font-mono font-semibold text-slate-300">{tool.searchInterest}</span>
-                              </div>
-                              <div className="text-center">
-                                <span className="block text-[9px] text-slate-500 uppercase">ADOP</span>
-                                <span className="text-xs font-mono font-semibold text-slate-300">{tool.designerAdoption}</span>
-                              </div>
-                            </div>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </section>
-
-        </div>
-
-        {/* VISUAL & TECHNICAL DETAIL GRID */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          
-          {/* SECTION 4: TREND CHART (SPAN 2 COLS) */}
+          {/* SECTION 4: TREND CHART */}
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center gap-2">
-              <TrendingUp size={18} className="text-violet-400" />
-              <h2 className="text-xl font-bold tracking-tight text-slate-200">Top 5 Momentum Trends</h2>
+              <TrendingUp size={18} className="text-[#1b61c9]" />
+              <h2 className="text-xl font-display font-semibold text-[#181d26]">Top 5 Momentum Trends</h2>
             </div>
             
-            <div className="glass-panel border border-slate-800 rounded-xl p-6 min-h-[350px]">
+            <div className="bg-slate-50 border border-slate-200 rounded-lg p-6 min-h-[350px]">
               {mounted ? (
                 <div className="w-full h-[300px]">
                   <ResponsiveContainer width="100%" height="100%">
@@ -372,35 +369,36 @@ export default function RadarDashboard() {
                       data={chartData}
                       margin={{ top: 10, right: 20, left: -20, bottom: 0 }}
                     >
-                      <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+                      <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
                       <XAxis 
                         dataKey="name" 
-                        stroke="#94a3b8" 
+                        stroke="#64748b" 
                         fontSize={11}
                         tickLine={false}
                       />
                       <YAxis 
-                        stroke="#94a3b8" 
+                        stroke="#64748b" 
                         fontSize={11} 
-                        domain={[70, 100]}
+                        domain={[65, 100]}
                         tickLine={false}
                       />
                       <Tooltip 
                         contentStyle={{ 
-                          backgroundColor: '#0f172a', 
-                          borderColor: '#1e293b',
-                          borderRadius: '8px',
-                          color: '#f8fafc',
+                          backgroundColor: '#ffffff', 
+                          borderColor: '#dddddd',
+                          borderRadius: '6px',
+                          color: '#181d26',
                           fontSize: '12px'
                         }} 
                       />
                       <Legend 
                         wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }}
                       />
+                      {/* Using Airtable Brand Colors in the line series */}
                       <Line 
                         type="monotone" 
                         dataKey={topFiveTools[0].name} 
-                        stroke="#8b5cf6" 
+                        stroke="#aa2d00" /* Coral */
                         strokeWidth={2.5}
                         activeDot={{ r: 6 }}
                         dot={{ r: 3 }}
@@ -408,28 +406,28 @@ export default function RadarDashboard() {
                       <Line 
                         type="monotone" 
                         dataKey={topFiveTools[1].name} 
-                        stroke="#3b82f6" 
+                        stroke="#1b61c9" /* Link Blue */
                         strokeWidth={2.5}
                         dot={{ r: 3 }}
                       />
                       <Line 
                         type="monotone" 
                         dataKey={topFiveTools[2].name} 
-                        stroke="#10b981" 
+                        stroke="#0a2e0e" /* Forest Green */
                         strokeWidth={2.5}
                         dot={{ r: 3 }}
                       />
                       <Line 
                         type="monotone" 
                         dataKey={topFiveTools[3].name} 
-                        stroke="#f59e0b" 
+                        stroke="#d9a441" /* Mustard Yellow */
                         strokeWidth={2.5}
                         dot={{ r: 3 }}
                       />
                       <Line 
                         type="monotone" 
                         dataKey={topFiveTools[4].name} 
-                        stroke="#ec4899" 
+                        stroke="#181d26" /* Primary Ink */
                         strokeWidth={2.5}
                         dot={{ r: 3 }}
                       />
@@ -437,48 +435,48 @@ export default function RadarDashboard() {
                   </ResponsiveContainer>
                 </div>
               ) : (
-                <div className="h-[300px] flex items-center justify-center text-slate-500">
+                <div className="h-[300px] flex items-center justify-center text-slate-400">
                   Loading trend chart...
                 </div>
               )}
             </div>
           </div>
 
-          {/* SECTION 3: MOMENTUM SCORE SYSTEM */}
+          {/* SECTION 3: MOMENTUM SCORE SYSTEM - Styled as a Cream Callout Card */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <Info size={18} className="text-blue-400" />
-              <h2 className="text-xl font-bold tracking-tight text-slate-200">How Momentum is Calculated</h2>
+              <Info size={18} className="text-[#1b61c9]" />
+              <h2 className="text-xl font-display font-semibold text-[#181d26]">Score Methodology</h2>
             </div>
             
-            <div className="glass-panel border border-slate-800 rounded-xl p-6 space-y-6">
-              <div className="p-4 bg-slate-900/50 rounded-lg border border-slate-800/80">
-                <span className="block text-xs font-semibold text-slate-400 uppercase tracking-wide">Dynamic Formula</span>
-                <code className="block text-sm font-bold text-blue-400 mt-1.5 font-mono">
-                  Score = 30% Launch + 25% Social + 20% Search + 15% Adoption + 10% Editorial
+            <div className="bg-[#f5e9d4] border border-[#e0d4be] rounded-lg p-6 space-y-6 text-[#181d26]">
+              <div className="p-4 bg-white/70 rounded-md border border-[#e0d4be]">
+                <span className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider font-mono">Dynamic Formula</span>
+                <code className="block text-sm font-bold text-[#aa2d00] mt-1.5 font-mono">
+                  30% LNCH + 25% SOC + 20% SEAR + 15% ADOP + 10% QUAL
                 </code>
               </div>
 
               <div className="space-y-4 text-xs">
-                <div className="border-l-2 border-blue-500 pl-3 space-y-1">
-                  <span className="font-semibold text-slate-200">Launch Buzz (30%)</span>
-                  <p className="text-slate-400">Product Hunt activity, launch day posts, comment velocity, and maker interactions.</p>
+                <div className="border-l-2 border-[#aa2d00] pl-3 space-y-1">
+                  <span className="font-bold text-[#aa2d00] font-display">Launch Buzz (30%)</span>
+                  <p className="text-slate-750 font-body">Product Hunt upvotes, comment velocity, and maker responses.</p>
                 </div>
-                <div className="border-l-2 border-violet-500 pl-3 space-y-1">
-                  <span className="font-semibold text-slate-200">Social Buzz (25%)</span>
-                  <p className="text-slate-400">Total volume and sentiment of mentions across X, Reddit, LinkedIn, and core design communities.</p>
+                <div className="border-l-2 border-[#1b61c9] pl-3 space-y-1">
+                  <span className="font-bold text-[#1b61c9] font-display">Social Buzz (25%)</span>
+                  <p className="text-slate-755 font-body">X threads, Reddit mentions, and designer community sentiment volume.</p>
                 </div>
-                <div className="border-l-2 border-emerald-500 pl-3 space-y-1">
-                  <span className="font-semibold text-slate-200">Search Interest (20%)</span>
-                  <p className="text-slate-400">Branded search terms and relative search engine demand spikes over rolling 30-day periods.</p>
+                <div className="border-l-2 border-[#0a2e0e] pl-3 space-y-1">
+                  <span className="font-bold text-[#0a2e0e] font-display">Search Interest (20%)</span>
+                  <p className="text-slate-755 font-body font-body">Branded search term velocity and relative search demand curves.</p>
                 </div>
-                <div className="border-l-2 border-amber-500 pl-3 space-y-1">
-                  <span className="font-semibold text-slate-200">Designer Adoption (15%)</span>
-                  <p className="text-slate-400">Usage signals detected in public templates, Figma community plugin installs, and UI kits.</p>
+                <div className="border-l-2 border-[#d9a441] pl-3 space-y-1">
+                  <span className="font-bold text-[#d9a441] font-display font-display">Designer Adoption (15%)</span>
+                  <p className="text-slate-755 font-body">Figma Community template imports and plugin installation spikes.</p>
                 </div>
-                <div className="border-l-2 border-slate-400 pl-3 space-y-1">
-                  <span className="font-semibold text-slate-200">Editorial Quality (10%)</span>
-                  <p className="text-slate-400">Direct design system fit, performance fluidity, and efficacy in resolving actual UI friction.</p>
+                <div className="border-l-2 border-slate-600 pl-3 space-y-1">
+                  <span className="font-bold text-slate-700 font-display">Editorial Quality (10%)</span>
+                  <p className="text-slate-755 font-body font-body font-body">Usability fluidity, workflow efficiency, and core UI design problem fit.</p>
                 </div>
               </div>
             </div>
@@ -486,38 +484,38 @@ export default function RadarDashboard() {
 
         </div>
 
-        {/* SECTION 5: EMERGING TOOLS TO WATCH */}
+        {/* SECTION 5: EMERGING TOOLS TO WATCH - Styled as Airtable Demo Grids */}
         <section className="space-y-4">
           <div className="flex items-center gap-2">
-            <Compass size={18} className="text-emerald-400" />
-            <h2 className="text-xl font-bold tracking-tight text-slate-200">Tools to Watch</h2>
+            <Compass size={18} className="text-[#0a2e0e]" />
+            <h2 className="text-xl font-display font-semibold text-[#181d26]">Tools to Watch</h2>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             {watchTools.map((tool, idx) => (
               <div 
                 key={idx} 
-                className="glass-panel border border-slate-850 rounded-xl p-5 space-y-4 relative flex flex-col justify-between"
+                className={`rounded-lg p-5 border shadow-sm relative flex flex-col justify-between min-h-[180px] ${tool.bgColor}`}
               >
                 <div className="space-y-2">
                   <div className="flex items-start justify-between">
-                    <h4 className="font-bold text-slate-100">{tool.name}</h4>
-                    <span className="inline-flex px-1.5 py-0.5 rounded text-[10px] font-medium bg-slate-905 text-slate-400 border border-slate-800">
+                    <h4 className="font-bold text-[#181d26]">{tool.name}</h4>
+                    <span className="inline-flex px-2 py-0.5 rounded-sm text-[10px] font-semibold bg-white/80 text-slate-700 border border-slate-200">
                       {tool.category}
                     </span>
                   </div>
-                  <p className="text-xs text-slate-400 leading-relaxed">
+                  <p className="text-xs text-slate-700 leading-relaxed font-body">
                     {tool.whyTrending}
                   </p>
                 </div>
-                <div className="pt-4 border-t border-slate-900 space-y-2 text-[11px]">
+                <div className="pt-4 border-t border-slate-200/50 space-y-1.5 text-[11px]">
                   <div className="flex justify-between">
-                    <span className="text-slate-500">Signal Source</span>
-                    <span className="text-slate-300 font-medium">{tool.source}</span>
+                    <span className="text-slate-500 font-mono">SIGNAL</span>
+                    <span className="text-slate-800 font-semibold">{tool.source}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-500">Confidence</span>
-                    <span className={`font-semibold ${tool.confidence === 'High' ? 'text-emerald-400' : 'text-blue-400'}`}>
+                    <span className="text-slate-500 font-mono">CONFIDENCE</span>
+                    <span className={`font-bold ${tool.textColor}`}>
                       {tool.confidence}
                     </span>
                   </div>
@@ -528,53 +526,53 @@ export default function RadarDashboard() {
         </section>
 
         {/* FOOTER */}
-        <footer className="pt-8 border-t border-slate-800 text-center text-xs text-slate-500 space-y-1">
-          <p>© {new Date().getFullYear()} AI Design Tools Radar. Created for market tracking and intelligence.</p>
-          <p className="text-slate-600 font-mono">Vercel Ready • Static Build • Last updated: {new Date().toISOString().split('T')[0]}</p>
+        <footer className="pt-10 border-t border-slate-200 text-center text-xs text-slate-500 space-y-1.5">
+          <p>© {new Date().getFullYear()} AI Design Tools Radar. Structured with Airtable Design System guidelines.</p>
+          <p className="text-slate-400 font-mono">Vercel Ready • Editorial Engine • Updated: {new Date().toISOString().split('T')[0]}</p>
         </footer>
 
-        {/* SECTION 6: TOOL DETAIL MODAL */}
+        {/* SECTION 6: TOOL DETAIL MODAL - Refactored as clean print-magazine layout */}
         {selectedTool && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md transition-opacity duration-300">
-            <div className="glass-panel border border-slate-800 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl relative p-6 md:p-8 animate-in fade-in zoom-in-95 duration-200">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm transition-opacity duration-300">
+            <div className="bg-white border border-slate-200 rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl relative p-6 md:p-8 animate-in fade-in zoom-in-95 duration-150 text-[#181d26]">
               
               {/* Close Button */}
               <button 
                 onClick={() => setSelectedTool(null)}
-                className="absolute top-4 right-4 p-1 rounded-lg border border-slate-800 bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white transition"
+                className="absolute top-4 right-4 p-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-500 hover:text-slate-800 transition"
               >
                 <X size={18} />
               </button>
 
               {/* Title & Metadata */}
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-6 mb-6">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-6 mb-6">
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="inline-flex px-2 py-0.5 text-xs rounded bg-slate-800 text-slate-300 font-medium">
+                    <span className="inline-flex px-2.5 py-0.5 text-xs rounded-sm bg-slate-100 text-slate-700 border border-slate-200 font-medium">
                       {selectedTool.category}
                     </span>
                     <a 
                       href={selectedTool.website} 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-xs text-blue-400 hover:underline"
+                      className="inline-flex items-center gap-1 text-xs text-[#1b61c9] hover:underline"
                     >
                       Website
                       <ExternalLink size={10} />
                     </a>
                   </div>
-                  <h3 className="text-3xl font-extrabold text-white mt-2">{selectedTool.name}</h3>
-                  <p className="text-slate-400 text-xs mt-1 italic">Pricing: {selectedTool.pricing}</p>
+                  <h3 className="text-3xl font-display font-medium text-[#181d26] mt-2">{selectedTool.name}</h3>
+                  <p className="text-slate-500 text-xs mt-1 italic">Pricing: {selectedTool.pricing}</p>
                 </div>
 
-                <div className="flex items-center gap-4 bg-slate-900/60 border border-slate-800/80 rounded-xl p-3">
-                  <div className="text-center pr-4 border-r border-slate-800">
-                    <span className="block text-[10px] text-slate-500 uppercase font-mono">Radar Score</span>
-                    <span className="text-3xl font-black font-mono text-blue-400">{selectedTool.momentumScore}</span>
+                <div className="flex items-center gap-4 bg-slate-50 border border-slate-200 rounded-lg p-3">
+                  <div className="text-center pr-4 border-r border-slate-250">
+                    <span className="block text-[9px] text-slate-500 uppercase font-mono">Radar Score</span>
+                    <span className="text-3xl font-black font-mono text-[#aa2d00]">{selectedTool.momentumScore}</span>
                   </div>
                   <div className="text-center">
-                    <span className="block text-[10px] text-slate-500 uppercase font-mono">Verdict</span>
-                    <span className="text-lg font-bold font-mono text-slate-200">{selectedTool.scoreOutOf10}/10</span>
+                    <span className="block text-[9px] text-slate-500 uppercase font-mono">Rating</span>
+                    <span className="text-lg font-bold font-mono text-slate-800">{selectedTool.scoreOutOf10}/10</span>
                   </div>
                 </div>
               </div>
@@ -584,62 +582,62 @@ export default function RadarDashboard() {
                 
                 {/* Description */}
                 <div className="space-y-2">
-                  <h4 className="text-sm font-bold uppercase text-slate-400 tracking-wider font-mono">Description</h4>
-                  <p className="text-slate-200 text-sm leading-relaxed">{selectedTool.description}</p>
-                  <p className="text-slate-400 text-xs leading-relaxed"><strong className="text-slate-300">Best for: </strong>{selectedTool.bestFor}</p>
+                  <h4 className="text-xs font-bold uppercase text-slate-400 tracking-wider font-mono">Description</h4>
+                  <p className="text-slate-800 text-sm leading-relaxed font-body">{selectedTool.description}</p>
+                  <p className="text-slate-500 text-xs leading-relaxed"><strong className="text-slate-700 font-semibold">Best for: </strong>{selectedTool.bestFor}</p>
                 </div>
 
                 {/* Real-World Tracked Signals */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-slate-900/45 border border-slate-800 rounded-xl">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-slate-50 border border-slate-200 rounded-lg">
                   <div>
-                    <span className="block text-[10px] text-slate-500 uppercase font-mono">Est. Monthly Traffic</span>
-                    <span className="text-sm font-bold text-slate-200">{selectedTool.monthlyVisits}</span>
+                    <span className="block text-[9px] text-slate-500 uppercase font-mono">Est. Monthly Traffic</span>
+                    <span className="text-sm font-bold text-slate-800">{selectedTool.monthlyVisits}</span>
                   </div>
                   <div>
-                    <span className="block text-[10px] text-slate-500 uppercase font-mono">Real User Rating</span>
-                    <span className="text-sm font-bold text-amber-400">★ {selectedTool.userRating} / 5</span>
+                    <span className="block text-[9px] text-slate-500 uppercase font-mono">Real User Rating</span>
+                    <span className="text-sm font-bold text-amber-600">★ {selectedTool.userRating} / 5</span>
                   </div>
                   <div>
-                    <span className="block text-[10px] text-slate-500 uppercase font-mono">Figma Directory</span>
-                    <span className="text-sm font-bold text-slate-200">{selectedTool.figmaCommunityUsers}</span>
+                    <span className="block text-[9px] text-slate-500 uppercase font-mono">Figma Directory</span>
+                    <span className="text-sm font-bold text-slate-800">{selectedTool.figmaCommunityUsers}</span>
                   </div>
                 </div>
 
                 {/* Why Trending */}
-                <div className="p-4 bg-violet-500/5 border border-violet-500/20 rounded-xl space-y-2">
-                  <span className="flex items-center gap-1.5 text-xs font-bold text-violet-400 uppercase tracking-wide">
+                <div className="p-4 bg-amber-500/5 border border-amber-500/20 rounded-lg space-y-2">
+                  <span className="flex items-center gap-1.5 text-xs font-bold text-amber-700 uppercase tracking-wide">
                     <Zap size={14} />
                     Trending Catalyst
                   </span>
-                  <p className="text-slate-300 text-xs leading-relaxed">{selectedTool.whyTrending}</p>
-                  <div className="pt-2 border-t border-violet-500/10 text-[10px] text-slate-500">
-                    <strong className="text-slate-450 font-semibold">Tracked Sources: </strong>
+                  <p className="text-slate-800 text-xs leading-relaxed font-body">{selectedTool.whyTrending}</p>
+                  <div className="pt-2 border-t border-amber-500/10 text-[10px] text-slate-500">
+                    <strong className="text-slate-600 font-semibold">Tracked Sources: </strong>
                     {selectedTool.primaryDataSources.join(', ')}
                   </div>
                 </div>
 
                 {/* Score Breakdown Bars */}
                 <div className="space-y-3">
-                  <h4 className="text-sm font-bold uppercase text-slate-400 tracking-wider font-mono">Momentum Signals</h4>
+                  <h4 className="text-xs font-bold uppercase text-slate-400 tracking-wider font-mono">Momentum Signals</h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {renderScoreBar('Launch Buzz (30%)', selectedTool.launchBuzz, 'bg-blue-500')}
-                    {renderScoreBar('Social Buzz (25%)', selectedTool.socialBuzz, 'bg-violet-500')}
-                    {renderScoreBar('Search Interest (20%)', selectedTool.searchInterest, 'bg-emerald-500')}
-                    {renderScoreBar('Designer Adoption (15%)', selectedTool.designerAdoption, 'bg-amber-500')}
+                    {renderScoreBar('Launch Buzz (30%)', selectedTool.launchBuzz, 'bg-[#aa2d00]')}
+                    {renderScoreBar('Social Buzz (25%)', selectedTool.socialBuzz, 'bg-[#1b61c9]')}
+                    {renderScoreBar('Search Interest (20%)', selectedTool.searchInterest, 'bg-[#0a2e0e]')}
+                    {renderScoreBar('Designer Adoption (15%)', selectedTool.designerAdoption, 'bg-[#d9a441]')}
                   </div>
                 </div>
 
                 {/* Pros and Cons */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-slate-900">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-slate-200">
                   <div className="space-y-3">
-                    <h4 className="text-xs font-bold uppercase text-emerald-400 tracking-wider font-mono flex items-center gap-1.5">
+                    <h4 className="text-xs font-bold uppercase text-[#0a2e0e] tracking-wider font-mono flex items-center gap-1.5">
                       <ShieldCheck size={14} />
                       Strengths / Pros
                     </h4>
                     <ul className="space-y-2">
                       {selectedTool.pros.map((pro, index) => (
-                        <li key={index} className="flex gap-2 text-xs text-slate-300 leading-relaxed">
-                          <Check size={14} className="text-emerald-400 shrink-0 mt-0.5" />
+                        <li key={index} className="flex gap-2 text-xs text-slate-750 leading-relaxed font-body">
+                          <Check size={14} className="text-emerald-700 shrink-0 mt-0.5" />
                           <span>{pro}</span>
                         </li>
                       ))}
@@ -647,14 +645,14 @@ export default function RadarDashboard() {
                   </div>
 
                   <div className="space-y-3">
-                    <h4 className="text-xs font-bold uppercase text-rose-400 tracking-wider font-mono flex items-center gap-1.5">
+                    <h4 className="text-xs font-bold uppercase text-[#aa2d00] tracking-wider font-mono flex items-center gap-1.5">
                       <AlertTriangle size={14} />
                       Friction / Cons
                     </h4>
                     <ul className="space-y-2">
                       {selectedTool.cons.map((con, index) => (
-                        <li key={index} className="flex gap-2 text-xs text-slate-300 leading-relaxed">
-                          <X size={14} className="text-rose-400 shrink-0 mt-0.5" />
+                        <li key={index} className="flex gap-2 text-xs text-slate-750 leading-relaxed font-body">
+                          <X size={14} className="text-rose-700 shrink-0 mt-0.5" />
                           <span>{con}</span>
                         </li>
                       ))}
@@ -663,21 +661,21 @@ export default function RadarDashboard() {
                 </div>
 
                 {/* Alternatives & Verdict */}
-                <div className="space-y-4 pt-6 border-t border-slate-900">
+                <div className="space-y-4 pt-6 border-t border-slate-200">
                   <div>
-                    <h4 className="text-sm font-bold uppercase text-slate-400 tracking-wider font-mono">Alternatives to Consider</h4>
+                    <h4 className="text-xs font-bold uppercase text-slate-400 tracking-wider font-mono">Alternatives to Consider</h4>
                     <div className="flex flex-wrap gap-2 mt-2">
                       {selectedTool.alternatives.map((alt, index) => (
-                        <span key={index} className="px-2.5 py-1 text-xs rounded-full bg-slate-900 border border-slate-800 text-slate-400 font-semibold font-mono">
+                        <span key={index} className="px-2.5 py-1 text-xs rounded-sm bg-slate-50 border border-slate-200 text-slate-600 font-semibold font-mono">
                           {alt}
                         </span>
                       ))}
                     </div>
                   </div>
 
-                  <div className="p-4 bg-slate-900/40 rounded-xl border border-slate-800/60">
-                    <h4 className="text-xs font-bold uppercase text-slate-400 tracking-wide font-mono">Editorial Verdict</h4>
-                    <p className="text-slate-300 text-xs mt-1.5 leading-relaxed">{selectedTool.verdict}</p>
+                  <div className="p-4 bg-[#f5e9d4]/40 rounded-lg border border-[#e0d4be]/60">
+                    <h4 className="text-xs font-bold uppercase text-slate-600 tracking-wide font-mono">Editorial Verdict</h4>
+                    <p className="text-slate-750 text-xs mt-1.5 leading-relaxed font-body">{selectedTool.verdict}</p>
                   </div>
                 </div>
 
