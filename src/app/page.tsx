@@ -698,23 +698,27 @@ export default function RadarDashboard() {
                   <div className="flex items-start justify-between">
                     <h4 className={`font-bold transition-colors ${isDark ? 'text-slate-100' : 'text-[#181d26]'}`}>{tool.name}</h4>
                     <span className={`inline-flex px-2 py-0.5 rounded-sm text-[10px] font-semibold border ${
-                      isDark ? 'bg-slate-950 border-slate-800 text-slate-400' : 'bg-white/80 text-slate-700 border-slate-200'
+                      isDark ? 'bg-slate-950 border-slate-800 text-slate-300' : 'bg-white/80 text-slate-800 border-slate-200'
                     }`}>
                       {tool.category}
                     </span>
                   </div>
-                  <p className={`text-xs leading-relaxed font-body ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+                  <p className={`text-xs leading-relaxed font-body ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
                     {tool.whyTrending}
                   </p>
                 </div>
                 <div className={`pt-4 border-t space-y-1.5 text-[11px] ${isDark ? 'border-slate-800/80' : 'border-slate-200/50'}`}>
                   <div className="flex justify-between">
-                    <span className={`font-mono ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>SIGNAL</span>
-                    <span className={isDark ? 'text-slate-300' : 'text-slate-800 font-semibold'}>{tool.source}</span>
+                    <span className={`font-mono ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>SIGNAL</span>
+                    <span className={isDark ? 'text-slate-200' : 'text-slate-900 font-semibold'}>{tool.source}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className={`font-mono ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>CONFIDENCE</span>
-                    <span className={`font-bold ${isDark ? 'text-emerald-400' : tool.textColor}`}>
+                    <span className={`font-mono ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>CONFIDENCE</span>
+                    <span className={`font-bold ${
+                      isDark 
+                        ? (tool.confidence === 'High' ? 'text-emerald-400' : 'text-amber-400')
+                        : (tool.confidence === 'High' ? 'text-emerald-700' : 'text-amber-700')
+                    }`}>
                       {tool.confidence}
                     </span>
                   </div>
