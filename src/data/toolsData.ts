@@ -31,6 +31,7 @@ export interface Tool {
   launchDate: string;
   hqLocation?: string;
   mapsLink?: string;
+  enterpriseClients: string[];
 }
 
 export const CATEGORIES = [
@@ -69,6 +70,7 @@ const calculateScore = (
 export const rawToolsData = [
   {
     id: 'framer-ai',
+    enterpriseClients: ["Zapier","Superhuman","LottieFiles","Contra"],
     hqLocation: 'Amsterdam, Netherlands',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=Amsterdam,+Netherlands',
     launchDate: 'Jun 2023',
@@ -114,6 +116,7 @@ export const rawToolsData = [
   },
   {
     id: 'v0',
+    enterpriseClients: ["Under Armour","Loom","Notion"],
     hqLocation: 'San Francisco, CA',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=San+Francisco,+CA',
     launchDate: 'Oct 2023',
@@ -159,6 +162,7 @@ export const rawToolsData = [
   },
   {
     id: 'cursor',
+    enterpriseClients: ["Coinbase","Mercado Libre","Sentry","EPAM"],
     hqLocation: 'San Francisco, CA',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=San+Francisco,+CA',
     launchDate: 'Jan 2023',
@@ -204,6 +208,7 @@ export const rawToolsData = [
   },
   {
     id: 'lovable',
+    enterpriseClients: ["Elora Health","PrintPigeon","Startup MVPs"],
     hqLocation: 'Stockholm, Sweden',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=Stockholm,+Sweden',
     launchDate: 'Nov 2024',
@@ -249,6 +254,7 @@ export const rawToolsData = [
   },
   {
     id: 'bolt',
+    enterpriseClients: ["Google","Airbnb","Mozilla Devs"],
     hqLocation: 'San Francisco, CA',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=San+Francisco,+CA',
     launchDate: 'Oct 2024',
@@ -294,6 +300,7 @@ export const rawToolsData = [
   },
   {
     id: 'recraft',
+    enterpriseClients: ["Design Agencies","Indie Game Studios"],
     hqLocation: 'London, United Kingdom',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=London,+UK',
     launchDate: 'May 2023',
@@ -339,6 +346,7 @@ export const rawToolsData = [
   },
   {
     id: 'midjourney',
+    enterpriseClients: ["Netflix","Nike","Coca-Cola Agencies"],
     hqLocation: 'San Francisco, CA',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=San+Francisco,+CA',
     launchDate: 'Jul 2022',
@@ -384,6 +392,7 @@ export const rawToolsData = [
   },
   {
     id: 'runway',
+    enterpriseClients: ["A24","Google","VFX Studios"],
     hqLocation: 'New York City, NY',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=New+York,+NY',
     launchDate: 'Mar 2023',
@@ -429,6 +438,7 @@ export const rawToolsData = [
   },
   {
     id: 'krea-ai',
+    enterpriseClients: ["Creative Studios","Branding Agencies"],
     hqLocation: 'San Francisco, CA',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=San+Francisco,+CA',
     launchDate: 'Dec 2023',
@@ -474,6 +484,7 @@ export const rawToolsData = [
   },
   {
     id: 'spline-ai',
+    enterpriseClients: ["Shopify","Microsoft","Google"],
     hqLocation: 'San Francisco, CA',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=San+Francisco,+CA',
     launchDate: 'Mar 2023',
@@ -519,6 +530,7 @@ export const rawToolsData = [
   },
   {
     id: 'relume',
+    enterpriseClients: ["Webflow Agencies","SVZ Design","UI Freelancers"],
     hqLocation: 'Sydney, Australia',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=Sydney,+Australia',
     launchDate: 'Nov 2023',
@@ -564,6 +576,7 @@ export const rawToolsData = [
   },
   {
     id: 'uizard',
+    enterpriseClients: ["Tesla","Google","IBM","Airbnb"],
     hqLocation: 'Copenhagen, Denmark',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=Copenhagen,+Denmark',
     launchDate: 'Feb 2021',
@@ -609,6 +622,7 @@ export const rawToolsData = [
   },
   {
     id: 'galileo-ai',
+    enterpriseClients: ["Startup Designers","Indie UI Makers"],
     hqLocation: 'San Francisco, CA',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=San+Francisco,+CA',
     launchDate: 'Feb 2023',
@@ -654,6 +668,7 @@ export const rawToolsData = [
   },
   {
     id: 'maze',
+    enterpriseClients: ["Itaú Unibanco","Braze","Hopper"],
     hqLocation: 'Paris, France',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=Paris,+France',
     launchDate: 'May 2018',
@@ -699,6 +714,7 @@ export const rawToolsData = [
   },
   {
     id: 'dovetail',
+    enterpriseClients: ["AssemblyAI","Canva","Atlassian"],
     hqLocation: 'Sydney, Australia',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=Sydney,+Australia',
     launchDate: 'Aug 2017',
@@ -744,6 +760,7 @@ export const rawToolsData = [
   },
   {
     id: 'looppanel',
+    enterpriseClients: ["Help Scout","Atlassian","Miro"],
     hqLocation: 'Bengaluru, India',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=Bengaluru,+India',
     launchDate: 'Apr 2022',
@@ -789,6 +806,7 @@ export const rawToolsData = [
   },
   {
     id: 'lottiefiles-ai',
+    enterpriseClients: ["Airbnb","Google","Microsoft"],
     hqLocation: 'San Francisco, CA',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=San+Francisco,+CA',
     launchDate: 'May 2023',
@@ -834,6 +852,7 @@ export const rawToolsData = [
   },
   {
     id: 'phind',
+    enterpriseClients: ["Amazon","Google","Microsoft Devs"],
     hqLocation: 'San Francisco, CA',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=San+Francisco,+CA',
     launchDate: 'Feb 2023',
@@ -879,6 +898,7 @@ export const rawToolsData = [
   },
   {
     id: 'visily',
+    enterpriseClients: ["IT Agencies","Product PMs","FPT Software"],
     hqLocation: 'Atlanta, GA',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=Atlanta,+GA',
     launchDate: 'Nov 2021',
@@ -923,6 +943,7 @@ export const rawToolsData = [
   },
   {
     id: 'useberry',
+    enterpriseClients: ["Microsoft","Dell","Adobe","Intel"],
     hqLocation: 'Athens, Greece',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=Athens,+Greece',
     launchDate: 'May 2018',
@@ -967,6 +988,7 @@ export const rawToolsData = [
   },
   {
     id: 'notably',
+    enterpriseClients: ["Research Agencies","Academic Labs"],
     hqLocation: 'Columbus, OH',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=Columbus,+OH',
     launchDate: 'Jun 2021',
@@ -1011,6 +1033,7 @@ export const rawToolsData = [
   },
   {
     id: 'replit-agent',
+    enterpriseClients: ["Replit Devs","Indie Makers"],
     hqLocation: 'San Francisco, CA',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=San+Francisco,+CA',
     launchDate: 'Sep 2024',
@@ -1056,6 +1079,7 @@ export const rawToolsData = [
   },
   {
     id: 'khroma',
+    enterpriseClients: ["Brand Designers","Visual Artists"],
     hqLocation: 'Toronto, Canada',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=Toronto,+Canada',
     launchDate: 'May 2018',
@@ -1101,6 +1125,7 @@ export const rawToolsData = [
   },
   {
     id: 'vectary',
+    enterpriseClients: ["Audi","Epson","Vans","Peugeot"],
     hqLocation: 'Redwood City, CA',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=Redwood+City,+CA',
     launchDate: 'Oct 2016',
@@ -1146,6 +1171,7 @@ export const rawToolsData = [
   },
   {
     id: 'mockflow',
+    enterpriseClients: ["Adobe","IBM","Verizon","Salesforce"],
     hqLocation: 'Chennai, India',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=Chennai,+India',
     launchDate: 'Aug 2009',
@@ -1191,6 +1217,7 @@ export const rawToolsData = [
   },
   {
     id: 'leonardo-ai',
+    enterpriseClients: ["Razer","Indie Game Studios"],
     hqLocation: 'Sydney, Australia',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=Sydney,+Australia',
     launchDate: 'Nov 2022',
@@ -1236,6 +1263,7 @@ export const rawToolsData = [
   },
   {
     id: 'playground-ai',
+    enterpriseClients: ["Creative Agencies","Digital Artists"],
     hqLocation: 'San Francisco, CA',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=San+Francisco,+CA',
     launchDate: 'Sep 2022',
@@ -1281,6 +1309,7 @@ export const rawToolsData = [
   },
   {
     id: 'adobe-firefly',
+    enterpriseClients: ["PepsiCo","Dentsu","Mattel","IBM"],
     hqLocation: 'San Jose, CA',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=San+Jose,+CA',
     launchDate: 'Mar 2023',
@@ -1326,6 +1355,7 @@ export const rawToolsData = [
   },
   {
     id: 'stylar-ai',
+    enterpriseClients: ["Marketing Designers","Graphic Freelancers"],
     hqLocation: 'San Francisco, CA',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=San+Francisco,+CA',
     launchDate: 'Nov 2023',
@@ -1371,6 +1401,7 @@ export const rawToolsData = [
   },
   {
     id: 'clipdrop',
+    enterpriseClients: ["Jasper","E-commerce Sellers","Ad Agencies"],
     hqLocation: 'Paris, France',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=Paris,+France',
     launchDate: 'Jul 2020',
@@ -1416,6 +1447,7 @@ export const rawToolsData = [
   },
   {
     id: 'photoroom',
+    enterpriseClients: ["Warner Bros.","Decathlon","Sorare","Palm Angels"],
     hqLocation: 'Paris, France',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=Paris,+France',
     launchDate: 'Mar 2020',
@@ -1461,6 +1493,7 @@ export const rawToolsData = [
   },
   {
     id: 'kittl',
+    enterpriseClients: ["E-commerce Brands","Print-on-Demand","Freelancers"],
     hqLocation: 'Berlin, Germany',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=Berlin,+Germany',
     launchDate: 'Jan 2022',
@@ -1506,6 +1539,7 @@ export const rawToolsData = [
   },
   {
     id: 'microsoft-designer',
+    enterpriseClients: ["Microsoft 365 Users","Small Businesses"],
     hqLocation: 'Redmond, WA',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=Redmond,+WA',
     launchDate: 'Oct 2022',
@@ -1551,6 +1585,7 @@ export const rawToolsData = [
   },
   {
     id: 'tome',
+    enterpriseClients: ["Scale AI","Superhuman Sales","Startup PMs"],
     hqLocation: 'San Francisco, CA',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=San+Francisco,+CA',
     launchDate: 'Mar 2022',
@@ -1596,6 +1631,7 @@ export const rawToolsData = [
   },
   {
     id: 'gamma',
+    enterpriseClients: ["Consulting Firms","EdTech Companies","Sales Teams"],
     hqLocation: 'San Francisco, CA',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=San+Francisco,+CA',
     launchDate: 'Aug 2022',
@@ -1641,6 +1677,7 @@ export const rawToolsData = [
   },
   {
     id: 'looka',
+    enterpriseClients: ["Startup Founders","Small Businesses"],
     hqLocation: 'Toronto, Canada',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=Toronto,+Canada',
     launchDate: 'Nov 2016',
@@ -1686,6 +1723,7 @@ export const rawToolsData = [
   },
   {
     id: 'beautiful-ai',
+    enterpriseClients: ["SkySpecs","MEMIC","Cambium Networks","Udacity"],
     hqLocation: 'San Francisco, CA',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=San+Francisco,+CA',
     launchDate: 'Nov 2017',
@@ -1731,6 +1769,7 @@ export const rawToolsData = [
   },
   {
     id: 'designs-ai',
+    enterpriseClients: ["Social Media Agencies","Small Business Marketers"],
     hqLocation: 'Singapore',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=Singapore',
     launchDate: 'Jun 2020',
@@ -1776,6 +1815,7 @@ export const rawToolsData = [
   },
   {
     id: 'brandmark',
+    enterpriseClients: ["Startups","Local Businesses","Side-Project Creators"],
     hqLocation: 'San Francisco, CA',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=San+Francisco,+CA',
     launchDate: 'Nov 2017',
@@ -1821,6 +1861,7 @@ export const rawToolsData = [
   },
   {
     id: 'tailor-brands',
+    enterpriseClients: ["Local Service Providers","Small Businesses"],
     hqLocation: 'New York City, NY',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=New+York,+NY',
     launchDate: 'Jun 2015',
@@ -1866,6 +1907,7 @@ export const rawToolsData = [
   },
   {
     id: 'jitter',
+    enterpriseClients: ["Figma Plugins","Marketing Teams","Creative Agencies"],
     hqLocation: 'Paris, France',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=Paris,+France',
     launchDate: 'Nov 2020',
@@ -1911,6 +1953,7 @@ export const rawToolsData = [
   },
   {
     id: 'pika',
+    enterpriseClients: ["Filmmakers","Creative Agencies","Social Creators"],
     hqLocation: 'San Francisco, CA',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=San+Francisco,+CA',
     launchDate: 'Nov 2023',
@@ -1956,6 +1999,7 @@ export const rawToolsData = [
   },
   {
     id: 'luma-dream-machine',
+    enterpriseClients: ["Visual Studios","Corporate Marketers"],
     hqLocation: 'San Francisco, CA',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=San+Francisco,+CA',
     launchDate: 'Jun 2024',
@@ -2001,6 +2045,7 @@ export const rawToolsData = [
   },
   {
     id: 'kaiber',
+    enterpriseClients: ["Linkin Park","Kid Cudi","Digital Creators"],
     hqLocation: 'San Francisco, CA',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=San+Francisco,+CA',
     launchDate: 'Dec 2022',
@@ -2046,6 +2091,7 @@ export const rawToolsData = [
   },
   {
     id: 'veed-io',
+    enterpriseClients: ["NBCUniversal","Carlsberg","Cloud Software Group"],
     hqLocation: 'London, United Kingdom',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=London,+UK',
     launchDate: 'Jun 2019',
@@ -2091,6 +2137,7 @@ export const rawToolsData = [
   },
   {
     id: 'invideo-ai',
+    enterpriseClients: ["YouTube Channels","Social Agencies","Content Networks"],
     hqLocation: 'San Francisco, CA',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=San+Francisco,+CA',
     launchDate: 'Jun 2020',
@@ -2136,6 +2183,7 @@ export const rawToolsData = [
   },
   {
     id: 'meshy',
+    enterpriseClients: ["Indie Game Studios","3D Modeling Agencies"],
     hqLocation: 'San Francisco, CA',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=San+Francisco,+CA',
     launchDate: 'Nov 2023',
@@ -2181,6 +2229,7 @@ export const rawToolsData = [
   },
   {
     id: 'tripo3d',
+    enterpriseClients: ["AR/VR Studios","3D Freelancers","Indie Game Creators"],
     hqLocation: 'Singapore',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=Singapore',
     launchDate: 'Dec 2023',
@@ -2226,6 +2275,7 @@ export const rawToolsData = [
   },
   {
     id: 'copilot-workspace',
+    enterpriseClients: ["Microsoft","GitHub","Stripe","Accenture"],
     hqLocation: 'San Francisco, CA',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=San+Francisco,+CA',
     launchDate: 'Apr 2024',
@@ -2271,6 +2321,7 @@ export const rawToolsData = [
   },
   {
     id: 'appy-pie-ai-design',
+    enterpriseClients: ["Local Shops","Small Business Owners","Startup Planners"],
     hqLocation: 'New Delhi, India',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=New+Delhi,+India',
     launchDate: 'Dec 2021',

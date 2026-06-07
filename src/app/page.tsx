@@ -138,10 +138,180 @@ const ToolLogo = ({ id, name, category }: { id: string; name: string; category: 
   );
 };
 
+const CITY_CAM_MAPPING: { 
+  [key: string]: { 
+    timezone: string; 
+    ytId?: string; 
+    unsplashIds: string[];
+    country: string;
+  } 
+} = {
+  'Amsterdam, Netherlands': {
+    timezone: 'Europe/Amsterdam',
+    ytId: '5_S3c08RzEE',
+    unsplashIds: ['1513694203232-719a280e022f', '1494587416117-f102a2ac0a8d', '1524047902892-a13a04657da6'],
+    country: 'Netherlands'
+  },
+  'Athens, Greece': {
+    timezone: 'Europe/Athens',
+    ytId: '4Wk_z_H_Gis',
+    unsplashIds: ['1503152394-c571994fd383', '1515488042361-404e9253a570', '1551882547-ff40c63fe5fa'],
+    country: 'Greece'
+  },
+  'Atlanta, GA': {
+    timezone: 'America/New_York',
+    ytId: 'w8e1_9S0-H0',
+    unsplashIds: ['1575908539614-ff89490f4a78', '1543872084-c7bd3822856f', '1526848146743-4e8992e1efc3'],
+    country: 'USA'
+  },
+  'Bengaluru, India': {
+    timezone: 'Asia/Kolkata',
+    ytId: 'm0Y_Jb27a_o',
+    unsplashIds: ['1596176530529-78163a4f7af2', '1576487248805-cf45f6bcd290', '1605276374104-dee2a0ed3cd6'],
+    country: 'India'
+  },
+  'Berlin, Germany': {
+    timezone: 'Europe/Berlin',
+    ytId: '9rG3K9M7h2A',
+    unsplashIds: ['1599946347371-68eb71b16afc', '1560969184-10fe8719e047', '1527004013197-933c4bb611b3'],
+    country: 'Germany'
+  },
+  'Chennai, India': {
+    timezone: 'Asia/Kolkata',
+    ytId: 'c0F-lG_D7S8',
+    unsplashIds: ['1582510003544-4d00b7f74220', '1585806297371-c05297305290', '1616588589676-62b3bd4ff6d2'],
+    country: 'India'
+  },
+  'Columbus, OH': {
+    timezone: 'America/New_York',
+    ytId: 't7D8Pz8K2eY',
+    unsplashIds: ['1549241477-f273063fc7d1', '1612479532822-77c8e9b62649', '1569336415962-a4bd9f69cd83'],
+    country: 'USA'
+  },
+  'Copenhagen, Denmark': {
+    timezone: 'Europe/Copenhagen',
+    ytId: '69Hj3Hh9qI4',
+    unsplashIds: ['1513622470522-26c3c8a854bc', '1561542320-9a18cd340469', '1501622233866-a51362223386'],
+    country: 'Denmark'
+  },
+  'London, United Kingdom': {
+    timezone: 'Europe/London',
+    ytId: 'Hqp4RcrOpqU',
+    unsplashIds: ['1513635269975-59663e0ac1ad', '1529655683826-095745903d3a', '1486406146926-c627a92ad1ab'],
+    country: 'United Kingdom'
+  },
+  'New Delhi, India': {
+    timezone: 'Asia/Kolkata',
+    ytId: 'P_B_S04c2qY',
+    unsplashIds: ['1587474260584-136574528ed5', '1598305377380-6e69e8a26f92', '1622547748225-3fc4abd2cca0'],
+    country: 'India'
+  },
+  'New York City, NY': {
+    timezone: 'America/New_York',
+    ytId: 'FwOPR6Z1SAY',
+    unsplashIds: ['1496442226666-8d4d0e62e6e9', '1490644306279-052028e3b5e4', '1522083165195-3427832965d3'],
+    country: 'USA'
+  },
+  'Paris, France': {
+    timezone: 'Europe/Paris',
+    ytId: '7Sg_gV2kSzo',
+    unsplashIds: ['1502602898657-3e91760cbb34', '1499856871958-5b9647a640d0', '1508050913630-b99b9225d122'],
+    country: 'France'
+  },
+  'Redmond, WA': {
+    timezone: 'America/Los_Angeles',
+    ytId: 'J_Vv9_D0kEw',
+    unsplashIds: ['1508433363872-970924c69028', '1605379399642-870262d3d051', '1470071459604-3b5ec3a7fe05'],
+    country: 'USA'
+  },
+  'Redwood City, CA': {
+    timezone: 'America/Los_Angeles',
+    ytId: '8Y3V0c7hH7g',
+    unsplashIds: ['1554482504-20b127ff2823', '1492562080023-ab3db95bfbce', '1506157786151-b8491531f063'],
+    country: 'USA'
+  },
+  'San Francisco, CA': {
+    timezone: 'America/Los_Angeles',
+    ytId: 'hE8098_Z16M',
+    unsplashIds: ['1501594907352-04cda38ebc29', '1506012787146-f92b2d7d6d96', '1470229722913-7c0e2dbbafd3'],
+    country: 'USA'
+  },
+  'San Jose, CA': {
+    timezone: 'America/Los_Angeles',
+    ytId: '9xH4m9A7_m8',
+    unsplashIds: ['1605647540924-852290f6b0d5', '1618005182384-a83a8bd57fbe', '1533282960533-51328aa49826'],
+    country: 'USA'
+  },
+  'Singapore': {
+    timezone: 'Asia/Singapore',
+    ytId: '3H4hG0Xv2hQ',
+    unsplashIds: ['1525625293386-3f8f99389edd', '1568992688005-53574a5dbd83', '1509060464153-44667554f970'],
+    country: 'Singapore'
+  },
+  'Stockholm, Sweden': {
+    timezone: 'Europe/Stockholm',
+    ytId: '6jM7q5M0H2w',
+    unsplashIds: ['1508849789987-4e5333c12b78', '1548678816-7d1a58064970', '1520106212299-d99c443e4568'],
+    country: 'Sweden'
+  },
+  'Sydney, Australia': {
+    timezone: 'Australia/Sydney',
+    ytId: '69H4m9J7k2o',
+    unsplashIds: ['1506973035872-a4ec16b8e8d9', '1524820197278-540916411e2d', '1549488344-1f9b8d2bd1f3'],
+    country: 'Australia'
+  },
+  'Toronto, Canada': {
+    timezone: 'America/Toronto',
+    ytId: 'm0Y_Jb27a_o',
+    unsplashIds: ['1507608869274-d3177c8bb4c7', '1477959858617-67f85cf4f1df', '1517935703635-2717357c21b1'],
+    country: 'Canada'
+  }
+};
+
 export default function RadarDashboard() {
   const [mounted, setMounted] = useState(false);
   const [selectedTool, setSelectedTool] = useState<Tool | null>(null);
   
+  // City Cam Hover state
+  const [hoveredLocation, setHoveredLocation] = useState<{
+    city: string;
+    timezone: string;
+    ytId?: string;
+    unsplashUrl: string;
+    x: number;
+    y: number;
+  } | null>(null);
+
+  const getLocalTime = (timezone: string) => {
+    try {
+      return new Intl.DateTimeFormat('en-US', {
+        timeStyle: 'short',
+        timeZone: timezone
+      }).format(new Date());
+    } catch (e) {
+      return new Date().toLocaleTimeString('en-US', { timeStyle: 'short' });
+    }
+  };
+
+  const handleMouseEnterLocation = (e: React.MouseEvent<HTMLAnchorElement>, location: string) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const data = CITY_CAM_MAPPING[location];
+    if (data) {
+      const randomIdx = Math.floor(Math.random() * data.unsplashIds.length);
+      const unsplashId = data.unsplashIds[randomIdx];
+      const unsplashUrl = `https://images.unsplash.com/photo-${unsplashId}?w=300&h=180&fit=crop&q=80`;
+      
+      setHoveredLocation({
+        city: location,
+        timezone: data.timezone,
+        ytId: data.ytId,
+        unsplashUrl,
+        x: rect.left + rect.width / 2,
+        y: rect.top - 8
+      });
+    }
+  };
+
   // Theme toggle state
   const [isDark, setIsDark] = useState(false); // Default to light mode
   
@@ -671,6 +841,9 @@ export default function RadarDashboard() {
                     <th className="py-4 px-4 text-center cursor-pointer select-none" onClick={() => handleSort('hqLocation')}>
                       Location {renderSortArrow('hqLocation')}
                     </th>
+                    <th className="py-4 px-4 text-center select-none">
+                      Enterprise Clients
+                    </th>
                     <th className="py-4 px-4 text-center cursor-pointer select-none" onClick={() => handleSort('monthlyVisits')}>
                       Est. Monthly Traffic {renderSortArrow('monthlyVisits')}
                     </th>
@@ -718,18 +891,37 @@ export default function RadarDashboard() {
                         <td className={`py-4 px-4 text-center font-mono text-xs transition-colors ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
                           {tool.launchDate}
                         </td>
-                        {/* HQ Location with Google Maps link */}
+                        {/* HQ Location with Google Maps link and Cam Hover */}
                         <td className="py-4 px-4 text-center" onClick={(e) => e.stopPropagation()}>
                           <a 
                             href={tool.mapsLink} 
                             target="_blank" 
                             rel="noopener noreferrer"
+                            onMouseEnter={(e) => handleMouseEnterLocation(e, tool.hqLocation || '')}
+                            onMouseLeave={() => setHoveredLocation(null)}
                             className={`inline-flex items-center gap-1 text-xs hover:underline ${isDark ? 'text-sky-400' : 'text-[#1b61c9]'}`}
                           >
                             <MapPin size={10} className="shrink-0" />
                             {tool.hqLocation}
                             <ExternalLink size={8} />
                           </a>
+                        </td>
+                        {/* Enterprise Clients */}
+                        <td className="py-4 px-4 text-center max-w-[220px]">
+                          <div className="flex flex-wrap gap-1 justify-center">
+                            {tool.enterpriseClients?.map((client, idx) => (
+                              <span 
+                                key={idx}
+                                className={`inline-flex px-1.5 py-0.5 rounded-sm border text-[10px] font-semibold transition-colors leading-none shrink-0 ${
+                                  isDark 
+                                    ? 'bg-slate-900/50 border-slate-800/60 text-slate-350' 
+                                    : 'bg-slate-100 border-slate-200 text-slate-700'
+                                }`}
+                              >
+                                {client}
+                              </span>
+                            ))}
+                          </div>
                         </td>
                         {/* Est. Monthly Traffic */}
                         <td className={`py-4 px-4 text-center font-mono text-xs font-medium transition-colors ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
@@ -989,6 +1181,68 @@ export default function RadarDashboard() {
           <p>© {new Date().getFullYear()} AI Design Tools Radar. Created for market tracking and intelligence.</p>
         </footer>
 
+        {/* Location Cam Hover Popover Overlay */}
+        {hoveredLocation && (
+          <div 
+            className="fixed z-50 pointer-events-none transition-all duration-250 animate-in fade-in slide-in-from-bottom-2 duration-150"
+            style={{ 
+              left: hoveredLocation.x, 
+              top: hoveredLocation.y,
+              transform: 'translate(-50%, -100%)'
+            }}
+          >
+            <div className={`w-72 rounded-lg overflow-hidden border shadow-xl transition-colors ${
+              isDark ? 'bg-[#181615]/95 border-[#2a2725] text-slate-100' : 'bg-white/95 border-slate-200 text-[#181d26]'
+            }`}>
+              {/* Header */}
+              <div className={`px-4 py-2.5 border-b flex items-center justify-between text-xs transition-colors ${
+                isDark ? 'border-[#2a2725] bg-[#0f0e0d]/50' : 'border-slate-100 bg-slate-50'
+              }`}>
+                <div className="flex flex-col">
+                  <span className="font-bold font-display">{hoveredLocation.city}</span>
+                  <span className={`text-[10px] font-mono mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                    Local Time: {getLocalTime(hoveredLocation.timezone)}
+                  </span>
+                </div>
+                <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold font-mono uppercase tracking-wider ${
+                  hoveredLocation.ytId 
+                    ? 'bg-red-500/10 text-red-400 border border-red-500/20' 
+                    : 'bg-blue-500/10 text-blue-400 border border-blue-500/20'
+                }`}>
+                  <span className={`w-1.5 h-1.5 rounded-full ${hoveredLocation.ytId ? 'bg-red-500 animate-ping' : 'bg-blue-500'}`} />
+                  {hoveredLocation.ytId ? 'LIVE CAM' : 'STILL VIEW'}
+                </span>
+              </div>
+
+              {/* Content (Media Container) */}
+              <div className="relative aspect-video w-full overflow-hidden bg-slate-950 flex items-center justify-center">
+                {hoveredLocation.ytId ? (
+                  <>
+                    {/* Underlay Unsplash image for instant load before iframe is ready */}
+                    <img 
+                      src={hoveredLocation.unsplashUrl} 
+                      alt="City view placeholder" 
+                      className="absolute inset-0 w-full h-full object-cover opacity-40 blur-xs"
+                    />
+                    <iframe 
+                      src={`https://www.youtube.com/embed/${hoveredLocation.ytId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${hoveredLocation.ytId}&modestbranding=1&iv_load_policy=3&rel=0&showinfo=0&disablekb=1`}
+                      title="City cam feed"
+                      className="absolute inset-0 w-full h-full border-0 pointer-events-none scale-110"
+                      allow="autoplay; encrypted-media"
+                    />
+                  </>
+                ) : (
+                  <img 
+                    src={hoveredLocation.unsplashUrl} 
+                    alt="City view capture" 
+                    className="w-full h-full object-cover"
+                  />
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* SECTION 6: TOOL DETAIL MODAL */}
         {selectedTool && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm transition-opacity duration-300">
@@ -1052,7 +1306,13 @@ export default function RadarDashboard() {
                 <div className="space-y-2">
                   <h4 className={`text-xs font-bold uppercase tracking-wider font-mono ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>Description</h4>
                   <p className={`text-sm leading-relaxed font-body ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>{selectedTool.description}</p>
-                  <p className={`text-xs leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-600'}`}><strong className={`font-semibold ${isDark ? 'text-slate-200' : 'text-slate-700'}`}>Best for: </strong>{selectedTool.bestFor}</p>
+                  <p className={`text-xs leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-650'}`}><strong className={`font-semibold ${isDark ? 'text-slate-200' : 'text-slate-700'}`}>Best for: </strong>{selectedTool.bestFor}</p>
+                  {selectedTool.enterpriseClients && selectedTool.enterpriseClients.length > 0 && (
+                    <p className={`text-xs leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-650'}`}>
+                      <strong className={`font-semibold ${isDark ? 'text-slate-200' : 'text-slate-700'}`}>Biggest Clients: </strong>
+                      {selectedTool.enterpriseClients.join(', ')}
+                    </p>
+                  )}
                 </div>
 
                 {/* Real-World Tracked Signals */}
