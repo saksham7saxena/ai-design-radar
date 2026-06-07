@@ -91,8 +91,16 @@ const getCategoryBadgeStyle = (category: string, isDark: boolean): string => {
   return isDark ? style.dark : style.light;
 };
 
-// Helper function to return accurate brand logo SVG images dynamically from public/logos/
-const getToolIcon = (id: string, name: string, category: string) => {
+const MONOCHROME_LOGOS = new Set([
+  'framer-ai', 'v0', 'cursor', 'lovable', 'bolt', 'recraft', 'midjourney', 'runway', 
+  'krea-ai', 'maze', 'dovetail', 'lottiefiles-ai', 'phind', 'replit-agent', 'pika', 
+  'luma-dream-machine', 'meshy', 'tripo3d', 'copilot-workspace', 'veed-io', 'vectary', 
+  'adobe-firefly', 'clipdrop', 'microsoft-designer'
+]);
+
+// Helper component to return accurate brand logo SVG images dynamically from public/logos/
+const ToolLogo = ({ id, name, category }: { id: string; name: string; category: string }) => {
+  const [hasError, setHasError] = useState(false);
   const letter = name.charAt(0);
   const colors: { [key: string]: string } = {
     'UX Research': 'bg-cyan-900 border border-cyan-800 text-cyan-200',
@@ -108,24 +116,24 @@ const getToolIcon = (id: string, name: string, category: string) => {
     'Motion Design': 'bg-violet-900 border border-violet-800 text-violet-200',
   };
   
-  const colorClass = colors[category] || 'bg-[#2a2725] border border-[#3b3734] text-slate-300';
-  
+  const colorClass = colors[category] || 'bg-[#2a2725] border border-[#3b3734] text-slate-350';
+  const isMonochrome = MONOCHROME_LOGOS.has(id);
+
   return (
-    <div className="w-6 h-6 rounded-md overflow-hidden flex items-center justify-center shrink-0 relative shadow-sm border border-slate-200/40 dark:border-slate-800/40">
-      {/* Fallback initials badge (underneath) */}
-      <div className={`absolute inset-0 flex items-center justify-center text-[11px] font-bold ${colorClass}`}>
-        {letter}
-      </div>
-      {/* Brand logo SVG image (on top) */}
-      <img 
-        src={`/logos/${id}.svg`} 
-        alt={`${name} logo`} 
-        className="absolute inset-0 w-full h-full object-cover bg-white dark:bg-slate-900 z-10" 
-        onError={(e) => {
-          // Hide the image to reveal the fallback initials badge underneath
-          e.currentTarget.style.display = 'none';
-        }}
-      />
+    <div className="w-6 h-6 rounded-md overflow-hidden flex items-center justify-center shrink-0 relative shadow-sm border border-slate-200/40 dark:border-slate-800/40 bg-white dark:bg-[#181615]">
+      {/* Fallback initials badge (only show if image failed to load) */}
+      {hasError ? (
+        <div className={`absolute inset-0 flex items-center justify-center text-[11px] font-bold ${colorClass}`}>
+          {letter}
+        </div>
+      ) : (
+        <img 
+          src={`/logos/${id}.svg`} 
+          alt={`${name} logo`} 
+          className={`absolute inset-0 w-full h-full object-cover z-10 ${isMonochrome ? 'dark:invert p-0.5' : ''}`} 
+          onError={() => setHasError(true)}
+        />
+      )}
     </div>
   );
 };
@@ -691,7 +699,7 @@ export default function RadarDashboard() {
                         {/* Tool Name, Logo, Category & Description */}
                         <td className="py-4 px-4">
                           <div className="flex items-center gap-3">
-                            {getToolIcon(tool.id, tool.name, tool.category)}
+                            <ToolLogo id={tool.id} name={tool.name} category={tool.category} />
                             <div className="flex flex-col sm:flex-row sm:items-center gap-x-2 gap-y-0.5">
                               <span className={`font-bold transition-colors flex items-center gap-1 ${isDark ? 'text-slate-100 group-hover:text-[#ff5c35]' : 'text-[#181d26] group-hover:text-[#aa2d00]'}`}>
                                 {tool.name}
