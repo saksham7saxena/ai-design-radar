@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { toolsData, Tool, CATEGORIES } from '@/data/toolsData';
+import { ExecutiveIntelligenceTable } from '@/components/ExecutiveIntelligenceTable';
 import { 
   TrendingUp, 
   TrendingDown, 
@@ -586,6 +587,7 @@ export default function RadarDashboard() {
           </div>
           <div className={`hidden md:flex items-center gap-8 text-sm font-semibold ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
             <a href="#market-pulse" className={`transition ${isDark ? 'hover:text-white' : 'hover:text-[#1b61c9]'}`}>Market Pulse</a>
+            <a href="#executive-intelligence" className={`transition ${isDark ? 'hover:text-white' : 'hover:text-[#1b61c9]'}`}>Executive Intelligence</a>
             <a href="#leaderboard" className={`transition ${isDark ? 'hover:text-white' : 'hover:text-[#1b61c9]'}`}>Leaderboard</a>
             <a href="#trends" className={`transition ${isDark ? 'hover:text-white' : 'hover:text-[#1b61c9]'}`}>Trends</a>
             <a href="#watchlist" className={`transition ${isDark ? 'hover:text-white' : 'hover:text-[#1b61c9]'}`}>Watchlist</a>
@@ -701,6 +703,9 @@ export default function RadarDashboard() {
           <span className={`font-bold uppercase tracking-wider mr-2 ${isDark ? 'text-[#ff5c35]' : 'text-[#aa2d00]'}`}>Methodology:</span>
           Scored across 5 signals: Launch Buzz (30%), Social Buzz (25%), Search Interest (20%), Designer Adoption (15%), and Editorial Quality (10%)
         </div>
+
+        {/* EXECUTIVE INTELLIGENCE TABLE (2026 RESEARCH) */}
+        <ExecutiveIntelligenceTable isDark={isDark} />
 
         {/* SECTION 2: MOMENTUM LEADERBOARD */}
         <section id="leaderboard" className="scroll-mt-20 space-y-6">
