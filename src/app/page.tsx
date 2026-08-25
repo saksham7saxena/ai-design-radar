@@ -592,16 +592,6 @@ export default function RadarDashboard() {
             <a href="#trends" className={`transition ${isDark ? 'hover:text-white' : 'hover:text-[#1b61c9]'}`}>Trends</a>
             <a href="#watchlist" className={`transition ${isDark ? 'hover:text-white' : 'hover:text-[#1b61c9]'}`}>Watchlist</a>
             <a href="#scoring" className={`transition ${isDark ? 'hover:text-white' : 'hover:text-[#1b61c9]'}`}>Methodology</a>
-            <a 
-              href="https://www.figma.com/design/n513xhJJN5bhXL03OGXNEE/Amazon-Health-PPT?node-id=0-1&t=hL1LvGJ3ZGkKkM4V-1" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className={`inline-flex items-center gap-1 opacity-50 hover:opacity-100 transition-opacity font-normal text-xs ${isDark ? 'text-slate-400 hover:text-slate-200' : 'text-slate-500 hover:text-slate-800'}`}
-              title="Figma Deck"
-            >
-              <span>Figma</span>
-              <ExternalLink size={10} />
-            </a>
           </div>
           
           {/* Dark Mode Toggle Button */}
@@ -1200,22 +1190,8 @@ export default function RadarDashboard() {
         </section>
 
         {/* FOOTER */}
-        <footer className={`pt-10 pb-8 border-t text-xs text-slate-500 transition-colors ${isDark ? 'border-[#2a2725]' : 'border-slate-200'}`}>
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 max-w-7xl mx-auto">
-            <p>© {new Date().getFullYear()} AI Design Tools Radar. Created for market tracking and intelligence.</p>
-            <a 
-              href="https://www.figma.com/design/n513xhJJN5bhXL03OGXNEE/Amazon-Health-PPT?node-id=0-1&t=hL1LvGJ3ZGkKkM4V-1" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className={`inline-flex items-center gap-1.5 opacity-50 hover:opacity-100 transition-opacity ${
-                isDark ? 'text-slate-400 hover:text-slate-200' : 'text-slate-500 hover:text-slate-800'
-              }`}
-              title="Figma Deck"
-            >
-              <span>Figma Presentation</span>
-              <ExternalLink size={11} />
-            </a>
-          </div>
+        <footer className={`pt-10 border-t text-center text-xs text-slate-500 transition-colors ${isDark ? 'border-[#2a2725]' : 'border-slate-200'}`}>
+          <p>© {new Date().getFullYear()} AI Design Tools Radar. Created for market tracking and intelligence.</p>
         </footer>
 
         {/* Location Cam Hover Popover Overlay */}
