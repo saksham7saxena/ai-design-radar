@@ -592,6 +592,7 @@ export default function RadarDashboard() {
             <a href="#trends" className={`transition ${isDark ? 'hover:text-white' : 'hover:text-[#1b61c9]'}`}>Trends</a>
             <a href="#watchlist" className={`transition ${isDark ? 'hover:text-white' : 'hover:text-[#1b61c9]'}`}>Watchlist</a>
             <a href="#scoring" className={`transition ${isDark ? 'hover:text-white' : 'hover:text-[#1b61c9]'}`}>Methodology</a>
+            <a href="/case-study.txt" target="_blank" rel="noopener noreferrer" className={`transition font-bold ${isDark ? 'text-amber-400 hover:text-white' : 'text-[#aa2d00] hover:text-[#1b61c9]'}`}>Case Study</a>
           </div>
           
           {/* Dark Mode Toggle Button */}
